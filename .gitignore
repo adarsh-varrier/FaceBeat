@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment folder
+venv/
+musicenv/
+*.env
+
+# Django specific files
+db.sqlite3
+media/
+*.log
+
+# Static and media files (can be re-generated)
+static/
+media/
+
+# IDE specific files (e.g., VS Code)
+.vscode/
+.idea/
+*.swp
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Git specific files
+.git/
