@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+    {% load static %}
+    <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+</head>
+<body>
+    <!-- Common Header -->
+    <header id="header">
+        <img id="header-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNjj0wRkEdl_N6FRzq45x9bP8iBCwlLlkx2g&s" alt="Product Logo">
+        <h3><em>FaceBeat.</em></h3>
+        <nav id="nav-bar">
+            <a href="{% url 'home' %}" class="nav-link">Home</a>
+            <a href="{% url 'about' %}" class="nav-link">About</a>
+            <a href="{% url 'contact' %}" class="nav-link">Contact</a>
+            <a href="{% url 'login' %}" class="nav-link">Login</a>
+        </nav>
+    </header>
+    <hr>
+
+    <!-- Main Content Area -->
+    <div class="content">
+        {% block content %}
+        <!-- Page-specific content will go here -->
+        {% endblock %}
+    </div>
+
+    <!-- Common Footer -->
+     <hr>
+     <footer>
+        <p>Copyright © 2024 CUCEK edu. All rights reserved.</p>
+        <div class="social-icons">
+          <a href="https://www.facebook.com" target="_blank" class="social-icon">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://www.instagram.com" target="_blank" class="social-icon">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://www.twitter.com" target="_blank" class="social-icon">
+            <i class="fab fa-twitter"></i>
+          </a>
+        </div>
+         <p><a href="#">Privacy policy</a> | <a href="#">Terms of Use</a> | <a href="#">Sales Policy</a> |</p>
+      </footer>
+</body>
+</html>

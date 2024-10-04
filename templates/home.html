@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    FaceBeat
+{% endblock %}
+
+{% block content %}
+{% load static %}
+    <div>
+        <section>
+            <h1 class="app-name" style=" color: red;">FaceBeat</h1>
+        </section>
+    </div>
+    <div class="image-container" style="align-items: center;">
+        <img src="{% static 'images/welcome.jpeg' %}" alt="Background Image"/>
+    </div>
+    <div class="content" style="text-align: center;">
+        <p><a href="{% url 'login' %}">LOGIN</a></p><br>
+        <p style=" color: red;">New Visitor!! get a personalised Account</p>
+        <p><a href="{% url 'register' %}">Register</a></p>
+    </div>
+{% endblock %}

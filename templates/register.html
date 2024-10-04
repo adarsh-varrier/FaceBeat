@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Registration
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+<h3>Registration Page</h3>
+<p>If already registered, go to <a href="{% url 'login' %}">Login</a></p>
+
+<h3>FaceBeat Registration</h3>
+{% if messages %}
+    <div>
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- This will render the form fields with any validation errors -->
+    <button type="submit">Register</button>
+</form>
+
+
+<script src="{% static 'js/register.js' %}"></script>
+
+{% endblock %}

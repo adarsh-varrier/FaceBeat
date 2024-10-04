@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            padding-top: 20px;
+        }
+
+        .sidebar-wrapper {
+            padding: 15px;
+        }
+
+        .sidebar-background {
+            background-size: cover;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        .nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .nav-item {
+            margin: 15px 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: #444;
+        }
+
+        .nav-link i {
+            margin-right: 10px;
+        }
+
+        .nav-item.active .nav-link {
+            background-color: #f44336;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 260px;
+            padding: 20px;
+            flex-grow: 1;
+        }
+
+        /* Sections should have enough space for scrolling */
+        section {
+            padding: 20px 0;
+        }
+
+        /* Logout Button */
+        .logout-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        .rating {
+    display: flex;
+    align-items: center;
+}
+
+.rating input[type="radio"] {
+    display: none; /* Hide the radio button */
+}
+
+.rating label {
+    font-size: 2em; /* Adjust size for stars */
+    color: gray; /* Color for unselected stars */
+    cursor: pointer;
+}
+
+.rating input[type="radio"]:checked ~ label {
+    color: gold; /* Color for selected stars */
+}
+
+.rating input[type="radio"]:hover ~ label,
+.rating input[type="radio"]:hover {
+    color: gold; /* Change color on hover */
+}
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-wrapper">
+            <ul class="nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#index">
+                            <i class="nc-icon nc-chart-pie-35"></i>
+                            <p>{{ user.username }}</p>
+                        </a>
+                    </li>
+
+                    {% if user.is_superuser %}
+                        <li>
+                            <a class="nav-link" href="#user-management">
+                                <i class="fas fa-users-cog"></i>
+                                <p>User Management</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="#music-management">
+                                <i class="fas fa-music"></i>
+                                <p>Music Management</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" href="#feedback-view">
+                                <i class="fas fa-comments"></i>
+                                <p>Feedback View</p>
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <li>
+                        <a class="nav-link" href="#image-scan">
+                            <i class="fas fa-image"></i>
+                            <p>Image Scan</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#music-search">
+                            <i class="fas fa-search"></i>
+                            <p>Music Search</p>
+                        </a>
+                    </li>
+
+                    {% if not user.is_superuser %}
+                    <li>
+                        <a class="nav-link" href="#feedback-give">
+                            <i class="fas fa-comment-dots"></i>
+                            <p>Feedback & QA</p>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    <!-- Logout Button -->
+                    <li class="nav-item active active-pro">
+                        <form method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="logout-button">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </form>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <section id="index">
+            <h1>Dashboard</h1>
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <h3>Welcome, BOSS!</h3>
+
+                    <h2>Average Rating: {{ average_rating }} / 5</h2>
+
+                    <h2>Average Rating:</h2>
+                        <div>
+                            {% for i in "12345" %}
+                                <i class="fa fa-star{% if i > average_rating %}-o{% endif %}"></i>
+                            {% endfor %}
+                            ({{ average_rating }} / 5)
+                        </div>
+                {% else %}
+                    <h1>Welcome, {{ user.username }}!</h1>
+                {% endif %}
+            {% else %}
+                <p>Welcome, Guest!</p>
+            {% endif %}
+        </section>
+        {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+        <section id="user-management">
+            <h1>User Management</h1>
+            <p>This section is for managing users.</p>
+
+            <h2>List of Users:</h2>
+            <ul>
+                {% for user in users %}
+                    {% if not user.is_staff %}  <!-- Check if the user is an admin -->
+                    <li>
+                        {{ user.username }} - {{ user.email }}
+                        <form action="{% url 'remove_user' user.id %}" method="post" style="display:inline;">  <!-- Remove user form -->
+                            {% csrf_token %}
+                            <button type="submit">Remove</button>
+                        </form>
+                    </li>
+                    {% endif %}
+                {% empty %}
+                    <li>No users found.</li>
+                {% endfor %}
+            </ul>
+            <h2>List of Admin:</h2>
+            <ul>
+                {% for user in users %}
+                    {% if user.is_staff %} 
+                    <li>
+                        {{ user.username }} - {{ user.email }}
+                         <!-- Check if the user is an admin -->
+                            <strong>(Admin)</strong>
+                        <form action="{% url 'remove_user' user.id %}" method="post" style="display:inline;">  <!-- Remove user form -->
+                            {% csrf_token %}
+                            <button type="submit">Remove</button>
+                        </form>
+                    </li>
+                    {% endif %}
+                {% empty %}
+                    <li>No users found.</li>
+                {% endfor %}
+            </ul>
+
+            <h2>Create New Admin User</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ admin_form.as_p}}
+                <button type="submit" name="create_admin">Create Admin</button>
+            </form>
+        </section>
+
+        <section id="music-management">
+            <h1>Music Management</h1>
+            <p>This section is for managing music.</p>
+        </section>
+
+        <section id="feedback-view">
+            <h1>Feedback View</h1>
+            <p>View feedback here:</p>
+
+            <ul>
+              
+                {% for feedback in feedbacks %}
+                    {% if not feedback.reply_text %} 
+                    <li>
+                        <div>
+                        <strong>{{ feedback.user.username }}:</strong> <!-- Display the username -->
+                        {{ feedback.feedback_text }} <!-- Display the feedback text -->
+                        <br>
+                        <small>Submitted on: {{ feedback.created_at }}</small> <!-- If you have a timestamp -->
+
+                        <form action="{% url 'user_dashboard' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="feedback_id" value="{{ feedback.id }}">
+                            {{ reply_form.reply_text.label_tag }}
+                            {{ reply_form.reply_text }} <!-- Render reply textarea -->
+                            <button type="submit" name="reply_feedback">Submit Reply</button>
+                        </form>
+                        </div>
+                    </li>
+                    {% endif %}
+                {% empty %}
+                    <li>No feedback available.</li>
+                {% endfor %}
+            </ul>
+
+            <h2>Reviews:</h2>
+            <ul>
+                {% for feedback in feedbacks %}
+                    <li>
+                        <strong>{{ feedback.user.username }}:</strong> <!-- Display the username -->
+                        {{ feedback.feedback_text }} <!-- Display the feedback text -->
+                        <br>
+                        <small>Submitted on: {{ feedback.created_at }}</small> <!-- Timestamp for feedback -->
+        
+                        <!-- Check if there is a reply to the feedback -->
+                        {% if feedback.reply_text %}
+                            <br>
+                            <strong>Team FaceBeat:</strong> {{ feedback.reply_text }}
+                            <br>
+                            <small>Replied on: {{ feedback.replied_at }}</small>
+                        {% else %}
+                            <small>No replies available.</small>
+                        {% endif %}
+        
+                    </li>
+                {% empty %}
+                    <li>No feedback available.</li>
+                {% endfor %}
+            </ul>
+
+        </section>
+                {% endif %}
+        {% endif %}
+        <section id="image-scan">
+            <h1>Image Scan</h1>
+            <p>This section is for scanning images.</p>
+        </section>
+
+        <section id="music-search">
+            <h1>Music Search</h1>
+            <p>Search music here.</p>
+        </section>
+        {% if user.is_authenticated %}
+             {% if not user.is_superuser %}
+             <section id="feedback-give">
+                <h1>Give Feedback</h1>
+                <p>Submit your feedback here.</p>
+                <h2>Feedback:</h2>
+                <form action="{% url 'user_dashboard' %}" method="post">
+                    {% csrf_token %}
+            
+                    {{ feedback_form.feedback_text.label_tag }}
+                    {{ feedback_form.feedback_text }} <!-- Render feedback textarea -->
+            
+                    <div class="rating">
+                        <span>Rating:</span>
+                        {% for value, display in feedback_form.rating.field.choices %}
+                            <input type="radio" name="rating" id="rating_{{ value }}" value="{{ value }}" required>
+                            <label for="rating_{{ value }}">
+                                ★
+                            </label>
+                        {% endfor %}
+                    </div>
+            
+                    <button type="submit" name="submit_feedback">Submit Feedback</button>
+                </form>
+            
+                <h2>Reviews:</h2>
+                <ul>
+                    {% for feedback in feedbacks %}
+                        <li>
+                            <strong>{{ feedback.user.username }}:</strong> <!-- Display the username -->
+                            {{ feedback.feedback_text }} <!-- Display the feedback text -->
+                            <br>
+                            <small>Submitted on: {{ feedback.created_at }}</small> <!-- Timestamp for feedback -->
+            
+                            <!-- Check if there is a reply to the feedback -->
+                            {% if feedback.reply_text %}
+                                <br>
+                                <strong>Team FaceBeat:</strong> {{ feedback.reply_text }}
+                                <br>
+                                <small>Replied on: {{ feedback.replied_at }}</small>
+                            {% else %}
+                                <small>No replies available.</small>
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <li>No feedback available.</li>
+                    {% endfor %}
+                </ul>
+            </section>
+            
+            
+            {% endif %}
+        {% endif %}
+    </div>
+
+</body>
+</html>
