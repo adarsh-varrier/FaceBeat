@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import Feedback
+from .models import Music
+from musicindex.models import Registration, MusicGenre, MusicLanguage
 
 # Define the rating choices as a class variable for easy access
 RATING_CHOICES = [
@@ -40,3 +42,29 @@ class FeedbackForm(forms.ModelForm):
 
 class ReplyForm(forms.Form):
     reply_text = forms.CharField(widget=forms.Textarea, label="Reply", max_length=500)
+
+class MusicUploadForm(forms.ModelForm):
+    class Meta:
+        model = Music
+        fields = ['title', 'artist', 'genre', 'language', 'mood', 'release_date', 'duration', 'music_file']  # Added mood field
+        widgets = {
+            'release_date': forms.DateInput(attrs={'type': 'date'}),
+            'duration': forms.TimeInput(attrs={'type': 'time'}),
+        }
+class MusicSearchForm(forms.Form):
+    query = forms.CharField(max_length=255, required=False, label='Search Music')
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']  # Allow users to update username and email
+
+class RegistrationUpdateForm(forms.ModelForm):
+    genre = forms.ModelMultipleChoiceField(queryset=MusicGenre.objects.all(), widget=forms.CheckboxSelectMultiple)
+    language = forms.ModelMultipleChoiceField(queryset=MusicLanguage.objects.all(), widget=forms.CheckboxSelectMultiple)
+
+    class Meta:
+        model = Registration
+        fields = ['phone', 'genre', 'language']  # Allow users to update phone, genres, and languages

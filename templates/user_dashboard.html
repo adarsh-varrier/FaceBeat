@@ -194,6 +194,14 @@
                         </a>
                     </li>
                     {% endif %}
+                    {% if not user.is_superuser %}
+                    <li>
+                        <a class="nav-link" href="#settings">
+                            <i class="fas fa-cog"></i>
+                            <p>settings</p>
+                        </a>
+                    </li>
+                    {% endif %}
                     
                     <!-- Logout Button -->
                     <li class="nav-item active active-pro">
@@ -228,6 +236,21 @@
                         </div>
                 {% else %}
                     <h1>Welcome, {{ user.username }}!</h1>
+
+                    <!-- Other HTML content -->
+
+                    <h2>Recommended Music:</h2>
+                    <ul>
+                        {% if random_music_records %}
+                            {% for music in random_music_records %}
+                                <li>{{ music.title }} - {{ music.genre }} ({{ music.language }})</li>  <!-- Adjust based on your model -->
+                            {% endfor %}
+                        {% else %}
+                            <li>No music found based on your preferences.</li>
+                        {% endif %}
+                    </ul>
+                    <!-- Other HTML content -->
+
                 {% endif %}
             {% else %}
                 <p>Welcome, Guest!</p>
@@ -285,6 +308,53 @@
         <section id="music-management">
             <h1>Music Management</h1>
             <p>This section is for managing music.</p>
+            
+            <h2>Add Music Genre</h2>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="genre_name" placeholder="Enter genre name" required>
+                        <button type="submit" name="add_genre">Add Genre</button>
+                    </form>
+
+                    <h2>Remove Music Genre</h2>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <select name="genre_id">
+                            {% for genre in genres %}
+                                <option value="{{ genre.id }}">{{ genre.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" name="remove_genre">Remove Genre</button>
+                    </form>
+
+                    <h2>Add Music Language</h2>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="language_name" placeholder="Enter language name" required>
+                        <button type="submit" name="add_language">Add Language</button>
+                    </form>
+
+                    <h2>Remove Music Language</h2>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <select name="language_id">
+                            {% for language in languages %}
+                                <option value="{{ language.id }}">{{ language.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" name="remove_language">Remove Language</button>
+                    </form>
+
+
+
+            <h2>Upload Music</h2>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ music_form.as_p }}  <!-- Render the music upload form -->
+                    <button type="submit" name="upload_music">Upload Music</button>
+                </form>
+
+
         </section>
 
         <section id="feedback-view">
@@ -353,7 +423,33 @@
         <section id="music-search">
             <h1>Music Search</h1>
             <p>Search music here.</p>
+        
+            <form method="GET" action="{% url 'user_dashboard' %}">
+                {{ music_search.query.label_tag }}  <!-- Displaying label -->
+                {{ music_search.query }}             <!-- Input field -->
+                <button type="submit">Search</button>
+            </form>
+        
+            <h2>Uploaded Music</h2>
+            <ul>
+                {% for music in music_records %}
+                    <li>
+                        <strong>{{ music.title }}</strong> by {{ music.artist }} 
+                        (Genre: {{ music.genre }}, Language: {{ music.language }})
+                        <br>
+                        <audio controls>
+                            <source src="{{ music.music_file.url }}" type="audio/mp3">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <br>
+                        <small>Released on: {{ music.release_date }} | Duration: {{ music.duration }}</small>
+                    </li>
+                {% empty %}
+                    <li>No music uploaded yet.</li>
+                {% endfor %}
+            </ul>
         </section>
+        
         {% if user.is_authenticated %}
              {% if not user.is_superuser %}
              <section id="feedback-give">
@@ -402,6 +498,63 @@
                         <li>No feedback available.</li>
                     {% endfor %}
                 </ul>
+            </section>
+            <section id="settings">
+                <h1>settings</h1>
+                <p>Your Profile details.</p>
+
+                <h2>User Profile</h2>
+                <ul>
+                    <li><strong>Username:</strong> {{ user.username }}</li>
+                    <li><strong>Email:</strong> {{ user.email }}</li>
+                    <li><strong>Phone:</strong> {{ user_details.phone }}</li> <!-- Assuming 'phone' is in Registration model -->
+                    
+                    <li><strong>Genres:</strong>
+                        <ul>
+                            {% for genre in user_details.genre.all %}  <!-- Adjust to access genres from 'user_details' -->
+                                <li>{{ genre.name }}</li>  <!-- Access 'name' field from MusicGenre model -->
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    
+                    <li><strong>Languages:</strong>
+                        <ul>
+                            {% for lang in user_details.language.all %}  <!-- Adjust to access languages from 'user_details' -->
+                                <li>{{ lang.name }}</li>  <!-- Access 'name' field from MusicLanguage model -->
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+
+
+                <h2>Update profile</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    <h3>User Information</h3>
+                    <div>
+                        {{ user_form.username.label_tag }} {{ user_form.username }}
+                    </div>
+                    <div>
+                        {{ user_form.email.label_tag }} {{ user_form.email }}
+                    </div>
+                    
+                    <h3>Additional Information</h3>
+                    <div>
+                        {{ registration_form.phone.label_tag }} {{ registration_form.phone }}
+                    </div>
+                    <div>
+                        {{ registration_form.genre.label_tag }}
+                        {{ registration_form.genre }}
+                    </div>
+                    <div>
+                        {{ registration_form.language.label_tag }}
+                        {{ registration_form.language }}
+                    </div>
+                    
+                    <button type="submit" name="update_profile">Update Profile</button>
+                </form>
+                
+                
             </section>
             
             
