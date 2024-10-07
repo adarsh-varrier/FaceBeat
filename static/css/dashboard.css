@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #333;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding-top: 20px;
+    overflow-y: auto;
+}
+
+.sidebar-wrapper {
+    padding: 15px;
+}
+
+.nav {
+    list-style: none;
+    padding: 0;
+}
+
+.nav-item {
+    margin: 15px 0;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.nav-link:hover {
+    background-color: #444;
+}
+
+.nav-item.active .nav-link {
+    background-color: #f44336;
+}
+
+.nav-link i {
+    margin-right: 10px;
+}
+
+/* Main content */
+.main-content {
+    margin-left: 260px;
+    padding: 20px;
+    flex-grow: 1;
+}
+
+/* Sections */
+section {
+    padding: 40px;
+    display: block;
+    margin-bottom: 80px;  /* Increased margin to create a larger space between sections */
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Additional section styles */
+section h1 {
+    margin-top: 0;
+}
+
+/* Ensure scrolling works smoothly without overlap */
+html, body {
+    scroll-behavior: smooth;
+}
+
+section:target {
+    padding-top: 60px;  /* Offset for fixed sidebar */
+}

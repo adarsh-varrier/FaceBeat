@@ -6,17 +6,149 @@
 
 {% block content %}
 {% load static %}
-    <div>
-        <section>
-            <h1 class="app-name" style=" color: red;">FaceBeat</h1>
-        </section>
+<style>
+  .base-image img, .base-image2 img {
+    display: block;
+    max-width: 1550px;  /* Ensure images fit within their container */
+    height: auto;     /* Maintain aspect ratio */
+}
+
+.base-image{
+    display: block;
+    width: 45%;  /* Adjust the width for both images to be side by side */
+}
+.base-image2{
+    display: block;
+    width: 500px;
+    max-width: 1500px;  
+}
+
+div.flex-images {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.flex-images div {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.flex-images img {
+    max-width: 100%;
+    height: auto;
+}
+
+.last-flex {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.last-flex img {
+    max-width: 40%;
+}
+
+.last-flex p {
+    width: 55%;
+    padding-left: 20px;
+}
+/*login-register*/
+.login-register {
+    display: flex;                  /* Use flexbox to align items */
+    justify-content: space-around;  /* Space items evenly */
+    align-items: center;           /* Center items vertically */
+    padding: 20px;                 /* Padding for spacing */
+    background-color: #f8f8f8;     /* Light background for contrast */
+    border-radius: 8px;            /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    margin-top: 30px;              /* Space above the section */
+}
+
+.login-register p {
+    margin: 0;                     /* Remove default margin */
+}
+
+.login-register a {
+    color: #007bff;                /* Bootstrap primary color */
+    text-decoration: none;          /* Remove underline */
+    font-weight: bold;             /* Bold font for emphasis */
+}
+
+.login-register a:hover {
+    text-decoration: underline;     /* Underline on hover for clarity */
+}
+
+.login-register div {
+    text-align: center;            /* Center text within each div */
+}
+
+.login-register div p {
+    margin-bottom: 10px;           /* Space between text elements */
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .login-register {
+        flex-direction: column;     /* Stack items on smaller screens */
+        align-items: stretch;       /* Stretch items to fit */
+    }
+
+    .login-register div {
+        margin-bottom: 15px;        /* Space between stacked items */
+    }
+}
+
+
+</style>
+
+
+    <!-- Base images section -->
+    <div class="d-flex justify-content-center">
+        <div class="base-image">
+            <img src="{% static 'images/base.jpg' %}" alt="Base-image"/>
+        </div>
+        <div>
+            <main>
+                <p>Lorem ipsum, dolor sit amet consectetur </p>
+            </main>
+        </div>
+        <div class="base-image2">
+            <img src="{% static 'images/img.png' %}" alt="second-base-image"/>
+        </div>
     </div>
-    <div class="image-container" style="align-items: center;">
-        <img src="{% static 'images/welcome.jpeg' %}" alt="Background Image"/>
+
+    <!-- Flexing three images -->
+    <div class="flex-container">
+        <div>
+            <img src="{% static 'images/img2.jpg' %}" alt="flex-img1"/>
+        </div>
+        <div>
+            <img src="{% static 'images/new1.jpeg' %}" alt="flex-img2"/>
+        </div>
+        <div>
+            <img src="{% static 'images/img4.jpg' %}" alt="flex-img3"/>
+        </div>
     </div>
-    <div class="content" style="text-align: center;">
+
+    <!-- Last image flexed with content -->
+    <div class="last-flex">
+        <div>
+            <img src="{% static 'images/img7.jpg' %}" alt="flex-img"/>
+        </div>
+        <div>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati saepe eius quasi ducimus nemo placeat quae omnis deserunt eligendi ipsum fugit debitis quod hic, modi facere iste! Magnam, voluptate perferendis.</p>
+        </div>
+    </div>
+
+    <!-- Login and Register Section -->
+    <div class="login-register">
+        <div>
         <p><a href="{% url 'login' %}">LOGIN</a></p><br>
-        <p style=" color: red;">New Visitor!! get a personalised Account</p>
+        </div>
+        <div>
+        <p style="color: red;">New Visitor!! Get a personalized Account</p>
         <p><a href="{% url 'register' %}">Register</a></p>
+        </div>
     </div>
 {% endblock %}

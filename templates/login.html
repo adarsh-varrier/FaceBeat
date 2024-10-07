@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+
 
 {% block title %}
 login
@@ -8,11 +8,24 @@ login
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
+<style>
+        .login-container{
+            align-items: center;
+            text-align: center;
+            background-attachment:scroll;
+            background-color: bisque;
+            font-family: 'Arial', sans-serif;
+            width: 600px;
+            padding: 60px;
+            margin-left: 27%;
+            border-radius: 15px; /* This will create rounded corners */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+</style>
     <h3 class="login-title">Login Page</h3>
     <p class="register-prompt">
-        If not registered, take a <a href="{% url 'register' %}">New Profile</a>
+      
     </p>
-    <h3 class="login-title">Login Page</h3>
 
     {% if messages %}
         <ul class="messages">
@@ -23,12 +36,20 @@ login
             {% endfor %}
         </ul>
     {% endif %}
+    <div class="login-container">
+        <h2>Login</h2>
+        <div>
+            <p>If not registered, take a <a href="{% url 'register' %}">New Profile</a></p>
+        </div>
+        <div>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
     
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
     {% if messages %}
     <div>
         {% for message in messages %}
