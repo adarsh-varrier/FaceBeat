@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from .models import Registration, MusicGenre, MusicLanguage
 
 class RegistrationForm(UserCreationForm):
-    username = forms.CharField(required=True)
+    username = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),label='')
     email = forms.EmailField(required=True)
     phone = forms.CharField(max_length=20)
     genre = forms.ModelMultipleChoiceField(queryset=MusicGenre.objects.all(), widget=forms.CheckboxSelectMultiple)

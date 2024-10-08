@@ -5,23 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My Website{% endblock %}</title>
     {% load static %}
+
+    <!-- Favicon -->
+	  <link href="{% static 'images/fav-icon.jpeg' %}" rel="shortcut icon"/>
+
     <!-- Link to the CSS file -->
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+ body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background-color: #080762;
+  color: white;
+  padding: 20px 0;
+  position: fixed;
+  width: 98%;
+  top: 0;
+  z-index: 5;
+}
+
+#header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-shadow: 0 4px 8px rgba(15, 12, 12, 0.925);
+  font-family: ite;
+}
+
+.name-proj{
+  margin-left: 5%;
+}
+
+#header-img {
+  height: 60px;
+  width: 80px;
+  margin: 0%;
+  margin-left: -1.5%;
+}
+header h3{
+  text-align: left;
+  margin-left: -70%;
+}
+.nave-content{
+  margin-right: 0%;
+}
+
+#nav-bar {
+  display: flex;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+  box-shadow: 0 4px 8px rgba(10, 8, 8, 0.9);
+}
+
+.nav-link:hover {
+  background-color: #038ac4;
+}
+
+section {
+  padding: 300px 30px;
+  margin-top: 30px;
+}
+.nav-link:hover {
+  background-color: #1c2527;
+}
+
+@media (max-width: 600px) {
+  #nav-bar {
+    flex-direction: column;
+  }
+
+  .nav-link {
+    padding: 10px;
+      text-align: center;
+  }
+}
+
+.new-acc-link {
+    text-align: center; /* Center the button within the div */
+}
+
+.new-acc-link .nav-link {
+    display: inline-block; /* Make the link behave like a block for padding */
+    padding: 10px 20px; /* Add vertical and horizontal padding */
+    background-color: rgb(18, 92, 203); /* Background color */
+    color: #fff; /* Text color */
+    text-decoration: none; /* Remove underline */
+    border-radius: 50px; /* Make it oval by setting a high border radius */
+    transition: background-color 0.3s, transform 0.3s; /* Add transition effects */
+}
+
+.new-acc-link .nav-link:hover {
+    background-color: rgb(220, 50, 0); /* Darker shade on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+
+
+footer{
+    text-align: center;
+    background-color: #102866;
+    align-items: center;
+    padding: 5%;
+
+}
+  footer p{
+    color: #fff;
+  }
+  footer a{
+    color: #fff; 
+  }
+  hr{
+    margin-bottom: 0px;
+    border-color: red;
+    height: 3px;
+    background-color: rgb(190, 4, 4);
+    box-shadow: 0 5px 10px rgba(10, 10, 10, 0.925);
+  }
+ 
+  .social-icons {
+    display: flex; /* Use flexbox for horizontal alignment */
+    justify-content: center; /* Center the icons */
+    gap: 15px; /* Space between icons */
+}
+
+.social-icon {
+    display: inline-flex; /* Make the link behave like a block */
+    align-items: center; /* Center the icon vertically */
+    justify-content: center; /* Center the icon horizontally */
+    width: 40px; /* Set a fixed width */
+    height: 40px; /* Set a fixed height */
+    background-color: rgb(18, 18, 17); /* Background color */
+    color: rgb(255, 255, 255); /* Icon color */
+    border-radius: 50%; /* Make the icon circular */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+}
+
+.social-icon:hover {
+    background-color: rgb(220, 50, 0); /* Darker shade on hover */
+    transform: scale(1.1); /* Slightly enlarge the icon on hover */
+}
+
+    </style>
+
 </head>
 <body>
-    <!-- Common Header -->
-    <header id="header">
-        <img id="header-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNjj0wRkEdl_N6FRzq45x9bP8iBCwlLlkx2g&s" alt="Product Logo">
-        <h3><em><span style="color: rgb(255, 64, 0);">Face</span>
-          <span style="color: rgb(250, 243, 243);">Beat.</span></em></h3>
-        <nav id="nav-bar">
-            <a href="{% url 'home' %}" class="nav-link">Home</a>
-            <a href="{% url 'about' %}" class="nav-link">About</a>
-            <a href="{% url 'contact' %}" class="nav-link">Contact</a>
-            <a href="{% url 'login' %}" class="nav-link">Login</a>
-        </nav>
-    </header>
-    <hr>
+     <!-- Common Header -->
+     <header id="header">
+      <img id="header-img" src="{% static 'images/fav-icon.jpeg' %}" alt="Product Logo">
+      <div class="name-proj">
+      <h3><em><span style="color: rgb(255, 64, 0);">Face</span>
+        <span style="color: rgb(250, 243, 243);">Beat.</span></em></h3>
+      </div>
+      <div class="nave-content">
+      <nav id="nav-bar">
+          <a href="{% url 'home' %}" class="nav-link">home</a>
+          <a href="{% url 'about' %}" class="nav-link">about</a>
+          <a href="{% url 'contact' %}" class="nav-link">contact</a>
+          <a href="{% url 'login' %}" class="nav-link">login</a>
+          <div class="new-acc-link">
+          <a href="{% url 'register' %}" class="nav-link">create new account</a>
+          </div>
+      </nav>
+    </div>
+  </header>
+  <hr>
 
     <!-- Main Content Area -->
     <div class="content">
@@ -36,15 +193,16 @@
         <p>Copyright © 2024 CUCEK edu. All rights reserved.</p>
         <div class="social-icons">
           <a href="https://www.facebook.com" target="_blank" class="social-icon">
-            <i class="fab fa-facebook-f"></i>
+              <i class="fab fa-facebook-f"></i>
           </a>
           <a href="https://www.instagram.com" target="_blank" class="social-icon">
-            <i class="fab fa-instagram"></i>
+              <i class="fab fa-instagram"></i>
           </a>
           <a href="https://www.twitter.com" target="_blank" class="social-icon">
-            <i class="fab fa-twitter"></i>
+              <i class="fab fa-twitter"></i>
           </a>
-        </div>
+      </div>
+      
          <p><a href="#">Privacy policy</a> | <a href="#">Terms of Use</a> | <a href="#">Sales Policy</a> |</p>
       </footer>
 </body>

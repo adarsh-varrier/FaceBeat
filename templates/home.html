@@ -7,15 +7,23 @@
 {% block content %}
 {% load static %}
 <style>
-  .base-image img, .base-image2 img {
-    display: block;
-    max-width: 1550px;  /* Ensure images fit within their container */
-    height: auto;     /* Maintain aspect ratio */
+.base-image,
+.base-image2 {
+    display: flex; /* Use flexbox to align items side by side */
+    justify-content: center; /* Center the images horizontally */
+    width: 100%; /* Make the container take the full width */
+    overflow: hidden; /* Hide any overflow */
 }
 
-.base-image{
-    display: block;
-    width: 45%;  /* Adjust the width for both images to be side by side */
+.base-image img,
+.base-image2 img {
+    width: 100%; /* Make the image fill the container */
+    height: auto; /* Maintain aspect ratio */
+    max-width: none; /* Remove max-width to allow full flexibility */
+}
+#image1{
+    margin-left: 5% ;
+    padding: 2rem;
 }
 .base-image2{
     display: block;
@@ -105,8 +113,10 @@ div.flex-images {
 
     <!-- Base images section -->
     <div class="d-flex justify-content-center">
+        <div id="imgage1">
         <div class="base-image">
             <img src="{% static 'images/base.jpg' %}" alt="Base-image"/>
+        </div>
         </div>
         <div>
             <main>

@@ -43,17 +43,20 @@ def user_dashboard(request):
         user_form = UserUpdateForm(instance=request.user)
         registration_form = RegistrationUpdateForm(instance=user_details)
 
-        # Handle preferred genres and languages safely
+       # Get user's preferred genres and languages as strings
         preferred_genres = user_details.genre.all() if user_details else []
         preferred_languages = user_details.language.all() if user_details else []
 
-        preferred_genres_ids = [genre.id for genre in preferred_genres]
-        preferred_languages_ids = [language.id for language in preferred_languages]
+        # Get names of preferred genres and languages
+        preferred_genres_names = [genre.name for genre in preferred_genres]
+        preferred_languages_names = [language.name for language in preferred_languages]
 
+        # Fetch 5 random music records matching preferred genres or languages
         random_music_records = Music.objects.filter(
-            Q(genre__in=preferred_genres_ids) | 
-            Q(language__in=preferred_languages_ids)
-        ).order_by('?')[:5]
+            Q(genre__in=preferred_genres_names) | 
+            Q(language__in=preferred_languages_names)
+        ).order_by('?')[:5]  # Random order, limit to 5 records
+
         
                 # Get the search query from the GET request
         query = request.GET.get('query', '').strip()  # Use .strip() to remove any leading/trailing whitespace

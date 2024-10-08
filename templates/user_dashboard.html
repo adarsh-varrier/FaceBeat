@@ -106,6 +106,13 @@
                         {% if random_music_records %}
                             {% for music in random_music_records %}
                                 <li>{{ music.title }} - {{ music.genre }} ({{ music.language }})</li>  <!-- Adjust based on your model -->
+                                <br>
+                                <audio controls>
+                                    <source src="{{ music.music_file.url }}" type="audio/mp3">
+                                    Your browser does not support the audio element.
+                                </audio>
+                                <br>
+                                <small>Released on: {{ music.release_date }} | Duration: {{ music.duration }}</small>
                             {% endfor %}
                         {% else %}
                             <li>No music found based on your preferences.</li>
