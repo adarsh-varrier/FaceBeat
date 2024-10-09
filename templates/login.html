@@ -16,6 +16,7 @@ login
     max-width: 1200px; /* Set a max width for the container */
     margin: 0 auto; /* Center the container in the viewport */
     margin-right: 14%;
+    position: relative; /* Ensures child elements use this container as a reference */
 }
 
 .login-container {
@@ -29,9 +30,6 @@ login
     margin-left: 16%;
     color: #fffdfd; /* Text color */
 }
-
-
-
 
 
 .login-image {
@@ -152,6 +150,57 @@ input[type="password"]:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional shadow for focus effect */
 }
 
+ul.messages {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-width: 300px; /* Increased width from 250px to 300px */
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
+    position: absolute;
+    top: 400px;
+    left: 31.5%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+ul.messages li {
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 6px;
+    max-width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+}
+
+/* Style for success messages */
+ul.messages li.success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+/* Style for error messages */
+ul.messages li.error {
+    background-color: transparent;
+    
+    color: #f76126;
+}
+
+/* Style for info messages */
+ul.messages li.info {
+    background-color: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+}
+
+/* Style for warning messages */
+ul.messages li.warning {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    color: #856404;
+}
+
 
 
 
@@ -195,6 +244,9 @@ input[type="password"]:focus {
         <div class="login-image">
             <img src="{% static 'images/img7.jpg' %}" alt="login-img">
         </div>
+        <div class="messages">
+            
+        </div>
     </div>
     
     {% if messages %}
@@ -205,16 +257,6 @@ input[type="password"]:focus {
                 </li>
             {% endfor %}
         </ul>
-    {% endif %}
-    
-    {% if messages %}
-    <div>
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
     {% endif %}
 </div>
       
