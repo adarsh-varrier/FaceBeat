@@ -5,13 +5,89 @@
 {% endblock %}
 
 {% block content %}
-<style>main{
-    align-items: center;
+{% load static %}
+<style>
+    /* About Section */
+/* About Section */
+.about {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    display: block; /* Changed from block to flex to allow for proper alignment */
+    align-items: center; /* Center content vertically */
+    justify-content: center; /* Center content horizontally */
+    color: white; /* Text color to stand out against background */
+    text-align: center; /* Center the text */
+    padding: 0 50px; /* Increased padding for more content space */
+    max-width: 1200px; /* Restrict max width for better readability */
+    margin: 0 auto; /* Center the entire section */
+    box-sizing: border-box;
+}
+
+.about-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80vw; /* Full viewport width */
+    height: 100%;
+    z-index: -1; /* Ensure the image stays behind the content */
+    overflow: hidden;
+}
+
+.about-image img {
+    width: 100vw; /* Full viewport width for the image */
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the entire section without distortion */
+    filter: brightness(40%) opacity(0.8); /* Transparency and brightness for readability */
+}
+
+.about h2, .about h3, .about p, .about ol, .about ul {
   
-    margin: 2;
-}</style>
+    padding: 5px; /* Added more padding to increase content area */
+    border-radius: 10px;
+    width: 100%; /* Allow text to take up the full available width */
+}
+
+.about h2 {
+    font-size: 48px;
+    font-weight: bold;
+}
+
+.about h3 {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.about p, .about ol, .about ul {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.about ol, .about ul {
+    padding-left: 20px;
+    text-align: left;
+}
+
+.about li {
+    margin-bottom: 10px;
+}
+
+.about ol li strong, .about ul li strong {
+    color: #ffcc00; /* Emphasize important text */
+}
+
+.about p:last-of-type {
+    margin-bottom: 0;
+}
+
+
+
+</style>
 <main>
-    <section id="about">
+    <section id="about" class="about">
+        <div class="about-image">
+            <img src="{% static 'images/about2.jpeg' %}" alt="about-img"/>
+        </div>
         <h2>About FaceBeat - Emotion-Based Music Recommendation</h2>
         <p>Welcome to FaceBeat!</p>
         <p>FaceBeat is an innovative music recommendation app that understands your emotions and provides music tailored to your mood. Whether you're feeling joyful, calm, or reflective, FaceBeat curates personalized playlists based on your current emotional state.</p>
@@ -23,26 +99,7 @@
             <li><strong>Continuous Learning:</strong> Over time, FaceBeat learns your preferences and emotional patterns, refining its music recommendations to perfectly suit your unique tastes and moods.</li>
         </ol>
 
-        <h3>Why Use FaceBeat?</h3>
-        <ul>
-            <li><strong>Mood-Based Music Discovery:</strong> Forget browsing through endless playlists. FaceBeat intuitively delivers the right music, at the right time, based on your feelings.</li>
-            <li><strong>Personalized Experience:</strong> Our app tailors the recommendations specifically to you, ensuring that every playlist resonates with your current emotional state.</li>
-            <li><strong>Stay in Tune with Your Emotions:</strong> Music has the power to enhance and regulate emotions. With FaceBeat, you’ll discover how the right music can uplift, relax, or inspire you based on what you need in the moment.</li>
-        </ul>
-
-        <h3>Key Features</h3>
-        <ul>
-            <li><strong>Real-Time Emotion Detection:</strong> Using facial recognition and AI, FaceBeat interprets your emotions and recommends songs that match your mood in seconds.</li>
-            <li><strong>Custom Playlists:</strong> Get personalized playlists that suit any emotion, whether you're happy, sad, stressed, or excited.</li>
-            <li><strong>Diverse Music Library:</strong> FaceBeat connects to popular music streaming platforms to give you access to millions of tracks across all genres.</li>
-            <li><strong>Learning Algorithm:</strong> The more you use FaceBeat, the better it understands your musical preferences, ensuring more accurate and enjoyable recommendations.</li>
-        </ul>
-
-        <h3>Get Started with FaceBeat Today!</h3>
-        <p>Let your emotions guide your music. Download FaceBeat, turn on your camera, and let us provide the perfect soundtrack to your life. Whether you need energy to get through your day or calming tunes for relaxation, FaceBeat is your go-to app for mood-based music.</p>
-
-        <h3>Our Vision</h3>
-        <p>At FaceBeat, we believe that music has the power to transform emotions. Our goal is to create a seamless connection between technology, music, and emotional well-being, helping users find joy, peace, and inspiration through personalized music experiences.</p>
+       
     </section>
 </main>
 

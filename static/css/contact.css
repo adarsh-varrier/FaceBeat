@@ -1,0 +1,141 @@
+
+.contact-section {
+    background-color: #f5f5f5; /* Light background for section */
+    padding: 50px 0; /* Padding top and bottom */
+}
+
+.container-fluid {
+    max-width: 1200px; /* Constrain the section width */
+    margin: 0 auto; /* Center the content */
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap; /* Wrap on smaller screens */
+    gap: 20px; /* Space between map and content */
+}
+
+.map {
+    flex: 1 1 85%; /* Takes 45% of the width */
+}
+
+.map iframe {
+    width: 100%; /* Full width of the map container */
+    height: 450px;
+    border: none; /* Remove border */
+}
+
+.contact-warp {
+    flex: 1 1 50%; /* Takes 50% of the width */
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.contact-title h2 {
+    font-size: 36px; /* Large heading */
+    font-weight: bold;
+    color: #333; /* Dark color for text */
+    margin-bottom: 20px;
+}
+
+.contact-para p {
+    font-size: 16px;
+    line-height: 1.6; /* Line spacing */
+    color: #666; /* Grey text */
+    margin-bottom: 30px;
+}
+.list{
+    display: flex;
+    gap: 80px;
+    margin-left: 20%;
+}
+
+.contact-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-list li {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.contact-list ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-list li {
+    font-size: 16px;
+    color: #444;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center; /* Align icons with text */
+}
+
+.contact-list li i {
+    margin-right: 10px; /* Space between icon and text */
+    color: #ff8046; /* Icon color (optional) */
+}
+
+
+.contact-form {
+    margin-top: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%; /* Full width inputs */
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    color: #555;
+    box-sizing: border-box;
+}
+
+.contact-form textarea {
+    height: 120px; /* Height for textarea */
+    resize: none; /* Disable resizing */
+}
+
+.oval-button {
+    padding: 12px 30px; /* Adjust padding for height and width */
+    background-color: #f44336; /* Button background color */
+    color: white; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 50px; /* High border radius for oval shape */
+    text-transform: uppercase; /* Uppercase text */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Make sure it behaves like a button */
+}
+
+.oval-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+    transform: scale(1.05); /* Slight scale up on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .row {
+        flex-direction: column; /* Stack elements on small screens */
+    }
+
+    .map {
+        margin-bottom: 30px;
+    }
+
+    .contact-warp {
+        margin-top: 20px;
+    }
+}
+

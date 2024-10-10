@@ -2,6 +2,54 @@
 {% extends 'base_dashboard.html' %}
 
     {% block content %}
+
+    <style>
+
+    .sidebar-wrapper {
+        padding: 15px;
+        margin-top: 15%;
+        padding-top: 10px; /* Adjusted padding-top to 50px */
+    }
+    .logout-button {
+    background-color: #f44336; /* Primary button color */
+    color: white;
+    border: none;
+    padding: 10px 20px; /* Padding for the button */
+    font-size: 16px;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    width: 100%; /* Full width to fit the sidebar */
+    text-align: left;
+}
+
+.logout-button i {
+    margin-right: 10px; /* Space between icon and text */
+    font-size: 18px; /* Icon size */
+}
+
+.logout-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
+
+.logout-button:active {
+    background-color: #b71c1c; /* Even darker red on click */
+    transform: scale(1); /* Reset scaling on click */
+}
+
+.logout-button:focus {
+    outline: none; /* Remove focus outline */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle shadow on focus */
+}
+
+
+
+    </style>
+
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="sidebar-wrapper">
@@ -66,6 +114,7 @@
                     {% endif %}
                     
                     <!-- Logout Button -->
+                    <div class="logout-div">
                     <li class="nav-item active active-pro">
                         <form method="POST" action="{% url 'logout' %}">
                             {% csrf_token %}
@@ -74,6 +123,7 @@
                             </button>
                         </form>
                     </li>
+                    </div>
                 {% endif %}
             </ul>
         </div>

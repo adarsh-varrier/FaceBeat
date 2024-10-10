@@ -6,159 +6,166 @@
 
 {% block content %}
 {% load static %}
-<style>
-.base-image,
-.base-image2 {
-    display: flex; /* Use flexbox to align items side by side */
-    justify-content: center; /* Center the images horizontally */
-    width: 100%; /* Make the container take the full width */
-    overflow: hidden; /* Hide any overflow */
-}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 
-.base-image img,
-.base-image2 img {
-    width: 100%; /* Make the image fill the container */
-    height: auto; /* Maintain aspect ratio */
-    max-width: none; /* Remove max-width to allow full flexibility */
-}
-#image1{
-    margin-left: 5% ;
-    padding: 2rem;
-}
-.base-image2{
-    display: block;
-    width: 500px;
-    max-width: 1500px;  
-}
+<!-- Hero section -->
+<section class="hero-section">
+    <div class="hero-static">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="hr-img">
+                        <img src="{% static 'images/base.jpg' %}" alt="Base-image">
+                        <!-- Text overlay -->
+                        <div class="hs-text-overlay">
+                            <h2 id="dynamic-heading">Music for<br><span class="orange-text">everyone.</span></h2>
+                            <p id="dynamic-paragraph">Unlimited Access to 100K tracks.<br> Listen to new music.</p>
+                            <a href="#how-section" class="site-btn" id="dynamic-btn-1">How to Use</a>
+                            <a href="{% url 'register' %}" class="site-btn sb-c2" id="dynamic-btn-2">Explore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Hero section end -->
 
-div.flex-images {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
+<!-- Support section -->
+<section class="support-section">
+    <section class="support-static">
+        <div class="support-container">
+            <div class="support-heading">
+                <h2>Unlimited Access <br>to 100K tracks</h2>
+            </div>
+            <div class="support-hr"></div> <!-- Vertical line -->
+            <div class="support-content">
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vitae, alias consectetur eum praesentium ex <br>impedit enim, officiis quia exercitationem esse veniam mollitia delectus? Molestias quas odit nostrum quo est provident.</p>
+                <a href="#"><button class="oval-button">Learn More</button></a>
+            </div>
+        </div>
+    </section>
+  
+    <!-- HTML code to include an audio file -->
+    <section id="audio-section">
+        <h2>ByByBy-NSYNC</h2>
+        <audio controls>
+            <source src="{% static 'audio/bybyby.mp3' %}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </section>
+</section>
 
-.flex-images div {
-    flex: 1;
-    margin: 0 10px;
-}
 
-.flex-images img {
-    max-width: 100%;
-    height: auto;
-}
 
-.last-flex {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
+    <!-- How section -->
+	<section class="how-section" id="how-section" >
+		
+			<div class="section-title">
+				<h2>How it works</h2>
+			</div>
+			<div class="how-row">
+				<div class="col-md-4">
+					<div class="how-item">
+                        <div class="circle"></div>
+						<div class="hi-icon">
+							<i class="fas fa-user-plus"></i> 
+						</div>
+						<h4 class="how-heading">Create an account</h4>
+						<p class="how-para">Lorem ipsum dolor sit amet, consectetur adipi-scing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. </p>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="how-item">
+                        <div class="circle"></div>
+						<div class="hi-icon">
+							<i class="fas fa-search"></i> 
+						</div>
+						<h4 class="how-heading">Choose by name</h4>
+						<p class="how-para">Donec in sodales dui, a blandit nunc. Pellen-tesque id eros venenatis, sollicitudin neque sodales, vehicula nibh. Nam massa odio, portti-tor vitae efficitur non. </p>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="how-item">
+                        <div class="circle"></div>
+						<div class="hi-icon">
+							<i class="fas fa-camera"></i> 
+						</div>
+						<h4 class="how-heading">Emotion Detection</h4>
+						<p class="how-para">Ablandit nunc. Pellentesque id eros venenatis, sollicitudin neque sodales, vehicula nibh. Nam massa odio, porttitor vitae efficitur non, ultric-ies volutpat tellus. </p>
+					</div>
+				</div>
+			</div>
+	</section>
+	<!-- How section end -->
 
-.last-flex img {
-    max-width: 40%;
-}
+    <!-- Concept section -->
+	<section class="concept-section">
+		<div class="container">
+			<div class="concept-row1">
+				<div class="concept-title">
+					<h2>Our Concept & aims</h2>
+				</div>
+				<div class="concept-para">
+					<p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.<br> Risus commodo viverra maecenas accumsan lacus vel facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+				</div>
+			</div>
+			<div class="concept-row2">
+					<div class="concept-item">
+						<img src="{% static 'images/img2.jpg' %}" alt="flex-img1">
+						<h5>Emotion Detection</h5>
+					</div>
+					<div class="concept-item">
+						<img src="{% static 'images/new1.jpeg' %}" alt="flex-img2">
+						<h5>Quality Of Music</h5>
+                    </div>
+					<div class="concept-item">
+						<img src="{% static 'images/img4.jpg' %}" alt="flex-img3">
+						<h5>Creative Mode</h5>
+					</div>	
+			</div>
+		</div>
+	</section>
+	<!-- Concept section end -->
 
-.last-flex p {
-    width: 55%;
-    padding-left: 20px;
-}
-/*login-register*/
-.login-register {
-    display: flex;                  /* Use flexbox to align items */
-    justify-content: space-around;  /* Space items evenly */
-    align-items: center;           /* Center items vertically */
-    padding: 20px;                 /* Padding for spacing */
-    background-color: #f8f8f8;     /* Light background for contrast */
-    border-radius: 8px;            /* Rounded corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-    margin-top: 30px;              /* Space above the section */
-}
 
-.login-register p {
-    margin: 0;                     /* Remove default margin */
-}
-
-.login-register a {
-    color: #007bff;                /* Bootstrap primary color */
-    text-decoration: none;          /* Remove underline */
-    font-weight: bold;             /* Bold font for emphasis */
-}
-
-.login-register a:hover {
-    text-decoration: underline;     /* Underline on hover for clarity */
-}
-
-.login-register div {
-    text-align: center;            /* Center text within each div */
-}
-
-.login-register div p {
-    margin-bottom: 10px;           /* Space between text elements */
-}
-
-/* Responsive design */
-@media (max-width: 600px) {
-    .login-register {
-        flex-direction: column;     /* Stack items on smaller screens */
-        align-items: stretch;       /* Stretch items to fit */
+    <!--====== Javascripts & Jquery ======-->
+	<script>
+       // Array of messages for heading, paragraph, and buttons
+const contentArray = [
+    {
+        heading: 'Music for<br><span class="orange-text">everyone.</span>',
+        paragraph: 'Unlimited Access to 100K tracks.<br> Listen to new music.',
+        btn1: 'How to use',
+        btn2: 'Explore'
+    },
+    {
+        heading: 'Enjoy music<br>tailored to your <span class="orange-text">Mood.</span>',
+        paragraph: 'Machine learning algorithms used for face detection,<br>and music recommendations based on your mood.',
+        btn1: 'How to use',
+        btn2: 'Explore'
     }
+];
 
-    .login-register div {
-        margin-bottom: 15px;        /* Space between stacked items */
-    }
+// Counter for the current content being displayed
+let currentIndex = 0;
+
+// Function to update the content
+function updateContent() {
+    document.getElementById('dynamic-heading').innerHTML = contentArray[currentIndex].heading;
+    document.getElementById('dynamic-paragraph').innerHTML = contentArray[currentIndex].paragraph;
+    document.getElementById('dynamic-btn-1').textContent = contentArray[currentIndex].btn1;
+    document.getElementById('dynamic-btn-2').textContent = contentArray[currentIndex].btn2;
+
+    // Move to the next content, or loop back to the first one
+    currentIndex = (currentIndex + 1) % contentArray.length;
 }
 
+// Set an interval to change content every 3 seconds
+setInterval(updateContent, 3000);
 
-</style>
+    </script>
 
 
-    <!-- Base images section -->
-    <div class="d-flex justify-content-center">
-        <div id="imgage1">
-        <div class="base-image">
-            <img src="{% static 'images/base.jpg' %}" alt="Base-image"/>
-        </div>
-        </div>
-        <div>
-            <main>
-                <p>Lorem ipsum, dolor sit amet consectetur </p>
-            </main>
-        </div>
-        <div class="base-image2">
-            <img src="{% static 'images/img.png' %}" alt="second-base-image"/>
-        </div>
-    </div>
-
-    <!-- Flexing three images -->
-    <div class="flex-container">
-        <div>
-            <img src="{% static 'images/img2.jpg' %}" alt="flex-img1"/>
-        </div>
-        <div>
-            <img src="{% static 'images/new1.jpeg' %}" alt="flex-img2"/>
-        </div>
-        <div>
-            <img src="{% static 'images/img4.jpg' %}" alt="flex-img3"/>
-        </div>
-    </div>
-
-    <!-- Last image flexed with content -->
-    <div class="last-flex">
-        <div>
-            <img src="{% static 'images/img7.jpg' %}" alt="flex-img"/>
-        </div>
-        <div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati saepe eius quasi ducimus nemo placeat quae omnis deserunt eligendi ipsum fugit debitis quod hic, modi facere iste! Magnam, voluptate perferendis.</p>
-        </div>
-    </div>
-
-    <!-- Login and Register Section -->
-    <div class="login-register">
-        <div>
-        <p><a href="{% url 'login' %}">LOGIN</a></p><br>
-        </div>
-        <div>
-        <p style="color: red;">New Visitor!! Get a personalized Account</p>
-        <p><a href="{% url 'register' %}">Register</a></p>
-        </div>
-    </div>
 {% endblock %}
