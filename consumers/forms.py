@@ -4,6 +4,7 @@ from .models import Feedback
 from .models import Music
 from musicindex.models import Registration, MusicGenre, MusicLanguage
 
+
 # Define the rating choices as a class variable for easy access
 RATING_CHOICES = [
     (1, '1 Star'),
@@ -68,3 +69,4 @@ class RegistrationUpdateForm(forms.ModelForm):
     class Meta:
         model = Registration
         fields = ['phone', 'genre', 'language']  # Allow users to update phone, genres, and languages
+

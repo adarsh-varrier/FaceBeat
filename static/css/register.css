@@ -5,6 +5,9 @@
         padding: 0;
         background-color: #f4f4f4;
     }
+    .register-message{
+        text-align: center;
+    }
     
     /* Container for Registration Page */
     .register-master {

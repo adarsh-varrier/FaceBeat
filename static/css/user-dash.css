@@ -1,0 +1,1289 @@
+        /* Sidebar styling */
+
+/* Sidebar Styles */
+.dash-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 260px; /* Adjust width as needed */
+    background-color: #000000; /* Dark background for the sidebar */
+    color: #ecf0f1; /* Light text color */
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
+    z-index: 1000; /* Keep it on top of other content */
+    transition: width 0.3s; /* Smooth transition for width changes */
+}
+
+.dash-sidebar-wrapper {
+    padding: 20px;
+    overflow-y: auto; /* Allow scrolling if content exceeds height */
+}
+
+.name-proj {
+    text-align: center;
+    margin-bottom: 30px; /* Space below the project name */
+    background-color: black;
+    padding-top: 15px;
+    padding-bottom: 15px;
+
+}
+
+.name-proj a {
+    text-decoration: none; /* Remove the underline */
+    color: rgb(255, 64, 0); /* Set the link color */
+}
+
+.name-proj a:hover {
+    color: rgb(250, 243, 243); /* Change color on hover */
+}
+.name-proj h3 {
+    margin: 0;
+    font-size: 1.75rem; /* Increase font size */
+    font-weight: bold; /* Bold font for project name */
+    letter-spacing: 1px; /* Space between letters */
+}
+
+.user-nav-item .dash-nav-link {
+    font-size: 25px; /* Increase font size */
+    padding: 15px; /* Increase padding */
+    font-family: 'Playfair Display', serif;
+}
+
+
+.dash-nav {
+    list-style: none; /* Remove default list styling */
+    padding: 0;
+}
+
+/* Navigation Item Styles */
+.dash-nav-item {
+    margin: 15px 0; /* Space between nav items */
+}
+
+.dash-nav-link {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    padding: 12px 15px; /* Padding for clickable area */
+    border-radius: 8px; /* Rounded corners for hover effect */
+    text-decoration: none; /* Remove underline */
+    color: #ecf0f1; /* Light text color */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effect */
+}
+
+.dash-nav-link i {
+    margin-right: 15px; /* Space between icon and text */
+    font-size: 1.5rem; /* Adjust icon size */
+    color: rgba(255, 255, 255, 0.7); /* Icon color */
+    transition: color 0.3s; /* Smooth color transition for icons */
+}
+
+.dash-nav-link:hover {
+    background-color: rgba(255, 64, 0, 0.2); /* Light hover effect */
+    color: #fff; /* Change text color on hover */
+}
+
+.dash-nav-item.active .dash-nav-link {
+    background-color: rgb(6, 31, 216); /* Active link background */
+    color: #fff; /* White text for active item */
+}
+
+/* Logout Button Styles */
+.dash-logout-div {
+    margin-top: auto; /* Push the logout button to the bottom */
+    padding: 20px 0; /* Padding for the logout area */
+}
+
+.logout-button {
+    width: 100%; /* Full-width button */
+    padding: 10px; /* Padding for button */
+    background-color: #e74c3c; /* Logout button color */
+    border: none; /* Remove border */
+    color: white; /* Text color */
+    font-size: 1rem; /* Font size */
+    font-weight: bold; /* Bold text for the button */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.logout-button:hover {
+    background-color: #c0392b; /* Darker red on hover */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .dash-sidebar {
+        width: 220px; /* Adjust sidebar width for smaller screens */
+    }
+}
+
+/*main css*/
+/* Main Content Area */
+.dash-main-content {
+    margin-left: 300px; /* Space for the sidebar */
+    padding: 20px; /* Space around the main content */
+    background-color: #f4f4f4; /* Light background color for contrast */
+    min-height: 100vh; /* Ensure full height coverage */
+}
+
+/* Add a gap between all sections */
+.dash-main-content section {
+    margin-bottom: 20px; /* Creates a 20px gap between sections */
+}
+
+/* Ensure the second last and last sections have spacing */
+.dash-main-content section:nth-last-child(2) {
+    margin-bottom: 20px; /* Ensure margin for the second last section */
+}
+
+/* Remove margin for the last section if necessary */
+.dash-main-content section:last-child {
+    margin-bottom: 0;
+}
+
+/* Admin Section */
+.dash-admin {
+    display: flex; /* Align child elements horizontally */
+    background-color: #fff; /* White background for the admin section */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 20px; /* Inner padding */
+    margin-bottom: 20px; /* Space below the admin section */
+    gap: 100px;
+}
+
+/* Row 1 Styles */
+
+/* Heading Styles */
+.dash-heading {
+    margin-bottom: 10px; /* Space below the heading */
+    margin-left: -10px;
+    padding: 60px;
+    max-width: 500px ;
+   
+}
+.image-emoji img {
+    width: 200px; /* Adjust the width */
+    height: 200px; /* Adjust the height */
+}
+
+.dash-heading h3 {
+    font-size: 24px; /* Increase heading font size */
+    font-weight: 700; /* Bold text */
+    color: rgb(255, 64, 0); /* Matching color scheme */
+}
+.dash-heading h2 {
+    font-size: 40px; /* Increase heading font size */
+    font-weight: 700; /* Bold text */
+    color: rgb(9, 9, 60); /* Matching color scheme */
+}
+
+/* Motto Styles */
+.moto1 p {
+    font-size: 20px; /* Font size for motto */
+    font-style: italic; /* Italicize text */
+    color: #555; /* Dark gray color for contrast */
+    padding: 20px;
+    margin-left: 45px;
+}
+
+/* Row 2 Styles */
+.row2 {
+    display: block; /* Align child elements horizontally */
+    justify-content: space-between; /* Space out elements */
+    align-items: center; /* Center vertically */
+}
+
+/* Average Rating Styles */
+.dash-avg {
+    flex: 1; /* Allow this element to grow */
+    flex-basis: 90%; /* Set a slightly larger initial size */
+    padding: 16px; /* Inner padding */
+    background-color: #e9ecef; /* Light background for contrast */
+    margin-right: 10px; /* Space to the right */
+}
+
+.dash-avg h2 {
+    font-size: 20px; /* Font size for average rating */
+    color: #333; /* Darker text color */
+}
+
+/* Graph Section */
+.dash-graph {
+    
+    padding: 8px; /* Inner padding */
+    background-color: #e9ecef; /* Light background for contrast */
+   
+}
+
+.avg-rating {
+    text-align: center; /* Center the content */
+}
+
+.avg-rating img {
+    max-width: 100%; /* Responsive image */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 5px; /* Rounded corners for images */
+}
+
+/* Fallback Message */
+.dash-graph p {
+    color: #888; /* Gray color for fallback message */
+    text-align: center; /* Center the text */
+}
+
+.first-row {
+    position: relative; /* Set relative positioning for text overlay */
+    width: 100%; /* Full-width container */
+}
+
+.emoji2 img {
+    width: 100%; /* Make the image responsive to screen width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: cover; /* Ensures image covers its container */
+}
+
+.dash-user-heading {
+    position: absolute; /* Absolute position over the image */
+    top: 20%; /* Adjust the position of the heading */
+    left: 5%; /* Adjust the position of the heading */
+    font-size: 40px; /* Increase heading font size */
+    font-weight: 700; /* Bold text */
+    color: rgb(9, 9, 60); /* Matching color scheme */
+    z-index: 2; /* Ensure the heading is on top of the image */
+}
+
+.moto {
+    position: absolute; /* Absolute position for the motto text */
+    top: 40%; /* Adjust the position of the motto */
+    left: 10%; /* Adjust the position of the motto */
+    z-index: 2; /* Ensure the motto is on top of the image */
+}
+
+.moto p {
+    font-size: 20px; /* Font size for motto */
+    font-style: italic; /* Italicize text */
+    color: #3c3a3a; /* Dark gray color for contrast */
+   
+    padding: 10px; /* Padding for better readability */
+    border-radius: 5px; /* Rounded corners for text box */
+}
+.dash-recommendation {
+    padding: 20px; /* Space around the recommendation section */
+  
+}
+
+.rec-musics {
+    display: flex; /* Flex layout for music items */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: space-between; /* Space items evenly */
+    list-style: none; /* Remove bullet points from the list */
+    padding: 0; /* Remove default padding */
+}
+
+.rec-music {
+    flex: 0 0 30%; /* Each music card takes up about 30% of the width */
+    margin: 15px; /* Space around each card */
+}
+
+.music-card {
+    background-color: #f4c99e; /* Light background color for the card */
+    border: 1px solid #ddd; /* Light border around the card */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Inner padding for the card */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    text-align: center; /* Center the text */
+}
+
+.music-card h3 {
+    margin: 0 0 10px; /* Margin below the title */
+    font-size: 1.2em; /* Font size for the title */
+}
+
+.music-card p {
+    margin: 0 0 10px; /* Margin below the genre and language */
+    font-size: 0.9em; /* Font size for genre */
+}
+
+.music-card small {
+    display: block; /* Make the release date and duration appear on a new line */
+    margin-top: 10px; /* Space above the small text */
+    font-size: 0.8em; /* Font size for release date and duration */
+    color: #666; /* Gray color for the small text */
+}
+.player{
+    background-color: rgb(2, 2, 152);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .rec-music {
+        flex: 0 0 45%; /* Each card takes up 45% on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .rec-music {
+        flex: 0 0 100%; /* Each card takes up the full width on mobile */
+    }
+}
+
+
+#image-scan {
+    padding: 20px; /* Padding around the section */
+    background-color: #f9f9f9; /* Light background color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+
+/* Feedback Section */
+#feedback-give {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.feedback-user p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* General comment section styling */
+.user-comment-view {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 20px auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading styling */
+.comment-heading h2, .more-feedback h3 {
+    font-size: 24px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+/* Comment list styling */
+.comment-list {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.comment-list:last-child {
+    border-bottom: none;
+}
+
+/* Username and feedback text */
+.comment-list strong {
+    font-size: 16px;
+    font-weight: 500;
+    color: #0073e6;
+    margin-right: 10px;
+}
+
+.comment-list p {
+    font-size: 14px;
+    color: #444;
+    margin: 0;
+}
+
+.comment-list small {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Comment and reply section */
+.comment-list .reply {
+    font-size: 14px;
+    color: #555;
+    margin-left: 20px;
+}
+
+/* Hover effect for reply */
+.comment-list .reply:hover {
+    color: #0073e6;
+    cursor: pointer;
+}
+
+/* "Show More" button */
+#show-more-feedback {
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#show-more-feedback:hover {
+    background-color: #005bb5;
+}
+
+/* All Reviews section */
+.more-feedback {
+    margin-top: 30px;
+}
+
+.more-feedback ul {
+    list-style: none;
+    padding: 0;
+}
+
+.more-feedback li {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    .user-comment-view {
+        padding: 10px;
+    }
+
+    .comment-heading h2, .more-feedback h3 {
+        font-size: 20px;
+    }
+
+    .comment-list strong {
+        font-size: 14px;
+    }
+
+    .comment-list p {
+        font-size: 12px;
+    }
+
+    .comment-list small {
+        font-size: 10px;
+    }
+
+    #show-more-feedback {
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+/* General Feedback Form Styling */
+.feedback-user p {
+    font-size: 18px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.feedback-give-header h1 {
+    font-size: 28px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Feedback Form Container */
+.feedback-form-user {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.feedback-form-user form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Feedback Textarea */
+.user-feedback-form textarea {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #555;
+    resize: none;
+}
+
+.user-feedback-form textarea:focus {
+    outline: none;
+    border-color: #0073e6;
+}
+
+/* Rating Stars */
+.feedback-rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.feedback-rating span {
+    font-size: 16px;
+    color: #555;
+    margin-right: 10px;
+}
+
+.feedback-rating input[type="radio"] {
+    display: none;
+}
+
+/* Gray out unselected stars by default */
+.feedback-rating label {
+    font-size: 30px;
+    color: #ddd; /* Gray for unselected stars */
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    margin: 0 5px;
+}
+
+/* Highlight stars on hover */
+.feedback-rating label:hover,
+.feedback-rating label:hover ~ label {
+    color: #ffcc00; /* Yellow on hover */
+}
+
+/* Keep stars filled up to the selected rating */
+.feedback-rating input[type="radio"]:checked ~ label,
+.feedback-rating input[type="radio"]:checked ~ label ~ label {
+    color: #ddd; /* Gray out the unselected stars */
+}
+
+.feedback-rating input[type="radio"]:checked + label,
+.feedback-rating input[type="radio"]:checked + label ~ label {
+    color: #ffcc00; /* Keep selected stars yellow */
+}
+
+/* Submit Button Styling */
+.user-feedback-btn {
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.user-feedback-btn:hover {
+    background-color: #005bb5;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    .feedback-form-user {
+        padding: 15px;
+    }
+
+    .feedback-give-header h1 {
+        font-size: 24px;
+    }
+
+    .user-feedback-form textarea {
+        font-size: 14px;
+    }
+
+    .feedback-rating label {
+        font-size: 24px;
+    }
+
+    .user-feedback-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+
+/*settings*/
+
+/* Settings Section */
+#settings {
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.user-dashboard p {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.settings-heading h1 {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.settings-sub-heading h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+.settings {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.user-details {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.user-details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-details-list li {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.user-details-list li strong {
+    color: #000;
+}
+
+.user-details-list ul {
+    padding-left: 20px;
+}
+
+.user-details-list ul li {
+    font-size: 14px;
+    color: #555;
+}
+
+.user-settings-update {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.prof-update-heading h2 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.update-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.update-sub-heading h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+.update-name, .update-email, .update-phone, .update-genre, .update-language {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.update-form label {
+    font-size: 16px;
+    color: #333;
+}
+
+.update-form input, .update-form select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.update-btn {
+    background-color: #4caf50;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    align-self: center;
+}
+
+.update-btn:hover {
+    background-color: #45a049;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .settings {
+        flex-direction: column;
+    }
+
+    .user-details, .user-settings-update {
+        margin-bottom: 20px;
+    }
+}
+
+/*music search*/
+/* Music Search Section */
+#music-search {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.music-by-search p {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.music-search-header h1 {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.search-tab {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.search-music-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-music-form label {
+    font-size: 16px;
+    color: #444;
+}
+
+.search-music-form input {
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.search-tab-btn {
+    background-color: #2196f3;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.search-tab-btn:hover {
+    background-color: #1976d2;
+}
+
+/* Uploaded Music Section */
+.uploaded-music h2 {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.music-list-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.music-list-db {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.music-list-db:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+.music-player {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.music-player strong {
+    font-size: 18px;
+    color: #333;
+}
+
+.music-player small {
+    font-size: 12px;
+    color: #777;
+}
+
+.music-player audio {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+/* Audio Player */
+.music-track {
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    outline: none;
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    #music-search {
+        padding: 15px;
+    }
+
+    .search-music-form {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .search-music-form input {
+        width: 100%;
+    }
+
+    .music-list-db {
+        padding: 10px;
+    }
+
+    .music-player strong {
+        font-size: 16px;
+    }
+}
+.hidden {
+    display: none;
+}
+
+.see-more {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.see-more:hover {
+    background-color: #0056b3;
+}
+
+
+
+/*user-manage*/
+#user-management {
+    padding: 20px;
+    background-color: #f8f9fa; /* Light background for contrast */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dash-section h1, .dash-section h2 {
+    color: #343a40; /* Dark color for headings */
+    margin-bottom: 15px;
+}
+
+.dash-usermanagement-heading {
+    text-align: center; /* Center align the main heading */
+}
+
+.dash-list-of-users,
+.dash-admin-list {
+    margin: 20px 0; /* Space between sections */
+}
+
+.user-list, .admins {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0; /* Remove padding */
+}
+
+.users, .admin {
+    background-color: #ffffff; /* White background for user list items */
+    border: 1px solid #dee2e6; /* Border for user list items */
+    border-radius: 5px;
+    margin: 10px 0; /* Space between user items */
+    padding: 10px;
+    display: flex; /* Flexbox for alignment */
+    justify-content: space-between; /* Space between username and remove button */
+    align-items: center; /* Center items vertically */
+  
+}
+
+.user-rmv-btn, .admin-rmv-btn {
+    background-color: #dc3545; /* Bootstrap danger color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-rmv-btn:hover, .admin-rmv-btn:hover {
+    background-color: #c82333; /* Darker shade on hover */
+}
+
+.new-admin-form {
+    background-color: #ffffff; /* White background for form */
+    border: 1px solid #dee2e6; /* Border for form */
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.new-admin-form-frm {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+}
+
+.create-admin-btn {
+    background-color: #28a745; /* Bootstrap success color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.create-admin-btn:hover {
+    background-color: #218838; /* Darker shade on hover */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .users, .admin {
+        flex-direction: column; /* Stack items in a column on smaller screens */
+        align-items: flex-start; /* Align items to the left */
+    }
+
+    .user-rmv-btn, .admin-rmv-btn {
+        width: 100%; /* Full width buttons on small screens */
+    }
+}
+
+
+#music-management {
+    padding: 20px;
+    background-color: #f8f9fa; /* Light background for contrast */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dash-musicmanagement-heading h1 {
+    color: #343a40; /* Dark color for the main heading */
+    margin-bottom: 15px;
+}
+
+.dash-register-management {
+    margin: 20px 0; /* Space between sections */
+}
+
+.dash-genre, .dash-language {
+    display: flex;
+    gap: 20px; /* Space between sections */
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+}
+
+.dash-remove-language {
+    background-color: #ffffff; /* White background for consistency */
+    border: 1px solid #dee2e6; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Padding inside the section */
+    margin: 10px 0; /* Margin above and below the section */
+}
+
+.remove-heading h2 {
+    color: #495057; /* Darker color for headings */
+    margin-bottom: 10px; /* Space below the heading */
+}
+
+.rmv-gnre-form {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+}
+
+.lang-remove-form {
+    margin-bottom: 10px; /* Space between the select and button */
+    padding: 8px; /* Padding inside the select */
+    border: 1px solid #ced4da; /* Light border for the select */
+    border-radius: 4px; /* Rounded corners for the select */
+    font-size: 14px; /* Font size for readability */
+}
+
+.lang-remv-btn {
+    background-color: #dc3545; /* Bootstrap danger color for remove button */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+    font-size: 14px; /* Font size for the button */
+}
+
+.lang-remv-btn:hover {
+    background-color: #c82333; /* Darker shade on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+
+.dash-add-genre, .dash-remove-gere,
+.dash-add-language, .dash-remove-language {
+    background-color: #ffffff; /* White background for forms */
+    border: 1px solid #dee2e6; /* Light border */
+    border-radius: 5px;
+    padding: 15px;
+    flex: 1; /* Allow sections to take equal space */
+    min-width: 200px; /* Minimum width for form sections */
+}
+
+.add-gnre-heading, .add-music-heading, .remove-heading, .rmv-gnre-heding {
+    color: #495057; /* Darker color for subheadings */
+    margin-bottom: 10px; /* Space below subheadings */
+}
+
+.add-gnre-form, .add-music-form, .rmv-gnre-form, .lang-remove-form, .upload-music-form {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+}
+
+.add-gnre-form input, .add-music-form input,
+.lang-remove-form select, .rmv-gnre-form select {
+    margin-bottom: 10px; /* Space between input/select and button */
+    padding: 8px;
+    border: 1px solid #ced4da; /* Light border */
+    border-radius: 4px;
+    font-size: 14px; /* Font size for better readability */
+}
+
+.add-gnre-btn, .add-musc-btn,
+.rmv-gnre-btn, .lang-remv-btn,
+.upload-button {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+    font-size: 14px; /* Font size for buttons */
+}
+
+.add-gnre-btn:hover, .add-musc-btn:hover,
+.rmv-gnre-btn:hover, .lang-remv-btn:hover,
+.upload-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.upload-music-form {
+    background-color: #ffffff; /* White background for upload section */
+    border: 1px solid #dee2e6; /* Border for upload section */
+    border-radius: 5px;
+    padding: 15px;
+}
+
+.upload-heading {
+    margin-bottom: 15px; /* Space below the heading */
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .dash-genre, .dash-language {
+        flex-direction: column; /* Stack sections vertically on small screens */
+    }
+
+    .dash-add-genre, .dash-remove-gere,
+    .dash-add-language, .dash-remove-language {
+        margin: 10px 0; /* Margin between stacked sections */
+    }
+
+    .add-gnre-form input, .add-music-form input,
+    .lang-remove-form select, .rmv-gnre-form select {
+        font-size: 16px; /* Larger font size for better touch targets */
+    }
+}
+
+
+/* Feedback Section */
+#feedback-view {
+    background-color: #f8f9fa; /* Light background color for the section */
+    padding: 20px; /* Padding inside the section */
+    border-radius: 8px; /* Rounded corners */
+    margin: 20px 0; /* Margin above and below the section */
+}
+
+.dash-feedback-heading h1 {
+    color: #343a40; /* Darker text color for headings */
+    margin-bottom: 15px; /* Space below the heading */
+}
+
+.dash-feedbak {
+    background-color: #ffffff; /* White background for feedback list */
+    border: 1px solid #dee2e6; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Padding inside the feedback list */
+    max-height: 400px; /* Set a max height for the feedback list */
+    overflow-y: auto; /* Scrollbar for overflowing content */
+}
+
+.feedback-list {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.feedback-list li {
+    margin-bottom: 15px; /* Space between feedback items */
+    border-bottom: 1px solid #e9ecef; /* Divider between feedback items */
+    padding-bottom: 10px; /* Padding below feedback items */
+}
+
+.dash-feedback {
+    font-size: 16px; /* Font size for feedback text */
+}
+
+.dash-review-replayform {
+    margin-top: 10px; /* Space above the reply form */
+}
+
+.reply-form {
+    display: flex;
+    flex-direction: column; /* Stack form elements vertically */
+}
+
+.reply-form textarea {
+    margin: 5px 0; /* Space above and below textarea */
+    padding: 10px; /* Padding inside the textarea */
+    border: 1px solid #ced4da; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.replay-btn {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+
+.replay-btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.dash-review-list {
+    margin-top: 30px; /* Space above the review list */
+}
+
+.review-heading h2 {
+    color: #343a40; /* Darker text color for subheadings */
+    margin-bottom: 15px; /* Space below the subheading */
+}
+
+.dash-reviews {
+    background-color: #ffffff; /* White background for review list */
+    border: 1px solid #dee2e6; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 15px; /* Padding inside the review list */
+}
+
+.review-list {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+    margin: 0; /* Remove default margin */
+}
+
+.review-list li {
+    margin-bottom: 15px; /* Space between reviews */
+}
+
+#see-more-btn {
+    display: block; /* Block-level element */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center; /* Center text */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+    margin: 15px 0; /* Margin above and below the button */
+}
+
+#see-more-btn:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+/* Hide extra reviews by default */
+.hidden {
+    display: none; /* Hide element */
+}
+
+.music-operations{
+    display: flex;
+    gap: 20px;
+}
+
+.messages{
+    text-align: center;
+}

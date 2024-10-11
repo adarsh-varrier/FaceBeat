@@ -2,81 +2,64 @@
 {% extends 'base_dashboard.html' %}
 
     {% block content %}
+    {% load static %}
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<link rel="stylesheet" href="{% static 'css/user-dash.css' %}"/>
+   
+<script src="{% static 'js/dash.js' %}"></script>
+
 
     <style>
 
-    .sidebar-wrapper {
-        padding: 15px;
-        margin-top: 15%;
-        padding-top: 10px; /* Adjusted padding-top to 50px */
-    }
-    .logout-button {
-    background-color: #f44336; /* Primary button color */
-    color: white;
-    border: none;
-    padding: 10px 20px; /* Padding for the button */
-    font-size: 16px;
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
-    width: 100%; /* Full width to fit the sidebar */
-    text-align: left;
-}
-
-.logout-button i {
-    margin-right: 10px; /* Space between icon and text */
-    font-size: 18px; /* Icon size */
-}
-
-.logout-button:hover {
-    background-color: #d32f2f; /* Darker red on hover */
-    transform: scale(1.05); /* Slightly enlarge the button on hover */
-}
-
-.logout-button:active {
-    background-color: #b71c1c; /* Even darker red on click */
-    transform: scale(1); /* Reset scaling on click */
-}
-
-.logout-button:focus {
-    outline: none; /* Remove focus outline */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle shadow on focus */
-}
-
-
-
     </style>
-
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        <li class="{% if message.tags %}{{ message.tags }}{% endif %}">
+            {{ message }}
+        </li>
+    {% endfor %}
+</ul>
+{% endif %}
     <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-wrapper">
-            <ul class="nav">
+    <div class="dash-sidebar">
+        <div class="dash-sidebar-wrapper">
+            <ul class="dash-nav">
+                <div class="name-proj">
+                    <a href="{% url 'home' %}">
+                        <h3>
+                            <em>
+                                <span style="color: rgb(255, 64, 0);">Face</span>
+                                <span style="color: rgb(250, 243, 243);">Beat.</span>
+                            </em>
+                        </h3>
+                    </a>
+                </div>
                 {% if user.is_authenticated %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#index">
-                            <i class="nc-icon nc-chart-pie-35"></i>
-                            <p>{{ user.username }}</p>
+                    <li class="dash-nav-item active user-nav-item">
+                        <a class="dash-nav-link" href="#index">
+                            <i class="fas fa-user"></i>
+                            <bold><p>{{ user.username }}</p></bold>
                         </a>
                     </li>
 
                     {% if user.is_superuser %}
                         <li>
-                            <a class="nav-link" href="#user-management">
+                            <a class="dash-nav-link" href="#user-management">
                                 <i class="fas fa-users-cog"></i>
                                 <p>User Management</p>
                             </a>
                         </li>
                         <li>
-                            <a class="nav-link" href="#music-management">
+                            <a class="dash-nav-link" href="#music-management">
                                 <i class="fas fa-music"></i>
                                 <p>Music Management</p>
                             </a>
                         </li>
                         <li>
-                            <a class="nav-link" href="#feedback-view">
+                            <a class="dash-nav-link" href="#feedback-view">
                                 <i class="fas fa-comments"></i>
                                 <p>Feedback View</p>
                             </a>
@@ -84,13 +67,13 @@
                     {% endif %}
 
                     <li>
-                        <a class="nav-link" href="#image-scan">
+                        <a class="dash-nav-link" href="#image-scan">
                             <i class="fas fa-image"></i>
                             <p>Image Scan</p>
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#music-search">
+                        <a class="dash-nav-link" href="#music-search">
                             <i class="fas fa-search"></i>
                             <p>Music Search</p>
                         </a>
@@ -98,7 +81,7 @@
 
                     {% if not user.is_superuser %}
                     <li>
-                        <a class="nav-link" href="#feedback-give">
+                        <a class="dash-nav-link" href="#feedback-give">
                             <i class="fas fa-comment-dots"></i>
                             <p>Feedback & QA</p>
                         </a>
@@ -106,7 +89,7 @@
                     {% endif %}
                     {% if not user.is_superuser %}
                     <li>
-                        <a class="nav-link" href="#settings">
+                        <a class="dash-nav-link" href="#settings">
                             <i class="fas fa-cog"></i>
                             <p>settings</p>
                         </a>
@@ -114,9 +97,9 @@
                     {% endif %}
                     
                     <!-- Logout Button -->
-                    <div class="logout-div">
-                    <li class="nav-item active active-pro">
-                        <form method="POST" action="{% url 'logout' %}">
+                    <div class="dash-logout-div">
+                    <li class="nav-item active-pro">
+                        <form method="POST" action="{% url 'logout' %}" class="dash-form">
                             {% csrf_token %}
                             <button type="submit" class="logout-button">
                                 <i class="fas fa-sign-out-alt"></i> Logout
@@ -130,46 +113,81 @@
     </div>
 
     <!-- Main Content -->
-    <div class="main-content">
-        <section id="index">
-            <h1>Dashboard</h1>
+    <div class="dash-main-content">
+        <section id="index" class="dash-section">
             {% if user.is_authenticated %}
                 {% if user.is_superuser %}
-                    <h3>Welcome, BOSS!</h3>
-
-                    <h2>Average Rating: {{ average_rating }} / 5</h2>
-
-                    <h2>Average Rating:</h2>
-                        <div>
-                            {% for i in "12345" %}
-                                <i class="fa fa-star{% if i > average_rating %}-o{% endif %}"></i>
-                            {% endfor %}
-                            ({{ average_rating }} / 5)
+                <div class="dash-admin">
+                    <div class="row1">
+                        <div class="dash-heading">
+                            <h3>Authorized-Persons only!</h3>
+                            <h2>Welcome, BOSS!</h2>
                         </div>
+                        <div class="moto1">
+                            <p><em>Tune into your emotions,  <br>let the music follow.</em></p>
+                        </div>
+                        <div class="image-emoji">
+                            <img src="{% static 'images/emoji.jpeg' %}"/>
+                        </div>
+                    </div>
+                    <div class="row2">
+                        <div class="dash-avg">
+                            <h2>Average Rating: {{ average_rating }} / 5</h2>
+                        </div>
+                        <div class="dash-graph">
+                            <div class="avg-rating">
+                                {% if graph %}
+                                    <div>
+                                        <h2>Average Rating</h2>
+                                        <img src="data:image/png;base64,{{ graph }}" alt="Average Rating Graph" />
+                                    </div>
+                                {% else %}
+                                    <p>No ratings available to display a graph.</p>
+                                {% endif %}
+                        </div>
+                    </div>
+                </div>
                 {% else %}
-                    <h1>Welcome, {{ user.username }}!</h1>
-
+                <div dash-user>
+                    <div class="first-row">
+                        <div class="dash-user-heading">
+                            <h1>Welcome, {{ user.username }}!</h1>
+                        </div>
+                        <div class="moto">
+                            <p><em>"When words fail, music speaks.."<br>~</em></p>
+                        </div>
+                        <div class="emoji2">
+                            <img src="{% static 'images/emoji2.jpeg' %}"/>
+                        </div>
+                    </div>
                     <!-- Other HTML content -->
-
-                    <h2>Recommended Music:</h2>
-                    <ul>
-                        {% if random_music_records %}
-                            {% for music in random_music_records %}
-                                <li>{{ music.title }} - {{ music.genre }} ({{ music.language }})</li>  <!-- Adjust based on your model -->
-                                <br>
-                                <audio controls>
-                                    <source src="{{ music.music_file.url }}" type="audio/mp3">
-                                    Your browser does not support the audio element.
-                                </audio>
-                                <br>
-                                <small>Released on: {{ music.release_date }} | Duration: {{ music.duration }}</small>
-                            {% endfor %}
-                        {% else %}
-                            <li>No music found based on your preferences.</li>
-                        {% endif %}
-                    </ul>
+                    <div class="dash-recommendation">
+                        <div class="recmd-heading">
+                            <h2>Music For You</h2>
+                        </div>
+                        <ul class="rec-musics">
+                            {% if random_music_records %}
+                                {% for music in random_music_records %}
+                                    <li class="rec-music">
+                                        <div class="music-card">
+                                            <h3>{{ music.title }}</h3>
+                                            <p>{{ music.genre }} ({{ music.language }})</p>
+                                            <audio controls class="player">
+                                                <source src="{{ music.music_file.url }}" type="audio/mp3">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                            <small>Released on: {{ music.release_date }} | Duration: {{ music.duration }}</small>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li>No music found based on your preferences.</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    
                     <!-- Other HTML content -->
-
+                </div>
                 {% endif %}
             {% else %}
                 <p>Welcome, Guest!</p>
@@ -177,306 +195,453 @@
         </section>
         {% if user.is_authenticated %}
                 {% if user.is_superuser %}
-        <section id="user-management">
-            <h1>User Management</h1>
+        <section id="user-management" class="dash-section">
             <p>This section is for managing users.</p>
-
-            <h2>List of Users:</h2>
-            <ul>
-                {% for user in users %}
-                    {% if not user.is_staff %}  <!-- Check if the user is an admin -->
-                    <li>
-                        {{ user.username }} - {{ user.email }}
-                        <form action="{% url 'remove_user' user.id %}" method="post" style="display:inline;">  <!-- Remove user form -->
-                            {% csrf_token %}
-                            <button type="submit">Remove</button>
-                        </form>
-                    </li>
-                    {% endif %}
-                {% empty %}
-                    <li>No users found.</li>
-                {% endfor %}
-            </ul>
-            <h2>List of Admin:</h2>
-            <ul>
-                {% for user in users %}
-                    {% if user.is_staff %} 
-                    <li>
-                        {{ user.username }} - {{ user.email }}
-                         <!-- Check if the user is an admin -->
-                            <strong>(Admin)</strong>
-                        <form action="{% url 'remove_user' user.id %}" method="post" style="display:inline;">  <!-- Remove user form -->
-                            {% csrf_token %}
-                            <button type="submit">Remove</button>
-                        </form>
-                    </li>
-                    {% endif %}
-                {% empty %}
-                    <li>No users found.</li>
-                {% endfor %}
-            </ul>
-
-            <h2>Create New Admin User</h2>
-            <form method="post">
-                {% csrf_token %}
-                {{ admin_form.as_p}}
-                <button type="submit" name="create_admin">Create Admin</button>
-            </form>
-        </section>
-
-        <section id="music-management">
-            <h1>Music Management</h1>
-            <p>This section is for managing music.</p>
-            
-            <h2>Add Music Genre</h2>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <input type="text" name="genre_name" placeholder="Enter genre name" required>
-                        <button type="submit" name="add_genre">Add Genre</button>
-                    </form>
-
-                    <h2>Remove Music Genre</h2>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <select name="genre_id">
-                            {% for genre in genres %}
-                                <option value="{{ genre.id }}">{{ genre.name }}</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" name="remove_genre">Remove Genre</button>
-                    </form>
-
-                    <h2>Add Music Language</h2>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <input type="text" name="language_name" placeholder="Enter language name" required>
-                        <button type="submit" name="add_language">Add Language</button>
-                    </form>
-
-                    <h2>Remove Music Language</h2>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <select name="language_id">
-                            {% for language in languages %}
-                                <option value="{{ language.id }}">{{ language.name }}</option>
-                            {% endfor %}
-                        </select>
-                        <button type="submit" name="remove_language">Remove Language</button>
-                    </form>
-
-
-
-            <h2>Upload Music</h2>
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ music_form.as_p }}  <!-- Render the music upload form -->
-                    <button type="submit" name="upload_music">Upload Music</button>
-                </form>
-
-
-        </section>
-
-        <section id="feedback-view">
-            <h1>Feedback View</h1>
-            <p>View feedback here:</p>
-
-            <ul>
-              
-                {% for feedback in feedbacks %}
-                    {% if not feedback.reply_text %} 
-                    <li>
-                        <div>
-                        <strong>{{ feedback.user.username }}:</strong> <!-- Display the username -->
-                        {{ feedback.feedback_text }} <!-- Display the feedback text -->
-                        <br>
-                        <small>Submitted on: {{ feedback.created_at }}</small> <!-- If you have a timestamp -->
-
-                        <form action="{% url 'user_dashboard' %}" method="post">
-                            {% csrf_token %}
-                            <input type="hidden" name="feedback_id" value="{{ feedback.id }}">
-                            {{ reply_form.reply_text.label_tag }}
-                            {{ reply_form.reply_text }} <!-- Render reply textarea -->
-                            <button type="submit" name="reply_feedback">Submit Reply</button>
-                        </form>
-                        </div>
-                    </li>
-                    {% endif %}
-                {% empty %}
-                    <li>No feedback available.</li>
-                {% endfor %}
-            </ul>
-
-            <h2>Reviews:</h2>
-            <ul>
-                {% for feedback in feedbacks %}
-                    <li>
-                        <strong>{{ feedback.user.username }}:</strong> <!-- Display the username -->
-                        {{ feedback.feedback_text }} <!-- Display the feedback text -->
-                        <br>
-                        <small>Submitted on: {{ feedback.created_at }}</small> <!-- Timestamp for feedback -->
-        
-                        <!-- Check if there is a reply to the feedback -->
-                        {% if feedback.reply_text %}
-                            <br>
-                            <strong>Team FaceBeat:</strong> {{ feedback.reply_text }}
-                            <br>
-                            <small>Replied on: {{ feedback.replied_at }}</small>
-                        {% else %}
-                            <small>No replies available.</small>
+            <div class="dash-usermanagement-heading">
+                <h1>User Management</h1>
+            </div>
+            <div class="dash-list of users">
+                <div class="userlist-heading"><h2>List of Users:</h2></div>
+                <ul class="user-list">
+                    {% for user in users %}
+                        {% if not user.is_staff %}  <!-- Check if the user is an admin -->
+                        <li class="users">
+                            {{ user.username }} - {{ user.email }}
+                            <form action="{% url 'remove_user' user.id %}" method="post" style="display:inline;">  <!-- Remove user form -->
+                                {% csrf_token %}
+                                <button type="submit" class="user-rmv-btn">Remove</button>
+                            </form>
+                        </li>
                         {% endif %}
-        
-                    </li>
-                {% empty %}
-                    <li>No feedback available.</li>
-                {% endfor %}
-            </ul>
+                    {% empty %}
+                        <li>No users found.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="dash-admin-list">
+                <div class="admin-list-head"><h2>List of Admin:</h2></div>
+                <div class="admin-list">
+                    <ul class="admins">
+                        {% for user in users %}
+                            {% if user.is_staff %} 
+                            <li class="admin">
+                                {{ user.username }} - {{ user.email }}
+                                <!-- Check if the user is an admin -->
+                                    <strong>(Admin)</strong>
+                                <form action="{% url 'remove_user' user.id %}" method="post" style="display:inline;">  <!-- Remove user form -->
+                                    {% csrf_token %}
+                                    <button type="submit" class="admin-rmv-btn">Remove</button>
+                                </form>
+                            </li>
+                            {% endif %}
+                        {% empty %}
+                            <li>No users found.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="dash-new-admin">
+                <div class="new-admin-heading"><h2>Create New Admin User</h2></div>
+                <div class="new-admin-form">
+                    <form method="post" class="new-admin-form-frm">
+                        {% csrf_token %}
+                        {{ admin_form.as_p}}
+                        <button type="submit" name="create_admin" class="create-admin-btn">Create Admin</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="music-management" class="dash-section">
+            <p>This section is for managing music.</p>
+            <div class="dash-musicmanagement-heading">
+            <h1>Music Management</h1>
+            </div>
+            <div class="dash-register-management">
+                <div class="dash-genre">
+                    <div class="dash-add-genre">
+                        <div class="add-gnre-heading"><h2>Add Music Genre</h2></div>
+                        <form method="POST" class="add-gnre-form">
+                            {% csrf_token %}
+                            <input type="text" name="genre_name" placeholder="Enter genre name" required>
+                            <button type="submit" name="add_genre" class="add-gnre-btn">Add Genre</button>
+                        </form>
+                    </div>
+                    <div class="dash-remove-gere">                
+                        <div class="rmv-gnre-heding"><h2>Remove Music Genre</h2></div>
+                        <form method="POST" class="rmv-gnre-form">
+                            {% csrf_token %}
+                            <select name="genre_id">
+                                {% for genre in genres %}
+                                    <option value="{{ genre.id }}">{{ genre.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" name="remove_genre" class="rmv-gnre-btn">Remove Genre</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="dash-language">
+                    <div class="dash-add-language">
+                        <div class="add-music-heading"><h2>Add Music Language</h2></div>
+                        <form method="POST" class="add-music-form">
+                            {% csrf_token %}
+                            <input type="text" name="language_name" placeholder="Enter language name" required>
+                            <button type="submit" name="add_language" class="add-musc-btn">Add Language</button>
+                        </form>
+                    </div>
+                    <div class="dash-remove-language">
+                        <div class="remove-heading">
+                            <h2>Remove Music Language</h2>
+                        </div>
+                        <form method="POST" class="rmv-gnre-form">
+                            {% csrf_token %}
+                            <select name="language_id" class="lang-remove-form">
+                                {% for language in languages %}
+                                    <option value="{{ language.id }}">{{ language.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" name="remove_language" class="lang-remv-btn">Remove Language</button>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="music-operations">
+                <div class="dash-upload-music">
+                    <div class="upload-heading"><h2>Upload Music</h2></div>
+                    <div class="upload-music-form">
+                        <form method="POST" enctype="multipart/form-data" class="upload-music-from">
+                            {% csrf_token %}
+                            {{ music_form.as_p }}  <!-- Render the music upload form -->
+                            <button type="submit" name="upload_music" class="upload-button">Upload Music</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="music-rmv">
+                    <div class="music-search-header"><h1>Delete Music</h1></div>
+                    
+                    <div class="search-tab">
+                        <form method="GET" action="{% url 'user_dashboard' %}" class="search-music-form">
+                            {{ music_search.query.label_tag }}
+                            {{ music_search.query }}
+                            <button type="submit" class="search-tab-btn">Search</button>
+                        </form>
+                    </div>
+                
+                {% if music_list %}
+                    <div class="music-list">
+                        <ul>
+                            {% for music in music_list %}
+                                <li>
+                                    <div class="music-item">
+                                        <strong>{{ music.title }}</strong> by {{ music.artist }}
+                                        <p>Genre: {{ music.genre }}</p>
+                                        <p>Language: {{ music.language }}</p>
+                                        <p>Mood: {{ music.mood }}</p>
+                                        <form method="POST" action="{% url 'delete_music' music.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="delete-btn">Remove Music</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% else %}
+                    <p>No music found. Please search for music.</p>
+                {% endif %}
+            </div>
+            
+        </section>
+
+        <section id="feedback-view" class="dash-section">
+            <div class="dash-feedbcak-view">
+                <p>View feedback here:</p>
+
+                <div class="dash-feedback-heading"><h1>Feedback View</h1></div>
+                <div class="dash-feedbak">
+                    <ul class="feedback-list">
+                    
+                        {% for feedback in feedbacks %}
+                            {% if not feedback.reply_text %} 
+                            <li>
+                                <div class="dash-feedback">
+                                    <strong>{{ feedback.user.username }}:</strong> <!-- Display the username -->
+                                    {{ feedback.feedback_text }} <!-- Display the feedback text -->
+                                    <br>
+                                    <small>Submitted on: {{ feedback.created_at }}</small> <!-- If you have a timestamp -->
+                                </div>
+                                <div class="dash-review-replayform">
+                                    <form action="{% url 'user_dashboard' %}" method="post" class="reply-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="feedback_id" value="{{ feedback.id }}">
+                                        {{ reply_form.reply_text.label_tag }}
+                                        {{ reply_form.reply_text }} <!-- Render reply textarea -->
+                                        <button type="submit" name="reply_feedback" class="replay-btn">Submit Reply</button>
+                                    </form>
+                                </div>
+                            </li>
+                            {% endif %}
+                        {% empty %}
+                        <div class="no-feedback-message">
+                            <li>No feedback available.</li>
+                        </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="dash-review-list">
+                    <div class="review-heading"><h2>Reviews</h2></div>
+                    <div class="dash-reviews">
+                        <ul class="review-list">
+                            {% for feedback in feedbacks %}
+                                <li class="list-list {% if forloop.counter > 5 %} hidden {% endif %}">
+                                    <strong>{{ feedback.user.username }}:</strong> 
+                                    {{ feedback.feedback_text }} 
+                                    <br>
+                                    <small>Submitted on: {{ feedback.created_at }}</small>
+                                    {% if feedback.reply_text %}
+                                        <br>
+                                        <strong>Team FaceBeat:</strong> {{ feedback.reply_text }}
+                                        <br>
+                                        <small>Replied on: {{ feedback.replied_at }}</small>
+                                    {% else %}
+                                        <small>No replies available.</small>
+                                    {% endif %}
+                                </li>
+                            {% empty %}
+                                <li>No feedback available.</li>
+                            {% endfor %}
+                        </ul>
+                        {% if feedbacks|length > 5 %}
+                            <button id="see-more-btn" class="see-more">See More</button>
+                        {% endif %}
+                    </div>
+                </div>
+                
 
         </section>
                 {% endif %}
         {% endif %}
-        <section id="image-scan">
+        <section id="image-scan" class="dash-section">
             <h1>Image Scan</h1>
             <p>This section is for scanning images.</p>
-        </section>
-
-        <section id="music-search">
-            <h1>Music Search</h1>
-            <p>Search music here.</p>
-        
-            <form method="GET" action="{% url 'user_dashboard' %}">
-                {{ music_search.query.label_tag }}  <!-- Displaying label -->
-                {{ music_search.query }}             <!-- Input field -->
-                <button type="submit">Search</button>
-            </form>
-        
-            <h2>Uploaded Music</h2>
-            <ul>
-                {% for music in music_records %}
-                    <li>
-                        <strong>{{ music.title }}</strong> by {{ music.artist }} 
-                        (Genre: {{ music.genre }}, Language: {{ music.language }})
-                        <br>
-                        <audio controls>
-                            <source src="{{ music.music_file.url }}" type="audio/mp3">
-                            Your browser does not support the audio element.
-                        </audio>
-                        <br>
-                        <small>Released on: {{ music.release_date }} | Duration: {{ music.duration }}</small>
-                    </li>
-                {% empty %}
-                    <li>No music uploaded yet.</li>
-                {% endfor %}
-            </ul>
+            <div class="Machine-learning-section">
+                <div class="camera-container">
+                    <video id="camera-feed" autoplay></video>
+                    <canvas id="canvas" style="display:none;"></canvas>
+                    <div>
+                        <button id="capture-button">Capture</button>
+                        <button id="video-toggle-button">Turn Video Off</button>
+                    </div>
+                </div>
+                <div class="mood-search">
+                    <div class="mood-search-heading">
+                        <h3>What do you feel right now</h3>
+                    </div>
+                    <div class="mood-search-form">
+                        <form method="post" class="from-mood">
+                            <select class="drop-down-menu">
+                                <option value="HAPPY">HAPPY</option>
+                                <option value="SAD">SAD</option>
+                            </select>
+                            <button type="submit">Music</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </section>
         
+        <section id="music-search" class="dash-section">
+            <div class="music-by-search">
+                <p>Search music here.</p>
+                <div class="music-search-header"><h1>Music Search</h1></div>
+                
+                <div class="search-tab">
+                    <form method="GET" action="{% url 'user_dashboard' %}" class="search-music-form">
+                        {{ music_search.query.label_tag }}  <!-- Displaying label -->
+                        {{ music_search.query }}             <!-- Input field -->
+                        <button type="submit" class="search-tab-btn">Search</button>
+                    </form>
+                </div>
+                <div class="uploaded-music">
+                    <h2>Uploaded Music</h2>
+                    <ul class="music-list-ul">
+                        {% for music in music_records %}
+                            <li class="music-list-db">
+                                <div class="music-player">
+                                    <strong>{{ music.title }}</strong> by {{ music.artist }} 
+                                    (Genre: {{ music.genre }}, Language: {{ music.language }})
+                                    <br>
+                                    <div>
+                                        <audio controls class="music-track">
+                                            <source src="{{ music.music_file.url }}" type="audio/mp3">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                    </div>
+                                    <br>
+                                    <small>Released on: {{ music.release_date }} | Duration: {{ music.duration }}</small>
+                                </div>
+                            </li>
+                        {% empty %}
+                            <li>No music uploaded yet.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <div class="gapper"> 
         {% if user.is_authenticated %}
              {% if not user.is_superuser %}
-             <section id="feedback-give">
-                <h1>Give Feedback</h1>
-                <p>Submit your feedback here.</p>
-                <h2>Feedback:</h2>
-                <form action="{% url 'user_dashboard' %}" method="post">
-                    {% csrf_token %}
-            
-                    {{ feedback_form.feedback_text.label_tag }}
-                    {{ feedback_form.feedback_text }} <!-- Render feedback textarea -->
-            
-                    <div class="rating">
-                        <span>Rating:</span>
-                        {% for value, display in feedback_form.rating.field.choices %}
-                            <input type="radio" name="rating" id="rating_{{ value }}" value="{{ value }}" required>
-                            <label for="rating_{{ value }}">
-                                ★
-                            </label>
-                        {% endfor %}
-                    </div>
-            
-                    <button type="submit" name="submit_feedback">Submit Feedback</button>
-                </form>
-            
-                <h2>Reviews:</h2>
-                <ul>
-                    {% for feedback in feedbacks %}
-                        <li>
-                            <strong>{{ feedback.user.username }}:</strong> <!-- Display the username -->
-                            {{ feedback.feedback_text }} <!-- Display the feedback text -->
-                            <br>
-                            <small>Submitted on: {{ feedback.created_at }}</small> <!-- Timestamp for feedback -->
-            
-                            <!-- Check if there is a reply to the feedback -->
-                            {% if feedback.reply_text %}
-                                <br>
-                                <strong>Team FaceBeat:</strong> {{ feedback.reply_text }}
-                                <br>
-                                <small>Replied on: {{ feedback.replied_at }}</small>
-                            {% else %}
-                                <small>No replies available.</small>
-                            {% endif %}
-                        </li>
-                    {% empty %}
-                        <li>No feedback available.</li>
-                    {% endfor %}
-                </ul>
-            </section>
-            <section id="settings">
-                <h1>settings</h1>
-                <p>Your Profile details.</p>
+        <section id="feedback-give" class="dash-section">
+            <div class="feedback-user">
+                <p>Submit your feedback here.</p></div>
+                <div class="feedback-give-header"><h1>Give Feedback</h1></div>
+                <div class="feedback-form-user">
+                    <form action="{% url 'user_dashboard' %}" method="post" class="user-feedback-form">
+                        {% csrf_token %}
+                
+                        {{ feedback_form.feedback_text.label_tag }}
+                        {{ feedback_form.feedback_text }} <!-- Render feedback textarea -->
+                
+                        <div class="feedback-rating">
+                            <span>Rating:</span>
+                            {% for value, display in feedback_form.rating.field.choices %}
+                                <input type="radio" name="rating" id="rating_{{ value }}" value="{{ value }}" required>
+                                <label for="rating_{{ value }}">
+                                    ★
+                                </label>
+                            {% endfor %}
+                        </div>
+                
+                        <button type="submit" name="submit_feedback" class="user-feedback-btn">Submit Feedback</button>
+                    </form>
+                </div>
+               
 
-                <h2>User Profile</h2>
-                <ul>
-                    <li><strong>Username:</strong> {{ user.username }}</li>
-                    <li><strong>Email:</strong> {{ user.email }}</li>
-                    <li><strong>Phone:</strong> {{ user_details.phone }}</li> <!-- Assuming 'phone' is in Registration model -->
-                    
-                    <li><strong>Genres:</strong>
-                        <ul>
-                            {% for genre in user_details.genre.all %}  <!-- Adjust to access genres from 'user_details' -->
-                                <li>{{ genre.name }}</li>  <!-- Access 'name' field from MusicGenre model -->
+                <div class="user-comment-view">
+                    <div class="comment-heading"><h2>Top-Reviews</h2></div>
+                    <div class="comment-view">
+                        <ul class="comment">
+                            {% for feedback in feedbacks|slice:":5" %}
+                                <li class="comment-list">
+                                    <strong>{{ feedback.user.username }}:</strong>
+                                    {{ feedback.feedback_text }}
+                                    <br>
+                                    <small>Submitted on: {{ feedback.created_at }}</small>
+                                    
+                                    <!-- Check if there is a reply to the feedback -->
+                                    {% if feedback.reply_text %}
+                                        <br>
+                                        <strong>Team FaceBeat:</strong> {{ feedback.reply_text }}
+                                        <br>
+                                        <small>Replied on: {{ feedback.replied_at }}</small>
+                                    {% else %}
+                                        <small>No replies available.</small>
+                                    {% endif %}
+                                </li>
+                            {% empty %}
+                                <li>No feedback available.</li>
                             {% endfor %}
                         </ul>
-                    </li>
+                
+                        {% if feedbacks.count > 5 %}
+                            <button id="show-more-feedback">Show More</button>
+                        {% endif %}
+                    </div>
                     
-                    <li><strong>Languages:</strong>
+                    <div class="more-feedback" style="display: none;">
+                        <h3>All Reviews</h3>
                         <ul>
-                            {% for lang in user_details.language.all %}  <!-- Adjust to access languages from 'user_details' -->
-                                <li>{{ lang.name }}</li>  <!-- Access 'name' field from MusicLanguage model -->
+                            {% for feedback in feedbacks|dictsortreversed:"created_at" %}
+                                <li class="comment-list">
+                                    <strong>{{ feedback.user.username }}:</strong>
+                                    {{ feedback.feedback_text }}
+                                    <br>
+                                    <small>Submitted on: {{ feedback.created_at }}</small>
+                                    
+                                    <!-- Check if there is a reply to the feedback -->
+                                    {% if feedback.reply_text %}
+                                        <br>
+                                        <strong>Team FaceBeat:</strong> {{ feedback.reply_text }}
+                                        <br>
+                                        <small>Replied on: {{ feedback.replied_at }}</small>
+                                    {% else %}
+                                        <small>No replies available.</small>
+                                    {% endif %}
+                                </li>
                             {% endfor %}
                         </ul>
-                    </li>
-                </ul>
-
-
-                <h2>Update profile</h2>
-                <form method="POST">
-                    {% csrf_token %}
-                    <h3>User Information</h3>
-                    <div>
-                        {{ user_form.username.label_tag }} {{ user_form.username }}
                     </div>
-                    <div>
-                        {{ user_form.email.label_tag }} {{ user_form.email }}
-                    </div>
-                    
-                    <h3>Additional Information</h3>
-                    <div>
-                        {{ registration_form.phone.label_tag }} {{ registration_form.phone }}
-                    </div>
-                    <div>
-                        {{ registration_form.genre.label_tag }}
-                        {{ registration_form.genre }}
-                    </div>
-                    <div>
-                        {{ registration_form.language.label_tag }}
-                        {{ registration_form.language }}
-                    </div>
-                    
-                    <button type="submit" name="update_profile">Update Profile</button>
-                </form>
+                </div>
                 
+        </section>
+        <section id="settings" class="dash-section">
+            <div class="user-dashboard"><p>Your Profile details.</p>
+                <div class="settings-heading"><h1>settings</h1></div>
                 
-            </section>
+
+                <div class="settings-sub-heading"><h3>User Profile</h3></div>
+                <div class="settings">
+                    <div class="user-details">
+                        <ul class="user-details-list">
+                            <li class="row1"><strong>Username:</strong> {{ user.username }}</li>
+                            <li class="row2"><strong>Email:</strong> {{ user.email }}</li>
+                            <li class="row3"><strong>Phone:</strong> {{ user_details.phone }}</li> <!-- Assuming 'phone' is in Registration model -->
+                            
+                            <li class="row4"><strong>Genres:</strong>
+                                <ul>
+                                    {% for genre in user_details.genre.all %}  <!-- Adjust to access genres from 'user_details' -->
+                                        <li>{{ genre.name }}</li>  <!-- Access 'name' field from MusicGenre model -->
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            
+                            <li class="row5"><strong>Languages:</strong>
+                                <ul>
+                                    {% for lang in user_details.language.all %}  <!-- Adjust to access languages from 'user_details' -->
+                                        <li>{{ lang.name }}</li>  <!-- Access 'name' field from MusicLanguage model -->
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="user-settings-update">
+                        <div class="prof-update-heading"><h2>Update profile</h2></div>
+                        <div class="update-form">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="update-sub-heading"><h3>User Information</h3></div>
+                                <div class="update-name">
+                                    {{ user_form.username.label_tag }} {{ user_form.username }}
+                                </div>
+                                <div class="update-email">
+                                    {{ user_form.email.label_tag }} {{ user_form.email }}
+                                </div>
+                                
+                                <h3>Additional Information</h3>
+                                <div class="update-phone">
+                                    {{ registration_form.phone.label_tag }} {{ registration_form.phone }}
+                                </div>
+                                <div class="update-genre">
+                                    {{ registration_form.genre.label_tag }}
+                                    {{ registration_form.genre }}
+                                </div>
+                                <div class="update-language">
+                                    {{ registration_form.language.label_tag }}
+                                    {{ registration_form.language }}
+                                </div>
+                                
+                                <button type="submit" name="update_profile" class="update-btn">Update Profile</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+        </section>
             
-            
+        </div>    
             {% endif %}
         {% endif %}
     </div>

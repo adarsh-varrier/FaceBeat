@@ -14,13 +14,13 @@ Registration
     <!-- Messages (For success or error feedback) -->
     <div class="register-message">
         {% if messages %}
-            <div>
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }}">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
         {% endif %}
     </div>
 
@@ -39,20 +39,44 @@ Registration
                     <!-- First Part Fields -->
                     <div class="form-group">
                         {{ form.username }}
+                    
+                    <!-- Error handling -->
+                    {% if form.username.errors %}
+                        <div class="form-error">{{ form.username.errors }}</div>
+                    {% endif %}
                     </div>
                     <div class="form-group">
                         {{ form.email }}
+                    
+                    <!-- Error handling -->
+                    {% if form.email.errors %}
+                        <div class="form-error">{{ form.email.errors }}</div>
+                    {% endif %}
                     </div>
                     <div class="form-group">
                         {{ form.phone }}
+                    
+                     <!-- Error handling -->
+                    {% if form.phone.errors %}
+                     <div class="form-error">{{ form.phone.errors }}</div>
+                    {% endif %}
                     </div>
                     <div class="form-group">
                         {{ form.password1 }}
+                    
+                    <!-- Error handling -->
+                    {% if form.password1.errors %}
+                        <div class="form-error">{{ form.password1.errors }}</div>
+                    {% endif %}
                     </div>
                     <div class="form-group">
                         {{ form.password2 }}
+                  
+                    <!-- Error handling -->
+                    {% if form.password2.errors %}
+                        <div class="form-error">{{ form.password2.errors }}</div>
+                    {% endif %}
                     </div>
-
                     <!-- Next Button -->
                     <button type="button" class="next-button" onclick="showNext()">Next</button>
                 </div>
@@ -68,10 +92,18 @@ Registration
                     <div class="form-group">
                         <label for="{{ form.genre.id_for_label }}">Genre</label>
                         <em>{{ form.genre }}</em>
+                        <!-- Error handling -->
+                    {% if form.genre.errors %}
+                    <div class="form-error">{{ form.genre.errors }}</div>
+                    {% endif %}
                     </div>
                     <div class="form-group">
                         <label for="{{ form.language.id_for_label }}">Language</label>
                         <em>{{ form.language }}</em>
+                        <!-- Error handling -->
+                    {% if form.language.errors %}
+                    <div class="form-error">{{ form.language.errors }}</div>
+                    {% endif %}
                     </div>
 
                     <!-- Submit Button -->

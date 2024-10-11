@@ -8,128 +8,9 @@
 
     <!-- Favicon -->
 	  <link href="{% static 'images/fav-icon.jpeg' %}" rel="shortcut icon"/>
-
-    <!-- Link to the CSS file -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}"/>
-
-    <style>
- body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-header {
-  background-color: #080762;
-  color: white;
-  padding: 20px 0;
-  position: fixed;
-  width: 98%;
-  top: 0;
-  z-index: 5;
-}
-
-#header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  box-shadow: 0 4px 8px rgba(18, 17, 17, 0.325);
-  font-family: ite;
-}
-
-.name-proj{
-  margin-left: 5%;
-}
-
-#header-img {
-  height: 60px;
-  width: 80px;
-  margin: 0%;
-  margin-left: -1.5%;
-}
-header h3{
-  text-align: left;
-  margin-left: -70%;
-}
-.nave-content{
-  margin-right: 0%;
-}
-
-#nav-bar {
-  display: flex;
-}
-
-.nav-link {
-  color: white;
-  text-decoration: none;
-  padding: 10px 15px;
-  box-shadow: 0 4px 8px rgba(10, 8, 8, 0.9);
-}
-
-.nav-link:hover {
-  background-color: #038ac4;
-}
-
-section {
-  padding: 300px 30px;
-  margin-top: 30px;
-}
-.nav-link:hover {
-  background-color: #1c2527;
-}
-
-@media (max-width: 600px) {
-  #nav-bar {
-    flex-direction: column;
-  }
-
-  .nav-link {
-    padding: 10px;
-      text-align: center;
-  }
-}
-
-.new-acc-link {
-    text-align: center; /* Center the button within the div */
-}
-
-.new-acc-link .nav-link {
-    display: inline-block; /* Make the link behave like a block for padding */
-    padding: 10px 20px; /* Add vertical and horizontal padding */
-    background-color: rgb(18, 92, 203); /* Background color */
-    color: #fff; /* Text color */
-    text-decoration: none; /* Remove underline */
-    border-radius: 50px; /* Make it oval by setting a high border radius */
-    transition: background-color 0.3s, transform 0.3s; /* Add transition effects */
-}
-
-.new-acc-link .nav-link:hover {
-    background-color: rgb(220, 50, 0); /* Darker shade on hover */
-    transform: scale(1.05); /* Slightly enlarge the button on hover */
-}
-
-    </style>
-
 </head>
 <body>
-     <!-- Common Header -->
-     <header id="header">
-      <img id="header-img" src="{% static 'images/fav-icon.jpeg' %}" alt="Product Logo">
-      <div class="name-proj">
-      <h3><em><span style="color: rgb(255, 64, 0);">Face</span>
-        <span style="color: rgb(250, 243, 243);">Beat.</span></em></h3>
-      </div>
-      <div class="nave-content">
-      <nav id="nav-bar">
-          <a href="{% url 'home' %}" class="nav-link">home</a>
-          <a href="{% url 'about' %}" class="nav-link">about</a>
-          <a href="{% url 'contact' %}" class="nav-link">contact</a>
-      </nav>
-    </div>
-  </header>
-  <hr>
-
+    
     <!-- Main Content Area -->
     <div class="content">
         {% block content %}
@@ -137,4 +18,6 @@ section {
         <!-- Page-specific content will go here -->
         {% endblock %}
     </div>
+</body>
+</html>
 

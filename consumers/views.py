@@ -17,12 +17,14 @@ from .forms import (
 from .models import Feedback, Music
 from musicindex.models import MusicGenre, MusicLanguage, Registration
 from django.utils import timezone
+from .utils import get_plot  # Import the get_plot function
+
 
 def user_dashboard(request):
     if request.user.is_authenticated:
         # Fetch relevant data
         users = User.objects.exclude(id=request.user.id)  # Exclude the logged-in user
-        feedbacks = Feedback.objects.select_related('user').all()  # Fetch all feedback with user info
+        feedbacks = Feedback.objects.select_related('user').order_by('-created_at')  # Fetch latest feedback with user info
         average_rating = Feedback.objects.aggregate(Avg('rating'))['rating__avg']
         genres = MusicGenre.objects.all()
         languages = MusicLanguage.objects.all()
@@ -38,6 +40,17 @@ def user_dashboard(request):
         music_form = MusicUploadForm()  # Initialize music upload form
         music_records = Music.objects.all()
         music_search = MusicSearchForm()
+
+        graph = get_plot(average_rating)
+
+        rmv_music_list = []
+        if 'query' in request.GET:
+            search_form = MusicSearchForm(request.GET)
+            if search_form.is_valid():
+                query = search_form.cleaned_data['query']
+                rmv_music_list = Music.objects.filter(title__icontains=query) | Music.objects.filter(artist__icontains=query)
+        else:
+            search_form = MusicSearchForm()
 
         # Initialize profile update forms
         user_form = UserUpdateForm(instance=request.user)
@@ -161,12 +174,15 @@ def user_dashboard(request):
             'music_records': music_records,
             'music_search': music_search,
             'average_rating': average_rating,
+            'graph': graph,
             'genres': genres,
             'languages': languages,
             'user_form': user_form,  # Pass the user update form
             'registration_form': registration_form,  # Pass the registration form
             'user_details': user_details,
             'random_music_records': random_music_records,
+            'music_list': rmv_music_list,
+            'music_search': search_form,
         })
     else:
         return redirect('login')
@@ -184,3 +200,15 @@ def remove_user(request, user_id):
         return redirect('user_dashboard')  # Redirect back to the user dashboard
     else:
         return redirect('login')  # Redirect to login if not authenticated
+    
+def delete_music(request, music_id):
+    music = get_object_or_404(Music, id=music_id)
+    if request.method == 'POST':
+        music.delete()  # Delete the music instance
+        return redirect('user_dashboard')  # Redirect to the user dashboard or another page after deletion
+    return render(request, 'user_dashboard.html', {'music': music})  # Render a confirmation page if not a POST request
+    
+
+
+
+

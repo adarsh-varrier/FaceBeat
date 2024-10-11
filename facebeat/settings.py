@@ -139,3 +139,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'user_dashboard'  # Replace 'home' with the actual name of the home view
 LOGOUT_REDIRECT_URL = 'login'  # Replace 'login' with the actual name of the login view
+
