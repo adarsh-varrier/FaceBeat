@@ -10,10 +10,6 @@
    
 <script src="{% static 'js/dash.js' %}"></script>
 
-
-    <style>
-
-    </style>
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -154,7 +150,7 @@
                             <h1>Welcome, {{ user.username }}!</h1>
                         </div>
                         <div class="moto">
-                            <p><em>"When words fail, music speaks.."<br>~</em></p>
+                            <p><em>"We value your emotions."<br>~</em></p>
                         </div>
                         <div class="emoji2">
                             <img src="{% static 'images/emoji2.jpeg' %}"/>
@@ -466,7 +462,7 @@
                         <button type="submit" class="search-tab-btn">Search</button>
                     </form>
                 </div>
-                <div class="uploaded-music">
+                <div class="uploaded-music" id="musicResults">
                     <h2>Uploaded Music</h2>
                     <ul class="music-list-ul">
                         {% for music in music_records %}

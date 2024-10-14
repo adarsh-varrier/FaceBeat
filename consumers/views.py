@@ -80,7 +80,8 @@ def user_dashboard(request):
                 Q(title__icontains=query) |
                 Q(artist__icontains=query) |
                 Q(language__icontains=query) |
-                Q(genre__icontains=query)
+                Q(genre__icontains=query)|
+                Q(mood__icontains=query)  # Search by mood
             )
         else:
             music_records = Music.objects.all()  # Return all records if no query
