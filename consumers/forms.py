@@ -23,9 +23,9 @@ class AdminUserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data['password'])  # Set the password properly
-        user.is_staff = True  # Set user as admin
-        user.is_superuser = True  # Set user as super admin (optional)
+        user.set_password(self.cleaned_data['password'])  # Properly hash the password
+        user.is_staff = True  # Mark the user as an admin
+        user.is_superuser = True  # Optional: mark as superuser
         if commit:
             user.save()
         return user

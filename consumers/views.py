@@ -18,6 +18,7 @@ from .models import Feedback, Music
 from musicindex.models import MusicGenre, MusicLanguage, Registration
 from django.utils import timezone
 from .utils import get_plot  # Import the get_plot function
+from django.contrib.auth import authenticate, login, get_user_model
 
 
 def user_dashboard(request):
@@ -68,19 +69,37 @@ def image_scan(request):
 
 
 
+User = get_user_model()  # Handle custom user models
+
 def remove_user(request, user_id):
-    if request.user.is_authenticated:
-        user_to_remove = get_object_or_404(User, id=user_id)  # Get user by ID
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        user_to_remove = get_object_or_404(User, id=user_id)
 
-        if user_to_remove != request.user:  # Prevent self-deletion
-            user_to_remove.delete()  # Delete the user
-            messages.success(request, f"User '{user_to_remove.username}' has been removed successfully.")
-        else:
+        # Ensure the user is not trying to delete their own account
+        if user_to_remove == request.user:
             messages.error(request, "You cannot remove your own account.")
+            return redirect('user_management')
 
-        return redirect('user_management')  # Redirect back to the user dashboard
-    else:
-        return redirect('login')  # Redirect to login if not authenticated
+        # Check if the target user is an admin
+        if user_to_remove.is_staff:
+            # Authenticate using the admin’s password entered during their creation
+            admin_auth = authenticate(request, username=user_to_remove.username, password=password)
+            
+            if admin_auth is not None:  # Password is correct
+                user_to_remove.delete()
+                messages.success(request, f"Admin '{user_to_remove.username}' has been removed successfully.")
+            else:
+                messages.error(request, "Incorrect password. Unable to remove the admin.")
+        else:
+            # If the user is not an admin, no password check is required
+            user_to_remove.delete()
+            messages.success(request, f"User '{user_to_remove.username}' has been removed successfully.")
+
+        return redirect('user_management')
+
+    messages.error(request, "Invalid request. Use the form to remove a user.")
+    return redirect('user_management')
     
     
 def delete_music(request, music_id):
@@ -101,13 +120,19 @@ def user_management(request):
     if 'create_admin' in request.POST:
         admin_form = AdminUserCreationForm(request.POST)
         if admin_form.is_valid():
-            admin_form.save()
+            admin = admin_form.save(commit=False)  # Save without committing to handle password properly
+            admin.set_password(admin_form.cleaned_data['password'])  # Hash the password
+            admin.is_staff = True  # Mark as admin
+            admin.is_superuser = True  # Optional: Mark as superuser if needed
+            admin.save()
             messages.success(request, 'New admin user created successfully.')
             return redirect('user_management')
-    return render(request, 'user-management.html',{
+
+    return render(request, 'user-management.html', {
         'users': users,
         'admin_form': admin_form,
     })
+
 
 
 def music_management(request):

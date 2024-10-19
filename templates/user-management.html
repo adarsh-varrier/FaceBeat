@@ -47,10 +47,11 @@
                             {{ user.username }} - {{ user.email }}
                             <!-- Check if the user is an admin -->
                                 <strong>(Admin)</strong>
-                            <form action="{% url 'remove_user' user.id %}" method="post" style="display:inline;">  <!-- Remove user form -->
-                                {% csrf_token %}
-                                <button type="submit" class="admin-rmv-btn">Remove</button>
-                            </form>
+                                <form action="{% url 'remove_user' user.id %}" method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="password" name="password" placeholder="Enter your password" required>
+                                    <button type="submit" class="admin-rmv-btn">Remove Admin</button>
+                                </form>
                         </li>
                         {% endif %}
                     {% empty %}
