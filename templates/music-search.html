@@ -1,0 +1,53 @@
+{% extends 'user_dashboard.html' %}
+
+
+{% block content %}
+{% load static %}
+
+<style>
+    .margin{
+        margin-left: 280px;
+        
+    }
+</style>
+<div class="margin">
+    <section id="music-search" class="dash-section">
+        <div class="music-by-search">
+            <p>Search music here.</p>
+            <div class="music-search-header"><h1>Music Search</h1></div>
+            
+            <div class="search-tab">
+                <form method="GET" action="{% url 'music_search' %}" class="search-music-form">
+                    {{ music_search.query.label_tag }}  <!-- Displaying label -->
+                    {{ music_search.query }}             <!-- Input field -->
+                    <button type="submit" class="search-tab-btn">Search</button>
+                </form>
+            </div>
+            <div class="uploaded-music" id="musicResults">
+                <h2>Uploaded Music</h2>
+                <ul class="music-list-ul">
+                    {% for music in music_records %}
+                        <li class="music-list-db">
+                            <div class="music-player">
+                                <strong>{{ music.title }}</strong> by {{ music.artist }} 
+                                (Genre: {{ music.genre }}, Language: {{ music.language }})
+                                <br>
+                                <div>
+                                    <audio controls class="music-track">
+                                        <source src="{{ music.music_file.url }}" type="audio/mp3">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                </div>
+                                <br>
+                                <small>Released on: {{ music.release_date }} | Duration: {{ music.duration }}</small>
+                            </div>
+                        </li>
+                    {% empty %}
+                        <li>No music uploaded yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

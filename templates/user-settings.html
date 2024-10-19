@@ -1,0 +1,83 @@
+{% extends 'user_dashboard.html' %}
+
+
+{% block content %}
+{% load static %}
+
+<style>
+    .dash-section{
+        margin-left: 250px;
+    }
+</style>
+
+{% if user.is_authenticated %}
+    {% if not user.is_superuser %}
+
+    <section id="settings" class="dash-section">
+        <div class="user-dashboard"><p>Your Profile details.</p>
+            <div class="settings-heading"><h1>settings</h1></div>
+            
+
+            <div class="settings-sub-heading"><h3>User Profile</h3></div>
+            <div class="settings">
+                <div class="user-details">
+                    <ul class="user-details-list">
+                        <li class="row1"><strong>Username:</strong> {{ user.username }}</li>
+                        <li class="row2"><strong>Email:</strong> {{ user.email }}</li>
+                        <li class="row3"><strong>Phone:</strong> {{ user_details.phone }}</li> <!-- Assuming 'phone' is in Registration model -->
+                        
+                        <li class="row4"><strong>Genres:</strong>
+                            <ul>
+                                {% for genre in user_details.genre.all %}  <!-- Adjust to access genres from 'user_details' -->
+                                    <li>{{ genre.name }}</li>  <!-- Access 'name' field from MusicGenre model -->
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        
+                        <li class="row5"><strong>Languages:</strong>
+                            <ul>
+                                {% for lang in user_details.language.all %}  <!-- Adjust to access languages from 'user_details' -->
+                                    <li>{{ lang.name }}</li>  <!-- Access 'name' field from MusicLanguage model -->
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="user-settings-update">
+                    <div class="prof-update-heading"><h2>Update profile</h2></div>
+                    <div class="update-form">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="update-sub-heading"><h3>User Information</h3></div>
+                            <div class="update-name">
+                                {{ user_form.username.label_tag }} {{ user_form.username }}
+                            </div>
+                            <div class="update-email">
+                                {{ user_form.email.label_tag }} {{ user_form.email }}
+                            </div>
+                            
+                            <h3>Additional Information</h3>
+                            <div class="update-phone">
+                                {{ registration_form.phone.label_tag }} {{ registration_form.phone }}
+                            </div>
+                            <div class="update-genre">
+                                {{ registration_form.genre.label_tag }}
+                                {{ registration_form.genre }}
+                            </div>
+                            <div class="update-language">
+                                {{ registration_form.language.label_tag }}
+                                {{ registration_form.language }}
+                            </div>
+                            
+                            <button type="submit" name="update_profile" class="update-btn">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </section>
+
+    {% endif %}
+{% endif %}
+{% endblock %}

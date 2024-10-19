@@ -1,0 +1,75 @@
+{% extends 'user_dashboard.html' %}
+
+
+{% block content %}
+{% load static %}
+
+<style>
+    .dash-section{
+        margin-left: 250px;
+    }
+</style>
+
+{% if user.is_authenticated %}
+    {% if user.is_superuser %}
+        <section id="user-management" class="dash-section">
+            <p>This section is for managing users.</p>
+            <div class="dash-usermanagement-heading">
+            <h1>User Management</h1>
+            </div>
+            <div class="consumers">
+            <div class="dash-list of users">
+            <div class="userlist-heading"><h2>List of Users:</h2></div>
+            <ul class="user-list">
+                {% for user in users %}
+                    {% if not user.is_staff %}  <!-- Check if the user is an admin -->
+                    <li class="users">
+                        {{ user.username }} - {{ user.email }}
+                        <form action="{% url 'remove_user' user.id %}" method="post" style="display:inline;">  <!-- Remove user form -->
+                            {% csrf_token %}
+                            <button type="submit" class="user-rmv-btn">Remove</button>
+                        </form>
+                    </li>
+                    {% endif %}
+                {% empty %}
+                    <li>No users found.</li>
+                {% endfor %}
+            </ul>
+            </div>
+            </div>
+            <div class="dash-admin-list">
+            <div class="admin-list-head"><h2>List of Admin:</h2></div>
+            <div class="admin-list">
+                <ul class="admins">
+                    {% for user in users %}
+                        {% if user.is_staff %} 
+                        <li class="admin">
+                            {{ user.username }} - {{ user.email }}
+                            <!-- Check if the user is an admin -->
+                                <strong>(Admin)</strong>
+                            <form action="{% url 'remove_user' user.id %}" method="post" style="display:inline;">  <!-- Remove user form -->
+                                {% csrf_token %}
+                                <button type="submit" class="admin-rmv-btn">Remove</button>
+                            </form>
+                        </li>
+                        {% endif %}
+                    {% empty %}
+                        <li>No users found.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            </div>
+            <div class="dash-new-admin">
+            <div class="new-admin-heading"><h2>Create New Admin User</h2></div>
+            <div class="new-admin-form">
+                <form method="post" class="new-admin-form-frm">
+                    {% csrf_token %}
+                    {{ admin_form.as_p}}
+                    <button type="submit" name="create_admin" class="create-admin-btn">Create Admin</button>
+                </form>
+            </div>
+            </div>
+        </section>
+        {% endif %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'user_dashboard.html' %}
+
+
+{% block content %}
+{% load static %}
+
+<style>
+    .dash-section{
+        margin-left: 250px;
+    }
+</style>
+
+<section id="image-scan" class="dash-section">
+    <h1>Image Scan</h1>
+    <p>This section is for scanning images.</p>
+    <div class="Machine-learning-section">
+        <div class="camera-container">
+            <video id="camera-feed" autoplay></video>
+            <canvas id="canvas" style="display:none;"></canvas>
+            <div>
+                <button id="capture-button">Capture</button>
+                <button id="video-toggle-button">Turn Video Off</button>
+            </div>
+        </div>
+        <div class="mood-search">
+            <div class="mood-search-heading">
+                <h3>What do you feel right now</h3>
+            </div>
+            <div class="mood-search-form">
+                <form method="post" class="from-mood">
+                    <select class="drop-down-menu">
+                        <option value="HAPPY">HAPPY</option>
+                        <option value="SAD">SAD</option>
+                    </select>
+                    <button type="submit">Music</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

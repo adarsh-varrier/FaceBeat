@@ -1,0 +1,76 @@
+{% extends 'user_dashboard.html' %}
+
+{% block content %}
+{% load static %}
+
+<style>
+.margin{
+    margin-left: 280px;
+}
+</style>
+
+<div class="margin">
+    <section id="feedback-view" class="dash-section">
+        <div class="dash-feedbcak-view">
+            <p>View feedback here:</p>
+
+            <div class="dash-feedback-heading">
+                <h1>Feedback View</h1>
+            </div>
+            <div class="dash-feedbak">
+                <ul class="feedback-list">
+                    {% for feedback in feedbacks %}
+                        {% if not feedback.reply_text %}
+                            <li>
+                                <div class="dash-feedback">
+                                    <strong>{{ feedback.user.username }}:</strong> 
+                                    {{ feedback.feedback_text }}
+                                    <br>
+                                    <small>Submitted on: {{ feedback.created_at }}</small>
+                                </div>
+                                <div class="dash-review-replayform">
+                                    <form action="{% url 'feedback_view' %}" method="post" class="reply-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="feedback_id" value="{{ feedback.id }}">
+                                        {{ reply_form.reply_text.label_tag }}
+                                        {{ reply_form.reply_text }}
+                                        <button type="submit" name="reply_feedback" class="replay-btn">Submit Reply</button>
+                                    </form>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% empty %}
+                        <li>No feedback available.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="dash-review-list">
+                <div class="review-heading"><h2>Reviews</h2></div>
+                <ul class="review-list">
+                    {% for feedback in feedbacks %}
+                        <li class="{% if forloop.counter > 5 %} hidden {% endif %}">
+                            <strong>{{ feedback.user.username }}:</strong>
+                            {{ feedback.feedback_text }}
+                            <br>
+                            <small>Submitted on: {{ feedback.created_at }}</small>
+                            {% if feedback.reply_text %}
+                                <br><strong>Team FaceBeat:</strong> {{ feedback.reply_text }}
+                                <br><small>Replied on: {{ feedback.replied_at }}</small>
+                            {% else %}
+                                <small>No replies available.</small>
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <li>No feedback available.</li>
+                    {% endfor %}
+                </ul>
+                {% if feedbacks|length > 5 %}
+                    <button id="see-more-btn" class="see-more">See More</button>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}

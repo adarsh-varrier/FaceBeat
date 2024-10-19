@@ -47,23 +47,37 @@ class ReplyForm(forms.Form):
 class MusicUploadForm(forms.ModelForm):
     genre = forms.ModelChoiceField(
         queryset=MusicGenre.objects.all(),  # Dropdown for genre
-        widget=forms.Select(attrs={'class': 'form-control'}),  # Apply styling if needed
+        widget=forms.Select(attrs={'class': 'form-select',}),  # Apply styling if needed
         label='Genre'
     )
     language = forms.ModelChoiceField(
         queryset=MusicLanguage.objects.all(),  # Dropdown for language
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-select',}),
         label='Language'
     )
     class Meta:
         model = Music
         fields = ['title', 'artist', 'genre', 'language', 'mood', 'release_date', 'duration', 'music_file']  # Added mood field
         widgets = {
-            'release_date': forms.DateInput(attrs={'type': 'date'}),
-            'duration': forms.TimeInput(attrs={'type': 'time'}),
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Music Title'}),
-            'artist': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Artist Name'}),
-            'music_file': forms.FileInput(attrs={'class': 'form-control'}),
+             'title': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter Music Title'
+            }),
+            'artist': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Enter Artist Name'
+            }),
+            'release_date': forms.DateInput(attrs={
+                'type': 'date', 
+                'class': 'form-control'
+            }),
+            'duration': forms.TimeInput(attrs={
+                'type': 'time', 
+                'class': 'form-control'
+            }),
+            'music_file': forms.FileInput(attrs={
+                'class': 'form-control'
+            }),
         }
 class MusicSearchForm(forms.Form):
     query = forms.CharField(max_length=255, required=False, label='Search Music')

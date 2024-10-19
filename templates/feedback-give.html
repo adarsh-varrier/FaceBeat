@@ -1,0 +1,100 @@
+{% extends 'user_dashboard.html' %}
+
+
+{% block content %}
+{% load static %}
+
+<style>
+    .dash-section{
+        margin-left: 250px;
+    }
+</style>
+
+{% if user.is_authenticated %}
+    {% if not user.is_superuser %}
+    <section id="feedback-give" class="dash-section">
+        <div class="feedback-user">
+        <p>Submit your feedback here.</p></div>
+        <div class="feedback-give-header"><h1>Give Feedback</h1></div>
+        <div class="feedback-form-user">
+            <form action="{% url 'feedback_give' %}" method="post" class="user-feedback-form">
+                {% csrf_token %}
+        
+                {{ feedback_form.feedback_text.label_tag }}
+                {{ feedback_form.feedback_text }} <!-- Render feedback textarea -->
+        
+                <div class="feedback-rating">
+                    <span>Rating:</span>
+                    {% for value, display in feedback_form.rating.field.choices %}
+                        <input type="radio" name="rating" id="rating_{{ value }}" value="{{ value }}" required>
+                        <label for="rating_{{ value }}">
+                            ★
+                        </label>
+                    {% endfor %}
+                </div>
+        
+                <button type="submit" name="submit_feedback" class="user-feedback-btn">Submit Feedback</button>
+            </form>
+        </div>
+        
+
+        <div class="user-comment-view">
+            <div class="comment-heading"><h2>Top-Reviews</h2></div>
+            <div class="comment-view">
+                <ul class="comment">
+                    {% for feedback in feedbacks|slice:":5" %}
+                        <li class="comment-list">
+                            <strong>{{ feedback.user.username }}:</strong>
+                            {{ feedback.feedback_text }}
+                            <br>
+                            <small>Submitted on: {{ feedback.created_at }}</small>
+                            
+                            <!-- Check if there is a reply to the feedback -->
+                            {% if feedback.reply_text %}
+                                <br>
+                                <strong>Team FaceBeat:</strong> {{ feedback.reply_text }}
+                                <br>
+                                <small>Replied on: {{ feedback.replied_at }}</small>
+                            {% else %}
+                                <small>No replies available.</small>
+                            {% endif %}
+                        </li>
+                    {% empty %}
+                        <li>No feedback available.</li>
+                    {% endfor %}
+                </ul>
+        
+                {% if feedbacks.count > 5 %}
+                    <button id="show-more-feedback">Show More</button>
+                {% endif %}
+            </div>
+            
+            <div class="more-feedback" style="display: none;">
+                <h3>All Reviews</h3>
+                <ul>
+                    {% for feedback in feedbacks|dictsortreversed:"created_at" %}
+                        <li class="comment-list">
+                            <strong>{{ feedback.user.username }}:</strong>
+                            {{ feedback.feedback_text }}
+                            <br>
+                            <small>Submitted on: {{ feedback.created_at }}</small>
+                            
+                            <!-- Check if there is a reply to the feedback -->
+                            {% if feedback.reply_text %}
+                                <br>
+                                <strong>Team FaceBeat:</strong> {{ feedback.reply_text }}
+                                <br>
+                                <small>Replied on: {{ feedback.replied_at }}</small>
+                            {% else %}
+                                <small>No replies available.</small>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+    </section>
+    {% endif %}
+{% endif %}
+{% endblock %}
