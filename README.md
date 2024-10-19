@@ -1,3 +1,3 @@
 # FaceBeat
 
-#Music Recommendation based on Emotion
+#Emotion based Music Recommendation System.
