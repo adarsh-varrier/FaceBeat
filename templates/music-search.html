@@ -9,11 +9,70 @@
         margin-left: 280px;
         
     }
+
+        .music-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-music-control {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn-music-control:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-music-control i {
+    font-size: 16px;
+}
+
+.listed-gen-lang {
+    display: flex;
+    padding: 40px;
+    gap: 100px;
+    margin-left: 20%;
+}
+
+.listed-gen-lang ul {
+    list-style-type: none; /* Removes the bullets from the list */
+    padding: 0; /* Removes default padding from the list */
+}
+
+.listed-gen-lang li {
+    margin-bottom: 10px; /* Space between the list items */
+}
+
+.listed-gen-lang a {
+    display: block; /* Makes the link a block element to take full width */
+    font-size: 18px; /* Adjust the size as needed */
+    text-decoration: none; /* Removes the underline */
+    color: #000; /* Set your desired text color */
+    padding: 15px; /* Adds padding inside the rectangle */
+    border: 1px solid #ccc; /* Adds a border to create the rectangle */
+    border-radius: 5px; /* Optional: rounds the corners of the rectangle */
+    transition: color 0.3s, background-color 0.3s; /* Adds transition for background color */
+    background-color: #f9f9f9; /* Sets a background color for the link */
+    margin-bottom: 10px; /* Space between rectangles */
+}
+
+.listed-gen-lang a:hover {
+    color: #fff; /* Change text color on hover */
+    background-color: #007BFF; /* Change background color on hover */
+}
+
+
+
 </style>
 <div class="margin">
     <section id="music-search" class="dash-section">
         <div class="music-by-search">
-            <p>Search music here.</p>
             <div class="music-search-header"><h1>Music Search</h1></div>
             
             <div class="search-tab">
@@ -24,6 +83,31 @@
                 </form>
             </div>
             <div class="uploaded-music" id="musicResults">
+                <div class="listed-gen-lang">
+                    <div>
+                        <div class="gen-lang">
+                            <h2>Genres</h2>
+                        </div>
+                        <br>
+                        <ul>
+                            {% for genre in genres %}
+                                <li><a href="{% url 'music_by_genre' genre.id %}">{{ genre.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="gen-lang">
+                            <h2>Languages</h2>
+                        </div>
+                        <br>
+                        <ul>
+                            {% for language in languages %}
+                                <li><a href="{% url 'music_by_language' language.id %}">{{ language.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                
                 <h2>Uploaded Music</h2>
                 <ul class="music-list-ul">
                     {% for music in music_records %}
@@ -38,6 +122,10 @@
                                         Your browser does not support the audio element.
                                     </audio>
                                 </div>
+                                <div class="music-controls">
+                                    <button class="prevButton btn-music-control"><i class="fas fa-backward"></i></button>
+                                    <button class="nextButton btn-music-control"><i class="fas fa-forward"></i></button>
+                                </div>
                                 <br>
                                 <small>Released on: {{ music.release_date }} | Duration: {{ music.duration }}</small>
                             </div>
@@ -50,4 +138,5 @@
         </div>
     </section>
 </div>
+
 {% endblock %}

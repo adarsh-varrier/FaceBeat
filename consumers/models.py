@@ -18,12 +18,15 @@ from django.db import models
 
 class Music(models.Model):
     MOOD_CHOICES = [
+        ('anger', 'Anger'),
         ('happy', 'Happy'),
         ('sad', 'Sad'),
-        ('fear', 'Fear'),
-        ('surprised', 'Surprised'),
-        ('anger', 'Anger'),
+        ('overjoyed', 'Overjoyed'),
         ('relax', 'Relax'),
+        ('romance', 'Romance'),
+        ('satisfaction', 'Satisfaction'),
+        ('excitement', 'Excitement'),
+        ('surprise', 'Surprise'),     
     ]
     
     title = models.CharField(max_length=255)

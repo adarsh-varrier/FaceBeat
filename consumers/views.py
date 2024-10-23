@@ -19,6 +19,7 @@ from musicindex.models import MusicGenre, MusicLanguage, Registration
 from django.utils import timezone
 from .utils import get_plot  # Import the get_plot function
 from django.contrib.auth import authenticate, login, get_user_model
+from .txtemotion_utils import detect_emotion
 
 
 def user_dashboard(request):
@@ -64,6 +65,63 @@ def user_dashboard(request):
 
 # Engine
 def image_scan(request):
+    return render(request, 'image-scan.html')
+
+
+#text_recommendation
+
+def recommend_music(request):
+    if request.method == "POST":
+        user_text = request.POST.get("user_text")
+
+        # Detect the emotion from the user's input
+        detected_emotion = detect_emotion(user_text)
+
+        # Define custom messages for each emotion
+        emotion_messages = {
+            'anger': "It seems like you're feeling angry. Take a deep breath and relax.",
+            'happy': "You're in a happy mood! Keep smiling and enjoy your day.",
+            'sad': "I think you are sad. Everything will be okay.",
+            'overjoyed': "You're feeling overjoyed! Let's celebrate with some music.",
+            'relax': "You seem to be in a relaxed mood. Enjoy the peaceful vibes.",
+            'romance': "Feeling romantic? Here's some music to set the mood.",
+            'satisfaction': "You're feeling satisfied. Keep up the good vibes.",
+            'excitement': "You're excited! Let's keep the energy going with these tracks.",
+            'interest': "You're interested and curious! Here's something to keep you engaged.",
+            'surprise': "Life is full of surprises! Here's some music to match your mood.",
+            'nostalgia': "Feeling nostalgic? Let these tracks take you back in time."
+        }
+
+        # Define a mapping from detected emotions to mood choices
+        mood_mapping = {
+            'anger': 'anger',
+            'happy': 'happy',
+            'sad': 'sad',
+            'overjoyed': 'overjoyed',
+            'relax': 'relax',
+            'romance': 'romance',
+            'satisfaction': 'satisfaction',
+            'excitement': 'excitement',
+            'interest': 'interest',
+            'surprise': 'surprise',
+            'nostalgia': 'nostalgia'
+        }
+
+        # Get the corresponding mood for the detected emotion
+        mood = mood_mapping.get(detected_emotion)
+
+        # Get the custom message for the detected emotion
+        custom_message = emotion_messages.get(detected_emotion, "Here's some music for your mood.")
+
+        # Filter music recommendations based on the detected mood
+        recommended_music = Music.objects.filter(mood=mood)
+
+        return render(request, 'image-scan.html', {
+            'detected_emotion': detected_emotion,
+            'custom_message': custom_message,
+            'recommended_music': recommended_music
+        })
+
     return render(request, 'image-scan.html')
 
 
@@ -240,10 +298,15 @@ def music_search(request):
         )
     else:
         music_records = Music.objects.all()  # Return all records if no query
+    
+    genres = MusicGenre.objects.all()  # Fetch all genres
+    languages = MusicLanguage.objects.all()  # Fetch all languages
 
     return render(request, 'music-search.html',{
         'music_records': music_records,
         'music_search': music_search,
+        'genres': genres,
+        'languages': languages,
     })
 
 def feedback_give(request):
@@ -290,7 +353,30 @@ def user_settings(request):
     })
 
 
- 
+def music_by_genre(request, id):
+    # Get the genre by ID or return a 404 if not found
+    genre = get_object_or_404(MusicGenre, id=id)
+
+    # Filter music records by the selected genre
+    music_records = Music.objects.filter(genre=genre)
+
+    return render(request, 'music_by_genre.html', {
+        'genre': genre,
+        'music_list': music_records,  # Ensure you're passing the filtered music list
+    })
+
+def music_by_language(request, id):
+    # Get the language by ID or return a 404 if not found
+    language = get_object_or_404(MusicLanguage, id=id)
+
+    # Filter music records by the selected language
+    music_records = Music.objects.filter(language=language)
+
+    return render(request, 'music_by_language.html', {
+        'language': language,
+        'music_list': music_records,  # Ensure you're passing the filtered music records
+    })
+
 
     
 

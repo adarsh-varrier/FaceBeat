@@ -13,6 +13,35 @@
     <link rel="stylesheet" href="{% static 'css/user-dash.css' %}"/>
     
     <script src="{% static 'js/dash.js' %}"></script>
+    <script src="{% static 'js/dash2.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        .music-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-music-control {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn-music-control:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-music-control i {
+    font-size: 16px;
+}
+
+    </style>
+    
 </head>
 <body>
     
@@ -72,8 +101,8 @@
 
                     <li>
                         <a class="dash-nav-link" href="{% url 'image_scan' %}">
-                            <i class="fas fa-image"></i>
-                            <p>Image Scan</p>
+                            <i class="fas fa-smile"></i>
+                            <p>Emotion-detection</p>
                         </a>
                     </li>
                     <li>
@@ -177,13 +206,19 @@
                             {% if random_music_records %}
                                 {% for music in random_music_records %}
                                     <li class="rec-music">
-                                        <div class="music-card">
+                                        <div class="music-player">
                                             <h3>{{ music.title }}</h3>
                                             <p>{{ music.genre }} ({{ music.language }})</p>
-                                            <audio controls class="player">
-                                                <source src="{{ music.music_file.url }}" type="audio/mp3">
-                                                Your browser does not support the audio element.
-                                            </audio>
+                                            <div>
+                                                <audio controls class="music-track">
+                                                    <source src="{{ music.music_file.url }}" type="audio/mp3">
+                                                    Your browser does not support the audio element.
+                                                </audio>
+                                            </div>
+                                            <div class="music-controls">
+                                                <button class="prevButton btn-music-control"><i class="fas fa-backward"></i></button>
+                                                <button class="nextButton btn-music-control"><i class="fas fa-forward"></i></button>
+                                            </div>
                                             <small>Released on: {{ music.release_date }} | Duration: {{ music.duration }}</small>
                                         </div>
                                     </li>
@@ -206,5 +241,6 @@
     {% endblock %}
 </div>
 </body>
+
 </html>
 
