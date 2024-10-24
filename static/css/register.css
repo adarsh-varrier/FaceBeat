@@ -163,3 +163,6 @@
     label{
         color: #c6c3c3;
     }
+    .form-error{
+        color: #fee5e5;
+    }
