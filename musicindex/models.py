@@ -24,6 +24,8 @@ class Registration(models.Model):
     email = models.EmailField(max_length=100, unique=True)
     genre = models.ManyToManyField(MusicGenre)  # Many genres allowed
     language = models.ManyToManyField(MusicLanguage)  # Many languages allowed
+    security_question = models.CharField(max_length=255, blank=True)
+    security_answer = models.CharField(max_length=255, blank=True)
 
     delete_status = models.IntegerField(choices=DELETE_CHOICES, default=LIVE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -31,3 +33,7 @@ class Registration(models.Model):
 
     def __str__(self):
         return f"USER: {self.name} ({self.email})"
+    class Meta:
+        ordering = ['created_at']
+        verbose_name = "User Registration"
+        verbose_name_plural = "User Registrations"

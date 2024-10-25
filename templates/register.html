@@ -8,6 +8,10 @@ Registration
 {% load static %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <link rel="stylesheet" href="{% static 'css/register.css' %}">
+<style>
+
+
+</style>
 
 
 <h3>Registration Page</h3>
@@ -85,7 +89,7 @@ Registration
                 <!-- Second Part of the Registration Form -->
                 <div id="step2" style="display:none;">
                     <!-- Back Button -->
-                    <button type="button" id="b1" class="back-button" onclick="showPrevious()">
+                    <button type="button" id="b1" class="back-button" onclick="showPrevious1()">
                         <i class="fas fa-arrow-left"></i> 
                     </button>
     
@@ -108,7 +112,38 @@ Registration
                     </div>
 
                     <!-- Submit Button -->
+                    <button type="button" class="next-button" onclick="showNext2()">Next</button>
+                </div>
+                <div class="step3-container">
+                <!-- 3rd Part of the Registration Form -->
+                <div id="step3" style="display:none;">
+                    <!-- Back Button -->
+                    <button type="button" id="b1" class="back-button" onclick="showPrevious2()">
+                        <i class="fas fa-arrow-left"></i> 
+                    </button>
+    
+                    <!-- 3rd Part Fields with Labels -->
+                    <div class="form-group">
+                        <label for="{{ form.genre.id_for_label }}">security Question</label>
+                        <em>{{ form.security_question }}</em>
+                        <!-- Error handling -->
+                    <!-- Error handling -->
+                    {% if form.security_question.errors %}
+                    <div class="form-error">{{ form.security_question.errors }}</div>
+                    {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.language.id_for_label }}">Answer:</label>
+                        <em>{{ form.security_answer }}</em>
+                        <!-- Error handling -->
+                    {% if form.security_answer.errors %}
+                        <div class="form-error">{{ form.security_answer.errors }}</div>
+                    {% endif %}
+                    </div>
+
+                    <!-- Submit Button -->
                     <button type="submit" id="b2" class="submit-button">Submit</button>
+                </div>
                 </div>
             </form>
         </div>
@@ -129,12 +164,27 @@ Registration
         document.getElementById('step2').style.display = 'block';
     }
 
-    function showPrevious() {
+    function showNext2() {
+        // Hide Step 2
+        document.getElementById('step2').style.display = 'none';
+        // Show Step 3
+        document.getElementById('step3').style.display = 'block';
+    }
+
+    function showPrevious1() {
         // Hide Step 2
         document.getElementById('step2').style.display = 'none';
         // Show Step 1
         document.getElementById('step1').style.display = 'block';
     }
+
+    function showPrevious2() {
+        // Hide Step 3
+        document.getElementById('step3').style.display = 'none';
+        // Show Step 2
+        document.getElementById('step2').style.display = 'block';
+    }
 </script>
+
 
 {% endblock %}

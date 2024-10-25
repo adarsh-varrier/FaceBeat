@@ -7,6 +7,32 @@ login
 {% block content %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/login.css' %}">
+<style>
+
+.forgot {
+    text-align: center; /* Aligns the link to the right */
+    margin-top: 15px; /* Adds spacing from the previous element */
+    margin-left: -10%;
+}
+
+.forgot p {
+    margin: 0;
+}
+
+.forgot a {
+    color: #eb4e1a; /* Primary color for the link (Bootstrap default color) */
+    text-decoration: none; /* Removes underline */
+    font-weight: bold; /* Makes the text bold */
+    transition: color 0.3s ease; /* Smooth transition effect */
+}
+
+.forgot a:hover {
+    color: #0056b3; /* Darker color on hover */
+    text-decoration: underline; /* Adds underline on hover */
+}
+
+
+</style>
 
 
 
@@ -40,6 +66,7 @@ login
                     <!-- Login Button -->
                     <button type="submit" id="login-button">Login</button>
                 </form>
+                <div class="forgot"><p><a href="{% url 'forgot_pass' %}">Forgot your password?</a></p></div>
             </div>
         </div>
         </div>

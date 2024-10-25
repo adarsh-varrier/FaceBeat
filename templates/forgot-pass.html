@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+login
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<h1>Forgot password Dealing</h1>
+<h1>Forgot password Dealing</h1>
+
+<p><a href="{% url 'login' %}">Back to Login</a></p>
+
+<!-- Display messages -->
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<h2>Forgot Password</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

@@ -19,9 +19,27 @@ class RegistrationForm(UserCreationForm):
     genre = forms.ModelMultipleChoiceField(queryset=MusicGenre.objects.all(), widget=forms.CheckboxSelectMultiple,label="genre")
     language = forms.ModelMultipleChoiceField(queryset=MusicLanguage.objects.all(), widget=forms.CheckboxSelectMultiple)
 
+    # New fields for security question and answer
+    security_question = forms.ChoiceField(
+        choices=[
+            ('What is your favorite color?', 'What is your favorite color?'),
+            ('What was the name of your first pet?', 'What was the name of your first pet?'),
+            ('What is your favorite book?', 'What is your favorite book?'),
+            ('What city were you born in?', 'What city were you born in?'),
+        ],
+        widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Select any question'}),
+        label=''
+    )
+    
+    security_answer = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Answer'}),
+        label=''
+    )
+
     class Meta:
         model = User
-        fields = ['username', 'email', 'phone', 'password1', 'password2', 'genre', 'language']
+        fields = ['username', 'email', 'phone', 'password1', 'password2', 'genre', 'language','security_question', 'security_answer']
 
     # Email validation method
     def clean_email(self):
@@ -87,7 +105,9 @@ class RegistrationForm(UserCreationForm):
                 registration = Registration.objects.create(
                     user=user,
                     phone=self.cleaned_data['phone'],  # Save the phone number
-                    email=self.cleaned_data['email']   # This should be the same as the User email
+                    email=self.cleaned_data['email'],   # This should be the same as the User email
+                    security_question=self.cleaned_data['security_question'],
+                    security_answer=self.cleaned_data['security_answer']  # Save the security answer
                 )
                 # Set many-to-many fields (genre and language)
                 registration.genre.set(self.cleaned_data['genre'])  
@@ -96,3 +116,55 @@ class RegistrationForm(UserCreationForm):
                 print(f"Error saving registration: {e}")  # Debugging line
 
         return user
+    
+class ForgotPasswordForm(forms.Form):
+    username_or_email = forms.CharField(
+        max_length=254,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username or Email'}),
+        label=''
+    )
+    security_question = forms.ChoiceField(
+        choices=[
+            ('What is your favorite color?', 'What is your favorite color?'),
+            ('What was the name of your first pet?', 'What was the name of your first pet?'),
+            ('What is your favorite book?', 'What is your favorite book?'),
+            ('What city were you born in?', 'What city were you born in?'),
+        ],
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        label='Select Security Question'
+    )
+    security_answer = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Answer'}),
+        label=''
+    )
+
+class ResetPasswordForm(forms.Form):
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'New Password'}),
+        label=''
+    )
+    new_password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm New Password'}),
+        label=''
+    )
+
+    def clean_new_password1(self):
+            password = self.cleaned_data.get('new_password1')
+
+            # Define a regex pattern to check for uppercase, lowercase, digits, and special characters
+            if not re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$', password):
+                raise ValidationError("Password must be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.")
+
+            return password
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password1 = cleaned_data.get("new_password1")
+        new_password2 = cleaned_data.get("new_password2")
+
+        if new_password1 and new_password2 and new_password1 != new_password2:
+            raise ValidationError("Passwords do not match.")
+
+        return cleaned_data
+    
