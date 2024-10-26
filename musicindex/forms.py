@@ -6,9 +6,11 @@ from django.core.exceptions import ValidationError
 import re
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.forms import AuthenticationForm
 
 class RegistrationForm(UserCreationForm):
-    username = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),label='')
+    username = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username','autocomplete': 'new-username'}),label='')
     email = forms.EmailField(
         required=True,  
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
@@ -75,7 +77,7 @@ class RegistrationForm(UserCreationForm):
 
     # Customizing the password fields
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password','autocomplete': 'new-password'}),
         label=''
     )
 
@@ -106,8 +108,8 @@ class RegistrationForm(UserCreationForm):
                     user=user,
                     phone=self.cleaned_data['phone'],  # Save the phone number
                     email=self.cleaned_data['email'],   # This should be the same as the User email
-                    security_question=self.cleaned_data['security_question'],
-                    security_answer=self.cleaned_data['security_answer']  # Save the security answer
+                    security_question=make_password(self.cleaned_data['security_question']),
+                    security_answer=make_password(self.cleaned_data['security_answer'])  # Hash the security answer
                 )
                 # Set many-to-many fields (genre and language)
                 registration.genre.set(self.cleaned_data['genre'])  
@@ -116,6 +118,28 @@ class RegistrationForm(UserCreationForm):
                 print(f"Error saving registration: {e}")  # Debugging line
 
         return user
+    
+
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(
+        required=True,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Username',
+            'autocomplete': 'off'  # Prevents browsers from auto-filling
+        }),
+        label=''
+    )
+    password = forms.CharField(
+        required=True,
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Password',
+            'autocomplete': 'off'  # Prevents browsers from auto-filling
+        }),
+        label=''
+    )
+
     
 class ForgotPasswordForm(forms.Form):
     username_or_email = forms.CharField(

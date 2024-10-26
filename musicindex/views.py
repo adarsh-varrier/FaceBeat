@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login  # Rename import to avoid conflict
-from .forms import RegistrationForm
+from .forms import RegistrationForm, CustomAuthenticationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.messages import constants as messages
 from .models import Registration
@@ -8,6 +8,7 @@ from .forms import ForgotPasswordForm, ResetPasswordForm
 from django.contrib.auth.models import User  # Import the User model
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.contrib.auth.hashers import check_password
 
 # Create your views here.
 
@@ -44,7 +45,7 @@ def register(request):
 
 def login_view(request):
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -83,13 +84,17 @@ def forgot_pass(request):
                 user = User.objects.get(username=username_or_email) or User.objects.get(email=username_or_email)
                 registration = Registration.objects.get(user=user)
 
-                # Validate the security question and answer
-                if registration.security_question == security_question and registration.security_answer == security_answer:
-                    # Allow user to reset password
-                    messages.success(request, "Security question validated. You can now reset your password.")
-                    return redirect('reset_password', user_id=user.id)  # Pass user ID to the reset password view
+                 # Validate the security question
+                if check_password(security_question, registration.security_question):
+                    # Check if the hashed security answer matches the provided answer
+                    if check_password(security_answer, registration.security_answer):
+                        # Allow user to reset password
+                        messages.success(request, "Security question validated. You can now reset your password.")
+                        return redirect('reset_password', user_id=user.id)  # Pass user ID to the reset password view
+                    else:
+                        messages.error(request, "Invalid security answer.")
                 else:
-                    messages.error(request, "Invalid security question or answer.")
+                    messages.error(request, "Invalid security question.")
             except User.DoesNotExist:
                 messages.error(request, "User not found.")
             except Registration.DoesNotExist:
