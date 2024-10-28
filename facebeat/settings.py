@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'facebeat.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'facebeat',
+        'NAME': 'fb',
         'HOST': 'localhost',
         'PORT': '5432',
         'USER': 'postgres',

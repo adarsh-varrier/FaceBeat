@@ -6,25 +6,156 @@ login
 
 {% block content %}
 {% load static %}
+<style>
 
-<h1>Forgot password Dealing</h1>
-<h1>Forgot password Dealing</h1>
+    /* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
 
-<p><a href="{% url 'login' %}">Back to Login</a></p>
+/* Main Container */
+.forgot-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
 
-<!-- Display messages -->
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
+/* Forgot Container */
+.forgot-container {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+}
 
-<h2>Forgot Password</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+/* Heading */
+.forgot-heading h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+    text-align: center;
+}
+
+/* Back to Login */
+.forgot-backtologin {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.forgot-backtologin a {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.forgot-backtologin a:hover {
+    text-decoration: underline;
+}
+
+/* Message Display */
+.forgot-message {
+    margin: 1rem 0;
+}
+
+.messages {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.messages li {
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.messages .error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.messages .success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Form Styling */
+.forgot-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-forget input[type="text"],
+.form-forget input[type="email"],
+.form-forget input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-forget input:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* Submit Button */
+.btn {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #3498db;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #2980b9;
+}
+
+
+</style>
+
+<div class="forgot-main">
+    <div class="forgot-container">
+        <div class="forgot-heading">
+        <h1>Forgot password Dealing</h1>
+        </div>
+        <div class="forgot-backtologin">
+        <p><a href="{% url 'login' %}">Back to Login</a></p>
+        </div>
+        <!-- Display messages -->
+        <div class="forgot-message">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        </div>
+        <div class="forgot-form">
+            <form method="post" class="form-forget">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

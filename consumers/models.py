@@ -31,7 +31,7 @@ class Music(models.Model):
     
     title = models.CharField(max_length=255)
     artist = models.CharField(max_length=255, blank=True)
-    genre = models.CharField(max_length=100, blank=True)
+    genre = models.CharField(max_length=100, blank=True, default="null")
     language = models.CharField(max_length=100, blank=True)
     mood = models.CharField(max_length=20, choices=MOOD_CHOICES, blank=True)  # Added mood field
     release_date = models.DateField(blank=True, null=True)
