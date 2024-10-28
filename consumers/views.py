@@ -71,6 +71,7 @@ def image_scan(request):
 #text_recommendation
 
 def recommend_music(request):
+    user_text=''
     if request.method == "POST":
         user_text = request.POST.get("user_text")
 
@@ -117,6 +118,7 @@ def recommend_music(request):
         recommended_music = Music.objects.filter(mood=mood)
 
         return render(request, 'image-scan.html', {
+            'user_text':user_text,
             'detected_emotion': detected_emotion,
             'custom_message': custom_message,
             'recommended_music': recommended_music

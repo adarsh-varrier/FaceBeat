@@ -159,7 +159,7 @@
                     {% csrf_token %}
                     <label for="user_text" class="heading-txt-music">How are you feeling today? Tell us about your mood:</label>
                     <br>
-                    <textarea id="user_text" class="text-box-music"  name="user_text" placeholder="e.g., I'm feeling happy and excited today..."></textarea>
+                    <textarea id="user_text" class="text-box-music"  name="user_text" placeholder="e.g., I'm feeling happy and excited today...">{{user_text}}</textarea>
                     <br>
                     <button type="submit" class="btn-txt-music"><i class="fas fa-music"></i></button>
                 </form>
