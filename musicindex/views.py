@@ -129,3 +129,6 @@ def reset_password(request, user_id):
         form = ResetPasswordForm()
 
     return render(request, 'reset-pass.html', {'form': form})
+
+def lernmore(request):
+    return render(request, 'lernmore.html')
