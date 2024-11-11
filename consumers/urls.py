@@ -22,6 +22,7 @@ urlpatterns = [
     path('recommend/', recommend_music, name='recommend_music'),
     path('genre/<int:id>/', views.music_by_genre, name='music_by_genre'),
     path('language/<int:id>/', views.music_by_language, name='music_by_language'),
+    path('video-feed/', views.video_feed, name='video_feed'),  # Route for video stream
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

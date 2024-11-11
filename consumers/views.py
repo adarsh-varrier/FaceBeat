@@ -20,6 +20,13 @@ from django.utils import timezone
 from .utils import get_plot  # Import the get_plot function
 from django.contrib.auth import authenticate, login, get_user_model
 from .txtemotion_utils import detect_emotion
+import cv2
+import numpy as np
+from tensorflow.keras.models import load_model
+from django.views.decorators.csrf import csrf_exempt
+from django.http import StreamingHttpResponse
+import time
+
 
 
 def user_dashboard(request):
@@ -64,8 +71,124 @@ def user_dashboard(request):
     
 
 # Engine
+
+# Load the emotion detection model
+try:
+    model = load_model('consumers/emotion_model/my_emotion_model3.h5')
+    print("Model loaded successfully.")
+except Exception as e:
+    print("Error loading model:", e)
+    model = None
+
+emotion_labels = ["Angry", "sad", "Sad", "Happy", "Sad", "Happy", "Neutral"]
+
+# Helper function to preprocess frames
+def preprocess_frame(frame):
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    resized = cv2.resize(gray, (48, 48))
+    normalized = resized / 255.0
+    reshaped = np.expand_dims(normalized, axis=-1)
+    reshaped = np.expand_dims(reshaped, axis=0)
+    return reshaped
+
+
+
+# Global variables to manage state
+camera_open = False
+latest_emotion = None
+detect_emotions = False
+
+@csrf_exempt
 def image_scan(request):
-    return render(request, 'image-scan.html')
+    global camera_open, latest_emotion, detect_emotions
+
+    if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "open":
+            camera_open = True
+            latest_emotion = None  # Reset detected emotion
+            detect_emotions = True  # Start detection with delay
+        elif action == "close":
+            camera_open = False
+            detect_emotions = False
+
+    # Detect emotion only if camera is open and detection is triggered
+    if camera_open and detect_emotions:
+        latest_emotion = start_emotion_detection()  # Detect emotion in background
+
+    return render(request, 'image-scan.html', {
+        'camera_open': camera_open,
+        'emotion': latest_emotion
+    })
+
+# This function generates frames for the video feed
+def video_feed(request):
+    return StreamingHttpResponse(generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
+
+# Generate frames and stream them
+def generate_frames():
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        print("Error: Camera not accessible.")
+        return
+
+    start_time = time.time()
+    capture_duration = 45  # Capture duration set to 45 seconds
+    emotion_counts = {emotion: 0 for emotion in emotion_labels}
+
+    try:
+        while time.time() - start_time < capture_duration:
+            ret, frame = cap.read()
+            if not ret:
+                break
+
+            # Preprocess frame for emotion prediction
+            processed_frame = preprocess_frame(frame)
+
+            # Display video feed on the browser
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+    finally:
+        cap.release()
+
+    return None  # No need to return anything in the streaming generator
+
+# Delayed emotion detection after feed starts
+def start_emotion_detection():
+    time.sleep(5)  # Delay for 5 seconds to allow video to show first
+
+    # Emotion detection logic here, e.g., detect_emotion()
+    detected_emotion = detect_emotion_logic()  # Mockup of your emotion detection logic
+    return detected_emotion
+
+def detect_emotion_logic():
+    # Actual emotion detection implementation
+    emotion_counts = {emotion: 0 for emotion in emotion_labels}
+    cap = cv2.VideoCapture(0)
+
+    for _ in range(100):  # Adjust based on needs
+        ret, frame = cap.read()
+        if not ret:
+            continue
+
+        processed_frame = preprocess_frame(frame)
+        try:
+            prediction = model.predict(processed_frame)
+            predicted_class = np.argmax(prediction, axis=1)[0]
+            emotion = emotion_labels[predicted_class]
+            emotion_counts[emotion] += 1
+        except Exception as e:
+            print("Error in prediction:", e)
+            emotion = "Prediction error"
+
+    cap.release()
+    most_frequent_emotion = max(emotion_counts, key=emotion_counts.get)
+    return most_frequent_emotion if emotion_counts[most_frequent_emotion] > 0 else "No emotion detected"
+
+
 
 
 #text_recommendation
@@ -83,14 +206,7 @@ def recommend_music(request):
             'anger': "It seems like you're feeling angry. Take a deep breath and relax.",
             'happy': "You're in a happy mood! Keep smiling and enjoy your day.",
             'sad': "I think you are sad. Everything will be okay.",
-            'overjoyed': "You're feeling overjoyed! Let's celebrate with some music.",
             'relax': "You seem to be in a relaxed mood. Enjoy the peaceful vibes.",
-            'romance': "Feeling romantic? Here's some music to set the mood.",
-            'satisfaction': "You're feeling satisfied. Keep up the good vibes.",
-            'excitement': "You're excited! Let's keep the energy going with these tracks.",
-            'interest': "You're interested and curious! Here's something to keep you engaged.",
-            'surprise': "Life is full of surprises! Here's some music to match your mood.",
-            'nostalgia': "Feeling nostalgic? Let these tracks take you back in time."
         }
 
         # Define a mapping from detected emotions to mood choices
@@ -98,14 +214,7 @@ def recommend_music(request):
             'anger': 'anger',
             'happy': 'happy',
             'sad': 'sad',
-            'overjoyed': 'overjoyed',
             'relax': 'relax',
-            'romance': 'romance',
-            'satisfaction': 'satisfaction',
-            'excitement': 'excitement',
-            'interest': 'interest',
-            'surprise': 'surprise',
-            'nostalgia': 'nostalgia'
         }
 
         # Get the corresponding mood for the detected emotion

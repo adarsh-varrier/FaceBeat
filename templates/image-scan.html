@@ -145,12 +145,35 @@
     <p>This section is for scanning images.</p>
     <div class="Machine-learning-section">
         <div class="camera-container">
-            <video id="camera-feed" autoplay></video>
-            <canvas id="canvas" style="display:none;"></canvas>
-            <div>
-                <button id="capture-button">Capture</button>
-                <button id="video-toggle-button">Turn Video Off</button>
+
+            <!-- Camera control form -->
+            <form method="post" action="{% url 'image_scan' %}">
+                {% csrf_token %}
+                {% if camera_open %}
+                    <button type="submit" name="action" value="close">Close Camera</button>
+                {% else %}
+                    <button type="submit" name="action" value="open">Open Camera</button>
+                {% endif %}
+            </form>
+            
+            {% if camera_open %}
+                <h3>Camera Feed</h3>
+                <img src="{% url 'video_feed' %}" alt="Emotion Detection Feed" style="border: 1px solid #333; width: 640px; height: 480px;">
+                
+                <h3>Emotion Detection</h3>
+                {% if emotion %}
+                    <p>Detected Emotion: {{ emotion }}</p>
+                {% else %}
+                    <p>Detecting Emotion...</p>
+                {% endif %}
+            {% else %}
+                <h3>Camera is closed.</h3>
+            {% endif %}
+            
+            <div class="try-face-music">
+                <a href="{% url 'image_scan' %}">Try Again</a>
             </div>
+
         </div>
         <div class="mood-search">
             <div class="container">
@@ -203,6 +226,16 @@
     </div>
 </section>
 
+<script>
+    // The video frame will automatically update as the server continuously streams new frames
+    const videoFrame = document.getElementById('video-frame');
+    
+    // Optionally, you can add event listeners to handle errors or frame updates
+    videoFrame.addEventListener('error', function() {
+        console.error("Error loading video stream");
+    });
+
+</script>
 
 
 

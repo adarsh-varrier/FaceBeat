@@ -21,12 +21,7 @@ class Music(models.Model):
         ('anger', 'Anger'),
         ('happy', 'Happy'),
         ('sad', 'Sad'),
-        ('overjoyed', 'Overjoyed'),
         ('relax', 'Relax'),
-        ('romance', 'Romance'),
-        ('satisfaction', 'Satisfaction'),
-        ('excitement', 'Excitement'),
-        ('surprise', 'Surprise'),     
     ]
     
     title = models.CharField(max_length=255)
