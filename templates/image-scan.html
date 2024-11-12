@@ -137,42 +137,172 @@
     font-size: 16px;
 }
 
+/*face-detection*/
+
+/* Main container styling */
+.camera-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1000px;
+    margin: 30px auto;
+    border: 2px solid #e0e0e0;
+}
+
+/* Heading section */
+.face-heading h1 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.face-heading p {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Button styling */
+.face-btn .f-btn {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 20px 35px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 15px;
+}
+
+.face-btn .f-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Custom message box with border */
+.face-custom-msg {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #007BFF;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.face-custom-msg p {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+}
+
+/* Styling for the Try Again link */
+.try-face-music a {
+    display: inline-block;
+    margin-top: 20px;
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 2px solid #007BFF;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.try-face-music a:hover {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+/* Try Again Link */
+.try-face {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.try-face a {
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 10px 20px;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.try-face a:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+
 
 </style>
 
 <section id="image-scan" class="dash-section">
-    <h1>Image Scan</h1>
-    <p>This section is for scanning images.</p>
     <div class="Machine-learning-section">
         <div class="camera-container">
-
-            <!-- Camera control form -->
-            <form method="post" action="{% url 'image_scan' %}">
-                {% csrf_token %}
-                {% if camera_open %}
-                    <button type="submit" name="action" value="close">Close Camera</button>
-                {% else %}
-                    <button type="submit" name="action" value="open">Open Camera</button>
-                {% endif %}
-            </form>
-            
-            {% if camera_open %}
-                <h3>Camera Feed</h3>
-                <img src="{% url 'video_feed' %}" alt="Emotion Detection Feed" style="border: 1px solid #333; width: 640px; height: 480px;">
-                
-                <h3>Emotion Detection</h3>
-                {% if emotion %}
-                    <p>Detected Emotion: {{ emotion }}</p>
-                {% else %}
-                    <p>Detecting Emotion...</p>
-                {% endif %}
-            {% else %}
-                <h3>Camera is closed.</h3>
-            {% endif %}
-            
-            <div class="try-face-music">
-                <a href="{% url 'image_scan' %}">Try Again</a>
+            <div class="face-heading">
+                <h1>Image Scan</h1>
+                <p>We are here to help you.</p>
             </div>
+            <div class="face-btn">
+                <!-- Camera control form -->
+                <form method="post" action="{% url 'image_scan' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="f-btn"><i class="fas fa-smile"></i></button>
+                </form>
+            </div>
+            <div class="face-custom-msg">
+                {% if emotion_message %}
+                    <p>{{ emotion_message }}</p>
+                {% else %}
+                    <p>Click "<i class="fas fa-smile"></i>" to begin.</p>
+                {% endif %}
+            </div>
+            {% if recommended_music and emotion_message %}
+                <h3>Music for you</h3>
+                <ul>
+                    {% for music in recommended_music %}
+                    <div>
+                        <li class="music-list-db">
+                            <div class="music-player">
+                                <strong>{{ music.title }}</strong> by {{ music.artist }} 
+                                (Genre: {{ music.genre }}, Language: {{ music.language }})
+                                <br>
+                                <div>
+                                    
+                                    <audio controls class="music-track">
+                                        <source src="{{ music.music_file.url }}" type="audio/mp3">
+                                        Your browser does not support the audio element.
+                                    </audio>
+                                    <div class="music-controls">
+                                        <button class="prevButton btn-music-control"><i class="fas fa-backward"></i></button>
+                                        <button class="nextButton btn-music-control"><i class="fas fa-forward"></i></button>
+                                    </div>
+                                </div>
+                                <br>
+                                <small>Released on: {{ music.release_date }} | Duration: {{ music.duration }}</small>
+                            </div>
+                        </li>
+                    </div>
+                    {% endfor %}
+                </ul>
+                <div class="try-face">
+                    <a href="{% url 'image_scan' %}">Try again</a>
+                </div>
+            {% endif %}
 
         </div>
         <div class="mood-search">

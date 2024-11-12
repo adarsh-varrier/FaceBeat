@@ -20,12 +20,13 @@ from django.utils import timezone
 from .utils import get_plot  # Import the get_plot function
 from django.contrib.auth import authenticate, login, get_user_model
 from .txtemotion_utils import detect_emotion
+import time
 import cv2
 import numpy as np
-from tensorflow.keras.models import load_model
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.http import StreamingHttpResponse
-import time
+from tensorflow.keras.models import load_model
 
 
 
@@ -74,13 +75,12 @@ def user_dashboard(request):
 
 # Load the emotion detection model
 try:
-    model = load_model('consumers/emotion_model/my_emotion_model3.h5')
+    model = load_model('consumers/emotion_model/my_emotion_model3.h5')  # Adjust path accordingly
     print("Model loaded successfully.")
 except Exception as e:
     print("Error loading model:", e)
-    model = None
 
-emotion_labels = ["Angry", "sad", "Sad", "Happy", "Sad", "Happy", "Neutral"]
+emotion_labels = ["Angry", "Angry", "Sad", "Happy", "Sad", "Happy", "Neutral"]
 
 # Helper function to preprocess frames
 def preprocess_frame(frame):
@@ -91,105 +91,88 @@ def preprocess_frame(frame):
     reshaped = np.expand_dims(reshaped, axis=0)
     return reshaped
 
+# The video streaming view
+def gen_frames():
+    cap = cv2.VideoCapture(0)
+    emotion_counts = {emotion: 0 for emotion in emotion_labels}  # Dictionary to store emotion counts
+    start_time = time.time()
+    capture_duration = 15  # Set to 45 seconds
 
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        
+        # Preprocess frame for emotion prediction
+        processed_frame = preprocess_frame(frame)
+        prediction = model.predict(processed_frame)
+        predicted_class = np.argmax(prediction, axis=1)[0]
+        emotion = emotion_labels[predicted_class]
+        
+        # Update emotion counts
+        emotion_counts[emotion] += 1
+        
+        # Check if the capture time (45 seconds) has passed
+        if time.time() - start_time >= capture_duration:
+             # Find the most frequent emotion detected
+            most_frequent_emotion = max(emotion_counts, key=emotion_counts.get)
+            cap.release()  # Stop the camera after 45 seconds
+            return most_frequent_emotion  # Return the most detected emotion
+        
+        # To ensure continuous feed, display the frame (for optional debugging)
+        cv2.putText(frame, f'Emotion: {emotion}', (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+        cv2.imshow('Real-Time Emotion Detection', frame)
+        
+        # Check if the window has been closed
+        if cv2.getWindowProperty('Real-Time Emotion Detection', cv2.WND_PROP_VISIBLE) < 1:
+            break
 
-# Global variables to manage state
-camera_open = False
-latest_emotion = None
-detect_emotions = False
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cv2.destroyAllWindows()
+    return "No emotion detected"  # Default if no emotion detected
+
 
 @csrf_exempt
 def image_scan(request):
-    global camera_open, latest_emotion, detect_emotions
+    # Emotion to custom message mapping
+    emotion_messages = {
+        'Angry': "It seems like you're feeling angry. Take a deep breath and relax.",
+        'Happy': "You're in a happy mood! Keep smiling and enjoy your day.",
+        'Sad': "I think you are sad. Everything will be okay.",
+        'Neutral': "You seem to be in a relaxed mood. Enjoy the peaceful vibes.",
+    }
 
-    if request.method == "POST":
-        action = request.POST.get("action")
-        if action == "open":
-            camera_open = True
-            latest_emotion = None  # Reset detected emotion
-            detect_emotions = True  # Start detection with delay
-        elif action == "close":
-            camera_open = False
-            detect_emotions = False
+    # Detected emotion to mood category mapping for database filtering
+    mood_mapping = {
+        'Angry': 'anger',
+        'Happy': 'happy',
+        'Sad': 'sad',
+        'Neutral': 'relax',
+    }
 
-    # Detect emotion only if camera is open and detection is triggered
-    if camera_open and detect_emotions:
-        latest_emotion = start_emotion_detection()  # Detect emotion in background
+    if request.method == "POST":  # Trigger detection on form submission
+        # Capture emotion when triggered
+        detected_emotion = gen_frames()  
 
-    return render(request, 'image-scan.html', {
-        'camera_open': camera_open,
-        'emotion': latest_emotion
-    })
+        # Get mood based on the detected emotion
+        mood = mood_mapping.get(detected_emotion, 'relax')  # Default to 'relax' if not found
 
-# This function generates frames for the video feed
-def video_feed(request):
-    return StreamingHttpResponse(generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
+        # Get the custom message based on the detected emotion
+        emotion_message = emotion_messages.get(detected_emotion, "Here's some music for your mood.")
 
-# Generate frames and stream them
-def generate_frames():
-    cap = cv2.VideoCapture(0)
-    if not cap.isOpened():
-        print("Error: Camera not accessible.")
-        return
+        # Filter music recommendations based on the detected mood
+        recommended_music = Music.objects.filter(mood=mood)
 
-    start_time = time.time()
-    capture_duration = 45  # Capture duration set to 45 seconds
-    emotion_counts = {emotion: 0 for emotion in emotion_labels}
+        return render(request, 'image-scan.html', {
+            'emotion_message': emotion_message,
+            'recommended_music': recommended_music,
+            'emotion': detected_emotion,
+        })
 
-    try:
-        while time.time() - start_time < capture_duration:
-            ret, frame = cap.read()
-            if not ret:
-                break
-
-            # Preprocess frame for emotion prediction
-            processed_frame = preprocess_frame(frame)
-
-            # Display video feed on the browser
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
-    finally:
-        cap.release()
-
-    return None  # No need to return anything in the streaming generator
-
-# Delayed emotion detection after feed starts
-def start_emotion_detection():
-    time.sleep(5)  # Delay for 5 seconds to allow video to show first
-
-    # Emotion detection logic here, e.g., detect_emotion()
-    detected_emotion = detect_emotion_logic()  # Mockup of your emotion detection logic
-    return detected_emotion
-
-def detect_emotion_logic():
-    # Actual emotion detection implementation
-    emotion_counts = {emotion: 0 for emotion in emotion_labels}
-    cap = cv2.VideoCapture(0)
-
-    for _ in range(100):  # Adjust based on needs
-        ret, frame = cap.read()
-        if not ret:
-            continue
-
-        processed_frame = preprocess_frame(frame)
-        try:
-            prediction = model.predict(processed_frame)
-            predicted_class = np.argmax(prediction, axis=1)[0]
-            emotion = emotion_labels[predicted_class]
-            emotion_counts[emotion] += 1
-        except Exception as e:
-            print("Error in prediction:", e)
-            emotion = "Prediction error"
-
-    cap.release()
-    most_frequent_emotion = max(emotion_counts, key=emotion_counts.get)
-    return most_frequent_emotion if emotion_counts[most_frequent_emotion] > 0 else "No emotion detected"
-
-
-
+    # First load without emotion detection
+    return render(request, 'image-scan.html', {'emotion_message': None, 'recommended_music': None})
 
 #text_recommendation
 
