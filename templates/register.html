@@ -8,6 +8,61 @@ Registration
 {% load static %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <link rel="stylesheet" href="{% static 'css/register.css' %}">
+<style>
+
+    
+.reg-submit{
+    
+    padding: 9px;
+}
+
+/* Messages Section */
+.register-message .messages {
+    list-style-type: none;
+    padding: 10px;
+    margin: 0;
+    background-color: #ffdddd;
+    color: #a94442;
+    border-left: 5px solid #a94442;
+}
+
+.register-message .messages li {
+    margin: 5px 0;
+}
+
+.lab-gnla{
+    color: #b6e32c;
+}
+
+/* Error Messages */
+.form-error {
+    color: #d9534f;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Security Section */
+p {
+    font-size: 14px;
+    color: #1ad442;
+    margin: 10px 0;
+}
+
+label input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+label a {
+    color: #d76309;
+    text-decoration: none;
+    padding: 5px;
+}
+
+label a:hover {
+    text-decoration: underline;
+}
+
+</style>
 
 
 <h3>Registration Page</h3>
