@@ -10,15 +10,16 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.forms import AuthenticationForm
 
 class RegistrationForm(UserCreationForm):
-    username = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username','autocomplete': 'new-username'}),label='')
+    username = forms.CharField(required=False, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username','autocomplete': 'new-username'}),label='')
     email = forms.EmailField(
-        required=True,  
+        required=False,  
         widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
         label='')
-    phone = forms.CharField(max_length=20, 
+    phone = forms.CharField(max_length=20,
+        required=False,   
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}),
         label='')
-    genre = forms.ModelMultipleChoiceField(queryset=MusicGenre.objects.all(), widget=forms.CheckboxSelectMultiple,label="genre")
+    genre = forms.ModelMultipleChoiceField(queryset=MusicGenre.objects.all(), widget=forms.CheckboxSelectMultiple)
     language = forms.ModelMultipleChoiceField(queryset=MusicLanguage.objects.all(), widget=forms.CheckboxSelectMultiple)
 
     # New fields for security question and answer
@@ -34,6 +35,7 @@ class RegistrationForm(UserCreationForm):
     )
     
     security_answer = forms.CharField(
+        required=False,  
         max_length=100,
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Answer'}),
         label=''
@@ -95,6 +97,14 @@ class RegistrationForm(UserCreationForm):
         label=''
     )
 
+    def __init__(self, *args, **kwargs):
+        """
+        Override __init__ to make password fields optional.
+        """
+        super().__init__(*args, **kwargs)
+        self.fields['password1'].required = False
+        self.fields['password2'].required = False
+
     def save(self, commit=True):
         user = super().save(commit=False)  # Save the User model fields
         user.email = self.cleaned_data['email']  # Assign the email to the user
@@ -126,7 +136,6 @@ class CustomAuthenticationForm(AuthenticationForm):
         widget=forms.TextInput(attrs={
             'class': 'form-control',
             'placeholder': 'Username',
-            'autocomplete': 'off'  # Prevents browsers from auto-filling
         }),
         label=''
     )
@@ -135,7 +144,6 @@ class CustomAuthenticationForm(AuthenticationForm):
         widget=forms.PasswordInput(attrs={
             'class': 'form-control',
             'placeholder': 'Password',
-            'autocomplete': 'off'  # Prevents browsers from auto-filling
         }),
         label=''
     )

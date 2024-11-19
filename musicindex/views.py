@@ -132,3 +132,7 @@ def reset_password(request, user_id):
 
 def lernmore(request):
     return render(request, 'lernmore.html')
+
+
+def terms(request):
+    return render(request, 'terms&cond.html')

@@ -1,157 +1,163 @@
-    /* Global Styles */
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-    }
-    .register-message{
-        text-align: center;
-    }
-    
-    /* Container for Registration Page */
+ /* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+.register-message{
+    text-align: center;
+}
+
+/* Container for Registration Page */
+.register-master {
+    display: flex;
+    flex-wrap: wrap; /* Allows items to wrap in smaller screens */
+    justify-content: center; /* Center items horizontally */
+    align-items: flex-start; /* Align items to the top */
+    padding: 20px;
+}
+
+/* Registration Container */
+.register-container {
+    background: linear-gradient(to left, rgb(9, 66, 152), rgba(56, 83, 146, 0.8)); /* Gradient from right bottom to top left */
+    border-top-right-radius: 0px; /* Curve the top right corner */
+    border-bottom-right-radius: 0px; /* Curve the bottom right corner */
+    border-top-left-radius: 8px; /* No curve for the top left corner */
+    border-bottom-left-radius: 8px; /* No curve for the bottom left corner */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.7); /* Shadow only on the left */
+    padding: 20px;
+    width: 300px; /* Fixed width for consistency */
+    max-width: 100%; /* Responsive */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    position: relative; /* Ensure stacking context */
+    z-index: 0; /* Ensure the container is below the image */
+}
+
+/* Register Heading */
+.register-heading {
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+/* Register Form */
+.register-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Form Fields */
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Input and Select Styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: inset 2px 2px 5px #e0e0e0;
+    font-size: 16px;
+}
+
+/* Focus Styles */
+input:focus,
+select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Buttons */
+.next-button,
+.back-button,
+.submit-button {
+    background-color: #d14617;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+    margin-top: 10px; /* Space above buttons */
+}
+
+.next-button:hover,
+.back-button:hover,
+.submit-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Slightly grow button on hover */
+}
+
+/* Registration Image */
+.register-image {
+    flex: 1; /* Allow image to take available space */
+    max-width: 563px; /* Limit image size */
+    margin-top: 0px; /* Adjust this value for the desired overlap */
+    margin-left: -1%;
+    z-index: 2; /* Ensure the image is above the container */
+    position: absolute; /* Position it relative to its container */
+    top: 0; /* Align it with the top */
+    left: 50%; /* Center the image horizontally */
+    transform: translateX(-50%); /* Center horizontally */
+}
+
+.register-image img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    min-height: 350px; /* Increase minimum height for the image */
+    border-radius: 15px; /* Match container radius */
+    border-top-right-radius: 8px; /* Curve the top right corner */
+    border-bottom-right-radius: 8px; /* Curve the bottom right corner */
+    border-top-left-radius: 0; /* No curve for the top left corner */
+    border-bottom-left-radius: 0; /* No curve for the bottom left corner */
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.7); /* Shadow only on the right */
+    object-fit: cover; /* Ensure image covers the container area */
+}
+
+/* Messages */
+.register-message {
+    width: 100%;
+    margin-bottom: 15px; /* Space below message area */
+}
+
+.alert {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px; /* Space between messages */
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
     .register-master {
-        display: flex;
-        flex-wrap: wrap; /* Allows items to wrap in smaller screens */
-        justify-content: center; /* Center items horizontally */
-        align-items: flex-start; /* Align items to the top */
-        padding: 20px;
-       
+        flex-direction: column; /* Stack items on smaller screens */
+        align-items: center; /* Center items */
     }
-    
-    /* Registration Container */
+
     .register-container {
-        background: linear-gradient(to left, rgb(9, 66, 152), rgba(56, 83, 146, 0.8)); /* Gradient from right bottom to top left */
-        border-top-right-radius: 0px; /* Curve the top right corner */
-        border-bottom-right-radius: 0px; /* Curve the bottom right corner */
-        border-top-left-radius: 8px; /* No curve for the top left corner */
-        border-bottom-left-radius: 8px; /* No curve for the bottom left corner */
-        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.7); /* Shadow only on the left */
-        padding: 20px;
-        width: 300px; /* Fixed width for consistency */
-        max-width: 100%; /* Responsive */
-        transition: all 0.3s ease; /* Smooth transition for hover effects */
-        position: relative; /* Ensure stacking context */
-        z-index: 0; /* Ensure the container is below the image */
+        width: 90%; /* Responsive width */
     }
-    
-    /* Register Heading */
-    .register-heading {
-        margin-bottom: 15px;
-        color: #ffffff;
-    }
-    
-    /* Register Form */
-    .register-form {
-        display: flex;
-        flex-direction: column;
-    }
-    
-    /* Form Fields */
-    .form-group {
-        margin-bottom: 15px;
-    }
-    
-    /* Input and Select Styles */
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    select {
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        box-shadow: inset 2px 2px 5px #e0e0e0;
-        font-size: 16px;
-    }
-    
-    /* Focus Styles */
-    input:focus,
-    select:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    }
-    
-    /* Buttons */
-    .next-button,
-    .back-button,
-    .submit-button {
-        background-color: #d14617;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transition */
-        margin-top: 10px; /* Space above buttons */
-    }
-    
-    .next-button:hover,
-    .back-button:hover,
-    .submit-button:hover {
-        background-color: #0056b3;
-        transform: scale(1.05); /* Slightly grow button on hover */
-    }
-    
-    /* Registration Image */
+
     .register-image {
-        flex: 1; /* Allow image to take available space */
-        max-width: 563px; /* Limit image size */
-        margin-top: 0px; /* Adjust this value for the desired overlap */
-        margin-left: -1%;
-        z-index: 2; /* Ensure the image is above the container */
+        max-width: 90%; /* Responsive image size */
+        margin-left: 0; /* Remove left margin */
+        margin-top: 20px; /* Add space between form and image */
     }
-    
-    .register-image img {
-        width: 100%;
-        height: auto; /* Maintain aspect ratio */
-        min-height: 350px; /* Increase minimum height for the image */
-        border-radius: 15px; /* Match container radius */
-        border-top-right-radius: 8px; /* Curve the top right corner */
-        border-bottom-right-radius: 8px; /* Curve the bottom right corner */
-        border-top-left-radius: 0; /* No curve for the top left corner */
-        border-bottom-left-radius: 0; /* No curve for the bottom left corner */
-        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.7); /* Shadow only on the right */
-    }
-    
-    
-    /* Messages */
-    .register-message {
-        width: 100%;
-        margin-bottom: 15px; /* Space below message area */
-    }
-    
-    .alert {
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px; /* Space between messages */
-    }
-    
-    .alert-success {
-        background-color: #d4edda;
-        color: #155724;
-    }
-    
-    .alert-error {
-        background-color: #f8d7da;
-        color: #721c24;
-    }
-    
-    /* Media Queries */
-    @media (max-width: 768px) {
-        .register-master {
-            flex-direction: column; /* Stack items on smaller screens */
-            align-items: center; /* Center items */
-        }
-    
-        .register-container {
-            width: 90%; /* Responsive width */
-        }
-    
-        .register-image {
-            max-width: 90%; /* Responsive image size */
-        }
-    }
+}
+
     #b1{
         padding: 3px;
         margin-top: -14px;
@@ -165,4 +171,55 @@
     }
     .form-error{
         color: #fee5e5;
+    }
+
+    .reg-submit{
+    
+        padding: 9px;
+    }
+    
+    /* Messages Section */
+    .register-message .messages {
+        list-style-type: none;
+        padding: 10px;
+        margin: 0;
+        background-color: #ffdddd;
+        color: #a94442;
+        border-left: 5px solid #a94442;
+    }
+    
+    .register-message .messages li {
+        margin: 5px 0;
+    }
+    
+    .lab-gnla{
+        color: #b6e32c;
+    }
+    
+    /* Error Messages */
+    .form-error {
+        color: #d9534f;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+    
+    /* Security Section */
+    p {
+        font-size: 14px;
+        color: #1ad442;
+        margin: 10px 0;
+    }
+    
+    label input[type="checkbox"] {
+        margin-right: 5px;
+    }
+    
+    label a {
+        color: #d76309;
+        text-decoration: none;
+        padding: 5px;
+    }
+    
+    label a:hover {
+        text-decoration: underline;
     }

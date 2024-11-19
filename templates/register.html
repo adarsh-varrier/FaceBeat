@@ -8,15 +8,11 @@ Registration
 {% load static %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <link rel="stylesheet" href="{% static 'css/register.css' %}">
-<style>
-.reg-submit{
-    padding: 15px;
-}
-
-</style>
 
 
 <h3>Registration Page</h3>
+
+
 <div class="register-master">
     <!-- Messages (For success or error feedback) -->
     <div class="register-message">
@@ -38,7 +34,7 @@ Registration
         </div>
 
         <div class="register-form">
-            <form id="registrationForm" method="POST" onsubmit="return validateCheckbox()">
+            <form id="registrationForm" method="POST" onsubmit="return validateForm()">
                 {% csrf_token %}
                 
                 <!-- First Part of the Registration Form -->
@@ -97,7 +93,7 @@ Registration
     
                     <!-- Second Part Fields with Labels -->
                     <div class="form-group">
-                        <label for="{{ form.genre.id_for_label }}">Genre</label>
+                        <label for="{{ form.genre.id_for_label }}"><b class="lab-gnla">Genre</b></label>
                         <em>{{ form.genre }}</em>
                         <!-- Error handling -->
                     {% if form.genre.errors %}
@@ -105,7 +101,7 @@ Registration
                     {% endif %}
                     </div>
                     <div class="form-group">
-                        <label for="{{ form.language.id_for_label }}">Language</label>
+                        <label for="{{ form.language.id_for_label }}"><b class="lab-gnla">Language</b></label>
                         <em>{{ form.language }}</em>
                         <!-- Error handling -->
                     {% if form.language.errors %}
@@ -146,7 +142,9 @@ Registration
                     </div>
 
                     <p>Do not share this details with anyone.</p>
-                    <label><input type="checkbox" id="check" name="check">Checked the <a href="#">Terms and conditions</a></label>
+                    <br>
+                    <label><input type="checkbox" id="check" name="check">Checked the <a href="{% url 'terms' %}" target="_blank">Terms and conditions</a></label>
+                    <br>
                     <br>
                     <!-- Submit Button -->
                     <div class="reg-submit">
@@ -164,46 +162,6 @@ Registration
     </div>
 </div>
 
-<!-- JavaScript for Navigation -->
-<script>
-    function showNext() {
-        // Hide Step 1
-        document.getElementById('step1').style.display = 'none';
-        // Show Step 2
-        document.getElementById('step2').style.display = 'block';
-    }
-
-    function showNext2() {
-        // Hide Step 2
-        document.getElementById('step2').style.display = 'none';
-        // Show Step 3
-        document.getElementById('step3').style.display = 'block';
-    }
-
-    function showPrevious1() {
-        // Hide Step 2
-        document.getElementById('step2').style.display = 'none';
-        // Show Step 1
-        document.getElementById('step1').style.display = 'block';
-    }
-
-    function showPrevious2() {
-        // Hide Step 3
-        document.getElementById('step3').style.display = 'none';
-        // Show Step 2
-        document.getElementById('step2').style.display = 'block';
-    }
-
-    function validateCheckbox() {
-        // Check if the checkbox is checked
-        const checkbox = document.getElementById('check');
-        if (!checkbox.checked) {
-            alert("Please check the box to confirm you've reviewed the details before submitting.");
-            return false; // Prevent form submission
-        }
-        return true; // Allow form submission
-    }
-</script>
-
+<script src="{% static 'js/validation.js' %}"></script>
 
 {% endblock %}
