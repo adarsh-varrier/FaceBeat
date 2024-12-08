@@ -5,7 +5,7 @@ from .models import Music
 from musicindex.models import Registration, MusicGenre, MusicLanguage
 
 
-# Define the rating choices as a class variable for easy access
+
 RATING_CHOICES = [
     (1, '1 Star'),
     (2, '2 Stars'),
@@ -23,9 +23,9 @@ class AdminUserCreationForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.set_password(self.cleaned_data['password'])  # Properly hash the password
-        user.is_staff = True  # Mark the user as an admin
-        user.is_superuser = True  # Optional: mark as superuser
+        user.set_password(self.cleaned_data['password']) 
+        user.is_staff = True  
+        user.is_superuser = True  
         if commit:
             user.save()
         return user
@@ -36,7 +36,7 @@ class FeedbackForm(forms.ModelForm):
 
     class Meta:
         model = Feedback
-        fields = ['feedback_text', 'rating']  # Include the rating field
+        fields = ['feedback_text', 'rating']  
         widgets = {
             'feedback_text': forms.Textarea(attrs={'placeholder': 'Enter your feedback here...'}),
         }
@@ -46,18 +46,18 @@ class ReplyForm(forms.Form):
 
 class MusicUploadForm(forms.ModelForm):
     genre = forms.ModelChoiceField(
-        queryset=MusicGenre.objects.all(),  # Dropdown for genre
-        widget=forms.Select(attrs={'class': 'form-select',}),  # Apply styling if needed
+        queryset=MusicGenre.objects.all(),  
+        widget=forms.Select(attrs={'class': 'form-select',}),  
         label='Genre'
     )
     language = forms.ModelChoiceField(
-        queryset=MusicLanguage.objects.all(),  # Dropdown for language
+        queryset=MusicLanguage.objects.all(),  
         widget=forms.Select(attrs={'class': 'form-select',}),
         label='Language'
     )
     class Meta:
         model = Music
-        fields = ['title', 'artist', 'genre', 'language', 'mood', 'release_date', 'duration', 'music_file']  # Added mood field
+        fields = ['title', 'artist', 'genre', 'language', 'mood', 'release_date', 'duration', 'music_file']  
         widgets = {
              'title': forms.TextInput(attrs={
                 'class': 'form-control', 

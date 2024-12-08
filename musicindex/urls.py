@@ -14,3 +14,4 @@ urlpatterns = [
     path('lernmore/', views.lernmore, name='lernmore'),
     path('terms&condition/', views.terms, name='terms'),
 ]
+

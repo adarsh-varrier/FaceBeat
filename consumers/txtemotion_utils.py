@@ -11,12 +11,6 @@ def detect_emotion(text):
     Returns:
         str: Detected emotion label.
     """
-    # Define specific keywords for romance
-    romance_keywords = ["love", "in love", "crush", "adore", "sweetheart", "romantic"]
-
-    # Check if any romance-specific keywords are in the input text
-    if any(keyword in text.lower() for keyword in romance_keywords):
-        return "romance"
     # Get predictions from the emotion classifier
     predictions = emotion_classifier(text)
     
@@ -26,13 +20,13 @@ def detect_emotion(text):
     # Map detected emotion to moods in the model
     emotion_to_mood = {
         'admiration': 'overjoyed',
-        'adoration': 'romance',
+        'adoration': 'happy',
         'amusement': 'happy',
         'anger': 'anger',
-        'anxiety': 'relax',
+        'anxiety': 'sad',
         'awe': 'relax',
         'awkwardness': 'relax',
-        'boredom': 'nostalgia',
+        'boredom': 'relax',
         'calmness': 'relax',
         'confusion': 'interest',
         'craving': 'satisfaction',
@@ -42,14 +36,14 @@ def detect_emotion(text):
         'excitement': 'excitement',
         'fear': 'fear',
         'happiness': 'happy',
-        'interest': 'interest',
+        'interest': 'happy',
         'joy': 'happy',
-        'nostalgia': 'nostalgia',
+        'nostalgia': 'relax',
         'relief': 'relax',
-        'romance': 'romance',
+        'romance': 'happy',
         'sadness': 'sad',
-        'satisfaction': 'satisfaction',
-        'surprise': 'surprise',
+        'satisfaction': 'happy',
+        'surprise': 'happy',
     }
     
     # Return the corresponding mood or a default

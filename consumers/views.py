@@ -17,7 +17,7 @@ from .forms import (
 from .models import Feedback, Music
 from musicindex.models import MusicGenre, MusicLanguage, Registration
 from django.utils import timezone
-from .utils import get_plot  # Import the get_plot function
+from .utils import get_plot  
 from django.contrib.auth import authenticate, login, get_user_model
 from .txtemotion_utils import detect_emotion
 import time
@@ -38,27 +38,27 @@ def user_dashboard(request):
         languages = MusicLanguage.objects.all()
         user_details = Registration.objects.filter(user=request.user).first()
 
-        # Ensure average_rating is rounded to 2 decimal places if needed
-        average_rating = round(average_rating, 2) if average_rating is not None else 0  # In case no ratings exist
+        
+        average_rating = round(average_rating, 2) if average_rating is not None else 0 
 
         graph = get_plot(average_rating)
 
-       # Get user's preferred genres and languages as strings
+       
         preferred_genres = user_details.genre.all() if user_details else []
         preferred_languages = user_details.language.all() if user_details else []
 
-        # Get names of preferred genres and languages
+        
         preferred_genres_names = [genre.name for genre in preferred_genres]
         preferred_languages_names = [language.name for language in preferred_languages]
 
-        # Fetch 5 random music records matching preferred genres or languages
+        
         random_music_records = Music.objects.filter(
             Q(genre__in=preferred_genres_names) | 
             Q(language__in=preferred_languages_names)
-        ).order_by('?')[:5]  # Random order, limit to 5 records
+        ).order_by('?')[:5]  
            
 
-        # Return all forms to the template
+        
         return render(request, 'user_dashboard.html', {
             'average_rating': average_rating,
             'graph': graph,
@@ -73,16 +73,16 @@ def user_dashboard(request):
 
 # Engine
 
-# Load the emotion detection model
+
 try:
-    model = load_model('consumers/emotion_model/my_emotion_model3.h5')  # Adjust path accordingly
+    model = load_model('consumers/emotion_model/my_emotion_model3.h5')  
     print("Model loaded successfully.")
 except Exception as e:
     print("Error loading model:", e)
 
 emotion_labels = ["Angry", "Angry", "Sad", "Happy", "Sad", "Happy", "Neutral"]
 
-# Helper function to preprocess frames
+
 def preprocess_frame(frame):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     resized = cv2.resize(gray, (48, 48))
@@ -91,10 +91,10 @@ def preprocess_frame(frame):
     reshaped = np.expand_dims(reshaped, axis=0)
     return reshaped
 
-# The video streaming view
+
 def gen_frames():
     cap = cv2.VideoCapture(0)
-    emotion_counts = {emotion: 0 for emotion in emotion_labels}  # Dictionary to store emotion counts
+    emotion_counts = {emotion: 0 for emotion in emotion_labels}  
     start_time = time.time()
     capture_duration = 15  # Set to 45 seconds
 
@@ -103,27 +103,27 @@ def gen_frames():
         if not ret:
             break
         
-        # Preprocess frame for emotion prediction
+        
         processed_frame = preprocess_frame(frame)
         prediction = model.predict(processed_frame)
         predicted_class = np.argmax(prediction, axis=1)[0]
         emotion = emotion_labels[predicted_class]
         
-        # Update emotion counts
+        
         emotion_counts[emotion] += 1
         
-        # Check if the capture time (45 seconds) has passed
-        if time.time() - start_time >= capture_duration:
-             # Find the most frequent emotion detected
-            most_frequent_emotion = max(emotion_counts, key=emotion_counts.get)
-            cap.release()  # Stop the camera after 45 seconds
-            return most_frequent_emotion  # Return the most detected emotion
         
-        # To ensure continuous feed, display the frame (for optional debugging)
+        if time.time() - start_time >= capture_duration:
+            
+            most_frequent_emotion = max(emotion_counts, key=emotion_counts.get)
+            cap.release()  
+            return most_frequent_emotion  
+        
+        
         cv2.putText(frame, f'Emotion: {emotion}', (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
         cv2.imshow('Real-Time Emotion Detection', frame)
         
-        # Check if the window has been closed
+        
         if cv2.getWindowProperty('Real-Time Emotion Detection', cv2.WND_PROP_VISIBLE) < 1:
             break
 
@@ -131,12 +131,15 @@ def gen_frames():
             break
 
     cv2.destroyAllWindows()
-    return "No emotion detected"  # Default if no emotion detected
+    return "No emotion detected"  
 
 
 @csrf_exempt
 def image_scan(request):
-    # Emotion to custom message mapping
+    genres = MusicGenre.objects.all()
+    languages = MusicLanguage.objects.all()
+    user_details = Registration.objects.filter(user=request.user).first()
+    
     emotion_messages = {
         'Angry': "It seems like you're feeling angry. Take a deep breath and relax.",
         'Happy': "You're in a happy mood! Keep smiling and enjoy your day.",
@@ -144,7 +147,7 @@ def image_scan(request):
         'Neutral': "You seem to be in a relaxed mood. Enjoy the peaceful vibes.",
     }
 
-    # Detected emotion to mood category mapping for database filtering
+    
     mood_mapping = {
         'Angry': 'anger',
         'Happy': 'happy',
@@ -152,8 +155,8 @@ def image_scan(request):
         'Neutral': 'relax',
     }
 
-    if request.method == "POST":  # Trigger detection on form submission
-        # Capture emotion when triggered
+    if request.method == "POST":  
+        
         detected_emotion = gen_frames()  
 
         # Get mood based on the detected emotion
@@ -162,12 +165,30 @@ def image_scan(request):
         # Get the custom message based on the detected emotion
         emotion_message = emotion_messages.get(detected_emotion, "Here's some music for your mood.")
 
-        # Filter music recommendations based on the detected mood
-        recommended_music = Music.objects.filter(mood=mood)
+        if request.user.is_authenticated and not request.user.is_staff:
+            # Get preferred genres and languages
+            preferred_genres = user_details.genre.all() if user_details else []
+            preferred_languages = user_details.language.all() if user_details else []
+
+            # Get names of preferred genres and languages
+            preferred_genres_names = [genre.name for genre in preferred_genres]
+            preferred_languages_names = [language.name for language in preferred_languages]
+
+            # Filter music based on mood, genres, and languages
+            music_records = Music.objects.filter(
+                Q(mood=mood) &
+                (Q(genre__in=preferred_genres_names) | Q(language__in=preferred_languages_names))
+            ).distinct()  # Ensure distinct results to avoid duplicates if music matches multiple criteria
+
+            # Fetch 5 random music records
+            random_music_records = music_records.order_by('?')[:5]  # Random order, limit to 5 records
+        else:
+             # Filter music recommendations based on the detected mood
+            random_music_records = Music.objects.filter(mood=mood)
 
         return render(request, 'image-scan.html', {
             'emotion_message': emotion_message,
-            'recommended_music': recommended_music,
+            'recommended_music': random_music_records,
             'emotion': detected_emotion,
         })
 
@@ -177,6 +198,9 @@ def image_scan(request):
 #text_recommendation
 
 def recommend_music(request):
+    genres = MusicGenre.objects.all()
+    languages = MusicLanguage.objects.all()
+    user_details = Registration.objects.filter(user=request.user).first()
     user_text=''
     if request.method == "POST":
         user_text = request.POST.get("user_text")
@@ -206,14 +230,36 @@ def recommend_music(request):
         # Get the custom message for the detected emotion
         custom_message = emotion_messages.get(detected_emotion, "Here's some music for your mood.")
 
-        # Filter music recommendations based on the detected mood
-        recommended_music = Music.objects.filter(mood=mood)
+        
 
+        if request.user.is_authenticated and not request.user.is_staff:
+            # Get user's preferred genres and languages
+            preferred_genres = user_details.genre.all() if user_details else []
+            preferred_languages = user_details.language.all() if user_details else []
+
+            # Get names of preferred genres and languages
+            preferred_genres_names = [genre.name for genre in preferred_genres]
+            preferred_languages_names = [language.name for language in preferred_languages]
+
+            # Fetch music records that match the user's mood, genres, or languages preferences
+            music_records = Music.objects.filter(
+                Q(mood=mood) &
+                (Q(genre__in=preferred_genres_names) | Q(language__in=preferred_languages_names))
+            ).distinct()  # Ensure distinct results to avoid duplicates if music matches multiple criteria
+
+            # Fetch 5 random music records
+            random_music_records = music_records.order_by('?')[:5]  # Random order, limit to 5 records
+        else:
+
+            # Filter music recommendations based on the detected mood
+            random_music_records = Music.objects.filter(mood=mood)
+
+        # Render the page with the recommended music
         return render(request, 'image-scan.html', {
-            'user_text':user_text,
+            'user_text': user_text,
             'detected_emotion': detected_emotion,
             'custom_message': custom_message,
-            'recommended_music': recommended_music
+            'recommended_music': random_music_records
         })
 
     return render(request, 'image-scan.html')

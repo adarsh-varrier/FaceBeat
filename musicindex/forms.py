@@ -22,7 +22,7 @@ class RegistrationForm(UserCreationForm):
     genre = forms.ModelMultipleChoiceField(queryset=MusicGenre.objects.all(), widget=forms.CheckboxSelectMultiple)
     language = forms.ModelMultipleChoiceField(queryset=MusicLanguage.objects.all(), widget=forms.CheckboxSelectMultiple)
 
-    # New fields for security question and answer
+     
     security_question = forms.ChoiceField(
         choices=[
             ('What is your favorite color?', 'What is your favorite color?'),
@@ -40,7 +40,6 @@ class RegistrationForm(UserCreationForm):
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Answer'}),
         label=''
     )
-
     class Meta:
         model = User
         fields = ['username', 'email', 'phone', 'password1', 'password2', 'genre', 'language','security_question', 'security_answer']
@@ -106,8 +105,8 @@ class RegistrationForm(UserCreationForm):
         self.fields['password2'].required = False
 
     def save(self, commit=True):
-        user = super().save(commit=False)  # Save the User model fields
-        user.email = self.cleaned_data['email']  # Assign the email to the user
+        user = super().save(commit=False)  
+        user.email = self.cleaned_data['email']  
 
         if commit:
             try:
@@ -116,17 +115,16 @@ class RegistrationForm(UserCreationForm):
                 # Create Registration entry
                 registration = Registration.objects.create(
                     user=user,
-                    phone=self.cleaned_data['phone'],  # Save the phone number
-                    email=self.cleaned_data['email'],   # This should be the same as the User email
+                    phone=self.cleaned_data['phone'],  
+                    email=self.cleaned_data['email'],   
                     security_question=make_password(self.cleaned_data['security_question']),
-                    security_answer=make_password(self.cleaned_data['security_answer'])  # Hash the security answer
+                    security_answer=make_password(self.cleaned_data['security_answer'])  
                 )
                 # Set many-to-many fields (genre and language)
                 registration.genre.set(self.cleaned_data['genre'])  
                 registration.language.set(self.cleaned_data['language'])
             except Exception as e:
-                print(f"Error saving registration: {e}")  # Debugging line
-
+                print(f"Error saving registration: {e}")  
         return user
     
 

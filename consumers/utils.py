@@ -15,11 +15,11 @@ def get_graph():
 def get_plot(average_rating):
     plt.figure(figsize=(6, 4))
     plt.bar(['Average Rating'], [average_rating], color='blue')
-    plt.ylim(0, 5)  # Assuming ratings are from 1 to 5
+    plt.ylim(0, 5)  
     plt.title('Facebeat Rating')
     plt.ylabel('Rating')
 
     # Generate the graph and return it as a base64 string
     graph = get_graph()
-    plt.clf()  # Clear the current figure to free memory
+    plt.clf()  
     return graph

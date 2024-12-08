@@ -22,8 +22,8 @@ class Registration(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='User_prof')
     phone = models.CharField(max_length=20)
     email = models.EmailField(max_length=100, unique=True)
-    genre = models.ManyToManyField(MusicGenre)  # Many genres allowed
-    language = models.ManyToManyField(MusicLanguage)  # Many languages allowed
+    genre = models.ManyToManyField(MusicGenre)  
+    language = models.ManyToManyField(MusicLanguage)  
     security_question = models.CharField(max_length=255, blank=True)
     security_answer = models.CharField(max_length=255, blank=True)
 

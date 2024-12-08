@@ -1,16 +1,17 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login as auth_login  # Rename import to avoid conflict
+from django.contrib.auth import login as auth_login  
 from .forms import RegistrationForm, CustomAuthenticationForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.messages import constants as messages
 from .models import Registration
 from .forms import ForgotPasswordForm, ResetPasswordForm
-from django.contrib.auth.models import User  # Import the User model
+from django.contrib.auth.models import User  
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.hashers import check_password
+from django.db.models import Q
 
-# Create your views here.
+
 
 def home(request):
     return render(request, 'home.html')
@@ -27,15 +28,15 @@ def register(request):
         if form.is_valid():
             try:
                 user = form.save()
-                login(request, user)  # Log in the user after registration
-                messages.success(request, 'Registration successful!')  # Success message
-                return redirect('login')  # Redirect to home page or dashboard
+                login(request, user)  
+                messages.success(request, 'Registration successful!')  
+                return redirect('login')  
             except Exception as e:
-                messages.error(request, f'Registration failed due to: {e}')  # Show any exceptions
+                messages.error(request, f'Registration failed due to: {e}')  
         else:
-            # If the form is not valid, show form errors
+            
             messages.error(request, 'Registration failed. Please correct the errors below.')
-            print(form.errors)  # Debugging: print form errors to the console
+            print(form.errors)  
     else:
         form = RegistrationForm()
     
@@ -51,8 +52,8 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
-                auth_login(request, user)  # Log in the user
-                return redirect('user_dashboard')  # Redirect to user dashboard
+                auth_login(request, user)  
+                return redirect('user_dashboard')  
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -81,8 +82,12 @@ def forgot_pass(request):
 
             try:
                 # Check if user exists based on username or email
-                user = User.objects.get(username=username_or_email) or User.objects.get(email=username_or_email)
+                user = User.objects.get(Q(username=username_or_email) | Q(email=username_or_email))
+                # Ensure the email matches if required
                 registration = Registration.objects.get(user=user)
+                if user.email != username_or_email and username_or_email not in [user.username, user.email]:
+                    messages.error(request, "Email or username does not match.")
+                    return redirect('forgot_password')
 
                  # Validate the security question
                 if check_password(security_question, registration.security_question):
